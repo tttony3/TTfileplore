@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.changhong.ttfileplore" >
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application
+        android:name="com.changhong.ttfileplore.application.MyApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.changhong.ttfileplore.activities.MainActivity"
+            android:label="@string/app_name"
+           >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.PloreActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.SambaActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.BrowseActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ClassifyGridActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ClassifyListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.PhotoGridActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ShowNetDevActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ShowNetFileActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.VideoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ShowPushFileActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ShowDownFileActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.CaptureActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.ShowSharefileActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.QQListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.changhong.ttfileplore.activities.SetActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1104922716" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service
+            android:name="com.chobit.corestorage.CoreService"
+            android:permission="com.chobit.corestorage.CoreService" >
+            <intent-filter>
+                <action android:name="com.chobit.corestorage.CoreService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.changhong.ttfileplore.service.DownLoadService"
+            android:permission="com.changhong.fileplore.service.DownLoadService" >
+            <intent-filter>
+                <action android:name="com.changhong.fileplore.service.DownLoadService" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

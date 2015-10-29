@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:id="@+id/samba_op">
+    <TableRow >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/server_url"> 
+       </TextView>
+       <EditText 
+           android:inputType="text"
+           android:labelFor="@+id/ip"
+           android:layout_marginStart="5dp"
+           android:id="@+id/ip"
+           android:layout_width="wrap_content"
+            android:ems="10"
+        
+           android:layout_height="wrap_content"          
+           />
+               
+    </TableRow>
+    <TableRow >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/username"> 
+       </TextView>
+       <EditText 
+           android:inputType="text"
+             android:labelFor="@+id/user"
+           android:layout_marginStart="5dp"
+           android:id="@+id/user"
+           android:layout_width="wrap_content"
+              android:ems="10"
+        
+           android:layout_height="wrap_content"          
+           />
+               
+    </TableRow>
+    <TableRow >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/password"> 
+       </TextView>
+       <EditText 
+           android:labelFor="@+id/password"
+           android:layout_marginStart="5dp"
+           android:id="@+id/password"
+           android:inputType="textPassword"
+           android:layout_width="wrap_content"
+              android:ems="10"
+        
+           android:layout_height="wrap_content"          
+           />
+               
+    </TableRow>
+    <TableRow >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/folder"> 
+       </TextView>
+       <EditText 
+           android:inputType="text"
+           android:labelFor="@+id/dir"
+           android:layout_marginStart="5dp"
+           android:id="@+id/dir"
+           android:layout_width="wrap_content"
+           android:ems="10"       
+           android:layout_height="wrap_content"          
+           />
+               
+    </TableRow>
+    
+
+</TableLayout>

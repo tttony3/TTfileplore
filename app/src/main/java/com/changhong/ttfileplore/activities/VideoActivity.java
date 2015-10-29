@@ -1,0 +1,130 @@
+package com.changhong.ttfileplore.activities;
+
+import com.changhong.ttfileplore.R;
+import com.changhong.ttfileplore.application.MyApp;
+import com.changhong.ttfileplore.base.BaseActivity;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.MediaController;
+import android.widget.VideoView;
+
+public class VideoActivity extends BaseActivity  {  
+    String uri;
+    /** Called when the activity is first created. */  
+//    @Override  
+//    public void onCreate(Bundle savedInstanceState) {
+//    	Intent intent =getIntent();
+//    	 uri =intent.getStringExtra("uri");
+//        super.onCreate(savedInstanceState);  
+//        setContentView(R.layout.video_player);  
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  
+//        surfaceView = (SurfaceView) this.findViewById(R.id.surfaceView1);  
+//  
+//        btnPlayUrl = (Button) this.findViewById(R.id.btnPlayUrl);  
+//        btnPlayUrl.setOnClickListener(new ClickEvent());  
+//  
+//        btnPause = (Button) this.findViewById(R.id.btnPause);  
+//        btnPause.setOnClickListener(new ClickEvent());  
+//  
+//        btnStop = (Button) this.findViewById(R.id.btnStop);  
+//        btnStop.setOnClickListener(new ClickEvent());  
+//  
+//        skbProgress = (SeekBar) this.findViewById(R.id.skbProgress);  
+//        skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());  
+//        player = new Player(surfaceView, skbProgress);  
+//  
+//    }  
+//  
+//    class ClickEvent implements OnClickListener {  
+//  
+//        @Override  
+//        public void onClick(View arg0) {  
+//            if (arg0 == btnPause) {  
+//                player.pause();  
+//            } else if (arg0 == btnPlayUrl) {  
+//             //   String url="http://daily3gp.com/vids/family_guy_penis_car.3gp";  
+//                player.playUrl(uri);  
+//            } else if (arg0 == btnStop) {  
+//                player.stop();  
+//            }  
+//  
+//        }  
+//    }  
+//  
+//    class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {  
+//        int progress;  
+//  
+//        @Override  
+//        public void onProgressChanged(SeekBar seekBar, int progress,  
+//                boolean fromUser) {  
+//            // 原本是(progress/seekBar.getMax())*player.mediaPlayer.getDuration()  
+//            this.progress = progress * player.mediaPlayer.getDuration()  
+//                    / seekBar.getMax();  
+//        }  
+//  
+//        @Override  
+//        public void onStartTrackingTouch(SeekBar seekBar) {  
+//  
+//        }  
+//  
+//        @Override  
+//        public void onStopTrackingTouch(SeekBar seekBar) {  
+//            // seekTo()的参数是相对与影片时间的数字，而不是与seekBar.getMax()相对的数字  
+//            player.mediaPlayer.seekTo(progress);  
+//        }  
+//    }  
+//  
+//}  
+//
+	private VideoView video1;
+	MediaController mediaco;
+//
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		MyApp myapp = (MyApp) getApplication();
+		myapp.setContext(this);
+		Intent intent = getIntent();
+		String uri =intent.getStringExtra("uri");
+		setContentView(R.layout.activity_video);
+		findView();
+		// File file = new File("/mnt/sdcard/通话录音/1.mp4");
+
+		// VideoView与MediaController进行关联
+		video1.setVideoURI(Uri.parse(uri));		
+		video1.setMediaController(mediaco);
+		mediaco.setAnchorView(video1);
+		mediaco.setMediaPlayer(video1);
+		mediaco.setVisibility(View.VISIBLE);
+		video1.requestFocus();		
+		video1.start();
+
+	}
+	@Override
+	protected void findView() {
+		video1 = (VideoView) findViewById(R.id.video1);
+		mediaco = new MediaController(this);
+		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			this.finish();
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
+
+}

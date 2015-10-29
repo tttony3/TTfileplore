@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.changhong.ttfileplore"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/alljoyn.jar')
+    compile files('libs/core-2.3.0.jar')
+    compile files('libs/CoreSynergyStorage.jar')
+    compile files('libs/disklrucache-2.0.1.jar')
+    compile files('libs/HttpDownload.jar')
+    compile files('libs/jcifs-1.3.18.jar')
+    compile files('libs/open_sdk_r5276_lite.jar')
+    compile files('libs/protobuf-java-2.6.1.jar')
+    compile files('libs/universal-image-loader-1.9.4-with-sources.jar')
+    compile project(':SlidingMenuLib')
+    compile 'com.android.support:appcompat-v7:22.1.1'
+}
