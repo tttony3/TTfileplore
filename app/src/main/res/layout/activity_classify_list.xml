@@ -25,9 +25,11 @@
             android:id="@+id/item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/path"
             android:layout_alignParentEnd="true"
             android:text="@string/default_count"
-            android:textSize="18sp" />
+            android:textSize="@dimen/top_textsize"
+            android:gravity="end" />
     </RelativeLayout>
 
     <LinearLayout
@@ -39,7 +41,7 @@
         android:paddingEnd="5dp"
         android:paddingStart="5dp" >
 
-        <com.changhong.fileplore.view.RefreshListView
+        <com.changhong.ttfileplore.view.RefreshListView
             android:id="@+id/file_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,3 +1,41 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="tangli" />
+  <dictionary name="tangli">
+    <words>
+      <w>adpter</w>
+      <w>asyn</w>
+      <w>brwloc</w>
+      <w>brwnet</w>
+      <w>changhong</w>
+      <w>curtime</w>
+      <w>detailfile</w>
+      <w>docx</w>
+      <w>filelist</w>
+      <w>fileplore</w>
+      <w>filepreview</w>
+      <w>foldername</w>
+      <w>griditem</w>
+      <w>marginstart</w>
+      <w>margintop</w>
+      <w>matchfiles</w>
+      <w>mlist</w>
+      <w>newfile</w>
+      <w>paddingbot</w>
+      <w>paddingtop</w>
+      <w>plore</w>
+      <w>popupsort</w>
+      <w>rmvb</w>
+      <w>seach</w>
+      <w>searchfile</w>
+      <w>selectall</w>
+      <w>showhidefile</w>
+      <w>sorttype</w>
+      <w>tencent</w>
+      <w>textmargin</w>
+      <w>textsize</w>
+      <w>topx</w>
+      <w>ttfileplore</w>
+      <w>unknow</w>
+      <w>wechat</w>
+    </words>
+  </dictionary>
 </component>

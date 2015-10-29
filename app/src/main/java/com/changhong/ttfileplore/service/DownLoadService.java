@@ -62,7 +62,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
 		try {
 			alreadydownList = Utils.getDownDataObject("alreadydownlist");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			alreadydownList = new ArrayList<DownData>();
 		}
 		ArrayList<String> del = new ArrayList<String>();
@@ -182,7 +182,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
 				try {
 					alreadydownList = Utils.getDownDataObject("alreadydownlist");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+
 					alreadydownList = new ArrayList<DownData>();
 				}
 				ArrayList<String> del = new ArrayList<String>();

@@ -33,13 +33,12 @@ public class ClassifyListAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
+
 		return content.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 

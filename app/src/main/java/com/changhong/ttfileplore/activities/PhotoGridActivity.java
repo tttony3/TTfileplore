@@ -1,7 +1,9 @@
 package com.changhong.ttfileplore.activities;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
 import com.changhong.ttfileplore.adapter.ClassifyGridAdapter;
 import com.changhong.ttfileplore.adapter.PhotoGirdAdapter;
 import com.changhong.ttfileplore.application.MyApp;
@@ -35,188 +37,194 @@ import android.widget.Toast;
 
 public class PhotoGridActivity extends AbsListViewBaseActivity {
 
-	TextView tv_dir;
-	ArrayList<Content> results ;
-	int flg;
-	Handler handler;
-	ClassifyGridAdapter gridAdapter;
-	PhotoGirdAdapter imageAdapter;
-	String[] content;
-	ProgressDialog dialog;
+    TextView tv_dir;
+    ArrayList<Content> results;
+    Handler handler;
+    PhotoGirdAdapter imageAdapter;
+    String[] content;
+    ProgressDialog dialog;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		imageLoader.init(ImageLoaderConfiguration.createDefault(this));
-		MyApp myapp = (MyApp) getApplication();
-		myapp.setContext(this);
-		setContentView(R.layout.activity_classify_grid);
-		content = getIntent().getStringArrayExtra("content");
-		handler = new Handler() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        imageLoader.init(ImageLoaderConfiguration.createDefault(this));
+        MyApp myapp = (MyApp) getApplication();
+        myapp.setContext(this);
+        setContentView(R.layout.activity_classify_grid);
+        content = getIntent().getStringArrayExtra("content");
+        handler = new PhotoHandler(this);
+        findView();
+        initView();
+        listView.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void handleMessage(Message msg) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				@SuppressWarnings("unchecked")
-				ArrayList<Content> results = (ArrayList<Content>) msg.getData().get("txts");
-				imageAdapter = new PhotoGirdAdapter(results, PhotoGridActivity.this, imageLoader);
-				dialog.dismiss();
-				listView.setAdapter(imageAdapter);
-				super.handleMessage(msg);
-			}
+                Content content = (Content) parent.getItemAtPosition(position);
+                File file = new File(content.getDir());
+                Intent intent = Utils.openFile(file);
+                startActivity(intent);
 
-		};
-		findView();
-		initView();
-		listView.setOnItemClickListener(new OnItemClickListener() {
+            }
+        });
+        listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Content content = (Content) parent.getItemAtPosition(position);
+                final File file = new File(content.getDir());
+                String[] data = {"打开", "删除", "共享", "推送"};
+                new AlertDialog.Builder(PhotoGridActivity.this).setTitle("选择操作").setItems(data, new OnClickListener() {
 
-				Content content = (Content) parent.getItemAtPosition(position);
-				File file = new File(content.getDir());
-				Intent intent = Utils.openFile(file);
-				startActivity(intent);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                Intent intent = Utils.openFile(file);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                if (file.exists()) {
+                                    if (file.delete()) {
+                                        results.remove(content);
+                                        imageAdapter.updateList(results);
+                                        Toast.makeText(PhotoGridActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                        //	initView();
+                                    } else {
+                                        Toast.makeText(PhotoGridActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(PhotoGridActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case 2:
+                                if (CoreApp.mBinder.isBinderAlive()) {
+                                    String s = CoreApp.mBinder.AddShareFile(file.getPath());
+                                    Toast.makeText(PhotoGridActivity.this, "AddShareFile  " + s, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(PhotoGridActivity.this, "服务未开启", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                            case 3:
+                                ArrayList<String> pushList = new ArrayList<>();
+                                if (!file.isDirectory()) {
+                                    MyApp myapp = (MyApp) getApplication();
+                                    String ip = myapp.getIp();
+                                    int port = myapp.getPort();
+                                    pushList.add("http://" + ip + ":" + port + file.getPath());
+                                } else {
+                                    Toast.makeText(PhotoGridActivity.this, "文件夹暂不支持推送", Toast.LENGTH_SHORT).show();
+                                }
 
-			}
-		});
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+                                intent = new Intent();
+                                Bundle b = new Bundle();
+                                b.putStringArrayList("pushList", pushList);
+                                intent.putExtra("pushList", b);
+                                intent.setClass(PhotoGridActivity.this, ShowNetDevActivity.class);
+                                startActivity(intent);
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				final Content content = (Content) parent.getItemAtPosition(position);
-				final File file = new File(content.getDir());
-				String[] data = { "打开", "删除", "共享","推送" };
-				new AlertDialog.Builder(PhotoGridActivity.this).setTitle("选择操作").setItems(data, new OnClickListener() {
+                                break;
+                            default:
+                                break;
+                        }
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							Intent intent = Utils.openFile(file);
-							startActivity(intent);
-							break;
-						case 1:
-							if (file.exists()) {
-								if (file.delete()) {
-									results.remove(content);
-									imageAdapter.updateList(results);
-									Toast.makeText(PhotoGridActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-								//	initView();
-								} else {
-									Toast.makeText(PhotoGridActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
-								}
-							} else {
-								Toast.makeText(PhotoGridActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
-							}
-							break;
-						case 2:
-							if (CoreApp.mBinder.isBinderAlive()) {
-								String s = CoreApp.mBinder.AddShareFile(file.getPath());
-								Toast.makeText(PhotoGridActivity.this, "AddShareFile  " + s, Toast.LENGTH_SHORT).show();
-							} else {
-								Toast.makeText(PhotoGridActivity.this, "服务未开启", Toast.LENGTH_SHORT).show();
-							}
-							break;
-						case 3:
-							ArrayList<String> pushList = new ArrayList<String>();
-							if (!file.isDirectory()) {
-								MyApp myapp = (MyApp) getApplication();
-								String ip = myapp.getIp();
-								int port = myapp.getPort();
-								pushList.add("http://" + ip + ":" + port + file.getPath());
-							} else {
-								Toast.makeText(PhotoGridActivity.this, "文件夹暂不支持推送", Toast.LENGTH_SHORT).show();
-							}
+                    }
+                }).create().show();
+                return true;
+            }
+        });
+    }
 
-							intent = new Intent();
-							Bundle b = new Bundle();
-							b.putStringArrayList("pushList", pushList);
-							intent.putExtra("pushList", b);
-							intent.setClass(PhotoGridActivity.this, ShowNetDevActivity.class);
-							startActivity(intent);
+    private void initView() {
+        showDialog();
 
-							break;
-						default:
-							break;
-						}
+        new Thread() {
+            @Override
+            public void run() {
+                ContentResolver cr = getContentResolver();
+                results = new ArrayList<>();
+                File file = new File(content[0].substring(0, content[0].lastIndexOf("/")));
 
-					}
-				}).create().show();
-				return true;
-			}
-		});
-	}
+                if (file.isDirectory()) {
+                    String whereClause1 = MediaStore.Images.Media.DATA + " like '" + file.getPath() + "%'";
+                    Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, whereClause1, null,
+                            null);
+                    cursor.moveToFirst();
 
-	private void initView() {
-		showDialog();
+                    for (int i = 0; i < cursor.getCount(); i++) {
 
-		new Thread() {
-			@Override
-			public void run() {
-				ContentResolver cr = getContentResolver();
-				 results = new ArrayList<Content>();
-				File file = new File(content[0].substring(0, content[0].lastIndexOf("/")));
+                        int origId = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+                        Content result = new Content(
+                                cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA)),
+                                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)), null,
+                                origId);
 
-				if (file.isDirectory()) {
-					String whereClause1 = MediaStore.Images.Media.DATA + " like '" + file.getPath() + "%'";
-					Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, whereClause1, null,
-							null);
-					cursor.moveToFirst();
+                        results.add(result);
+                        cursor.moveToNext();
 
-					for (int i = 0; i < cursor.getCount(); i++) {
+                    }
+                    cursor.close();
 
-						int origId = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-						Content result = new Content(
-								cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA)),
-								cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)), null,
-								origId);
+                }
+                Message msg = new Message();
+                Bundle data = new Bundle();
+                data.putSerializable("txts", results);
+                msg.setData(data);
+                handler.sendMessage(msg);
+            }
+        }.start();
 
-						results.add(result);
-						cursor.moveToNext();
+    }
 
-					}
-					cursor.close();
+    void findView() {
+        listView = (AbsListView) findViewById(R.id.gv_classify);
+        // gv_classify = (GridView) findViewById(R.id.gv_classify);
+        tv_dir = (TextView) findViewById(R.id.tv_classify_dir);
+    }
 
-				}
-				Message msg = new Message();
-				Bundle data = new Bundle();
-				data.putSerializable("txts", results);
-				msg.setData(data);
-				handler.sendMessage(msg);
-			}
-		}.start();
+    private void showDialog() {
+        dialog = new ProgressDialog(PhotoGridActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setTitle("查找中");
+        dialog.setMessage("请稍等...");
+        dialog.setIndeterminate(false);
+        dialog.setCancelable(true);
+        dialog.show();
 
-	}
+    }
 
-	void findView() {
-		listView = (AbsListView) findViewById(R.id.gv_classify);
-		// gv_classify = (GridView) findViewById(R.id.gv_classify);
-		tv_dir = (TextView) findViewById(R.id.tv_classify_dir);
-	}
-
-	private void showDialog() {
-		dialog = new ProgressDialog(PhotoGridActivity.this);
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setTitle("查找中");
-		dialog.setMessage("请稍等...");
-		dialog.setIndeterminate(false);
-		dialog.setCancelable(true);
-		dialog.show();
-		
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
+    static  class PhotoHandler extends Handler{
+
+        WeakReference<PhotoGridActivity> mActivity;
+
+        PhotoHandler(PhotoGridActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            PhotoGridActivity theActivity = mActivity.get();
+            ArrayList<Content> results = (ArrayList<Content>) msg.getData().get("txts");
+            theActivity. imageAdapter = new PhotoGirdAdapter(results, theActivity, theActivity.imageLoader);
+            theActivity.dialog.dismiss();
+            theActivity. listView.setAdapter(theActivity.imageAdapter);
+            super.handleMessage(msg);
+        }
+
+    }
 }

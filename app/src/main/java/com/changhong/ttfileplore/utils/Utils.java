@@ -515,12 +515,12 @@ public class Utils {
 
 	}
 
-	@SuppressWarnings("unchecked")
+
 	public static ArrayList<DownData> getDownDataObject(String name) throws Exception {
-		ArrayList<DownData> savedArrayList = null;
+		ArrayList<DownData> savedArrayList ;
 		File file = new File(getPath(MyApp.context, name));
-		FileInputStream fileInputStream = null;
-		ObjectInputStream objectInputStream = null;
+		FileInputStream fileInputStream ;
+		ObjectInputStream objectInputStream ;
 
 		fileInputStream = new FileInputStream(file.toString());
 		objectInputStream = new ObjectInputStream(fileInputStream);
@@ -701,7 +701,7 @@ public class Utils {
 		String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
 		if (end.equals("m4a") || end.equals("mp3") || end.equals("wav")) {
 			type = "audio";
-		} else if (end.equals("mp4") || end.equals("3gp")) {
+		} else if (end.equals("mp4") || end.equals("3gp")|| end.equals("avi")) {
 			type = "video";
 		} else if (end.equals("jpg") || end.equals("png") || end.equals("jpeg") || end.equals("bmp")
 				|| end.equals("gif")) {
@@ -777,7 +777,8 @@ public class Utils {
 		String cachePath;
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
 				|| !Environment.isExternalStorageRemovable()) {
-			cachePath = context.getExternalCacheDir().getPath();
+			cachePath = context.getExternalCacheDir()!=null?context.getExternalCacheDir().getPath():
+					context.getCacheDir().getPath();
 		} else {
 			cachePath = context.getCacheDir().getPath();
 		}

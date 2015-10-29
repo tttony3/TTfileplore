@@ -23,10 +23,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class PloreListAdapter extends BaseAdapter {
-	
-	public interface ImgOnClick{
+
+
+
+    public interface ImgOnClick{
 		void onClick(View v,File file);
 	}
+
 
 	ImageLoader imageLoader;
 	static final private int DOC = 1;
@@ -65,7 +68,10 @@ public class PloreListAdapter extends BaseAdapter {
 		mInflater = LayoutInflater.from(context);
 
 	}
+    public List<File> getAllFiles(){
 
+        return  files;
+    }
 	@Override
 	public int getCount() {
 		return files.size();
@@ -127,7 +133,7 @@ public class PloreListAdapter extends BaseAdapter {
 			}
 		});
 		if (file.isDirectory()) {
-			viewHolder.time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(((File) file).lastModified()));
+			viewHolder.time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(file.lastModified()));
 		//	viewHolder.time.setVisibility(View.GONE);
 			viewHolder.img.setImageResource(R.drawable.file_icon_folder);
 			viewHolder.img.setOnClickListener(new OnClickListener() {

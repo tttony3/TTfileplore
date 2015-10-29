@@ -87,13 +87,13 @@ public class MyApp extends CoreApp {
 
 	@Override
 	public void onLowMemory() {
-		// TODO Auto-generated method stub
+
 		super.onLowMemory();
 	}
 
 	@Override
 	public void onTerminate() {
-		// TODO Auto-generated method stub
+
 		super.onTerminate();
 	}
 

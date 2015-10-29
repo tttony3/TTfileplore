@@ -100,19 +100,19 @@ public class ShowSharefileActivity extends BaseActivity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
+
 			return shareList.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
+
 			return shareList.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
+
 			return position;
 		}
 

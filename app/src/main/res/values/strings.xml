@@ -75,4 +75,6 @@
     <string name="percent">0%</string>
  <string name="sort_time">按时间排序</string>
   <string name="sort_name">按名称排序</string>
+    <string name="filename">文件名：</string>
+    <string name="searchfile">搜索文件</string>
 </resources>

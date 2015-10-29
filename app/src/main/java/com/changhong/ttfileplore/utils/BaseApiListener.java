@@ -18,49 +18,49 @@ public class BaseApiListener implements IRequestListener {
 	//////////////////////////////////////
 	@Override
 	public void onComplete(JSONObject arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	
 	@Override
 	public void onHttpStatusException(HttpStatusException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onIOException(IOException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onJSONException(JSONException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onMalformedURLException(MalformedURLException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onNetworkUnavailableException(NetworkUnavailableException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onSocketTimeoutException(SocketTimeoutException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	@Override
 	public void onUnknowException(Exception arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void onConnectTimeoutException(ConnectTimeoutException arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 	}

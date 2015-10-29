@@ -19,20 +19,28 @@ public class DetailDialogFragment extends DialogFragment {
 	String url;
 	String time;
 	String space;
-
-	public DetailDialogFragment(String name, String url, String time, String space) {
-		this.name=name;
-		this.url=url;
-		this.time=time;
-		this.space=space;
+	public DetailDialogFragment(){
+		super();
 	}
+//	public DetailDialogFragment(String name, String url, String time, String space) {
+//		this.name=name;
+//		this.url=url;
+//		this.time=time;
+//		this.space=space;
+//	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View view = inflater.inflate(R.layout.fragment_detaildialog, container);
 		findView(view);
+		Bundle bundle =getArguments();
+		name = bundle.getString("name");
+		time = bundle.getString("time");
+		space = bundle.getString("space");
+		url = bundle.getString("path");
 		initView();
+
 		return view;
 	}
 

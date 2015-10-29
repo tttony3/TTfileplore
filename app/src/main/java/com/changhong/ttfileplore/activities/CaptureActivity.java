@@ -172,7 +172,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 	/**
 	 * 初始化摄像头。打开摄像头，检查摄像头是否被开启及是否被占用
 	 * 
-	 * @param surfaceHolder
+	 * @param surfaceHolder holder
+	 *
 	 */
 	private void initCamera(SurfaceHolder surfaceHolder) {
 		if (surfaceHolder == null) {
@@ -252,15 +253,14 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 	private void saveScanTypeToSp() {
 		SharedPreferences.Editor localEditor = this.mSharedPreferences.edit();
 		localEditor.putString("currentState", CaptureActivity.currentState);
-		localEditor.commit();
+		localEditor.apply();
 	}
 
 	/**
 	 * 获取扫描结果
-	 * 
-	 * @param rawResult
-	 * @param barcode
-	 * @param scaleFactor
+	 *
+	 * @param barcode 扫描结果
+	 * @param scaleFactor 扫描结果
 	 */
 	public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
 		inactivityTimer.onActivity();
@@ -298,7 +298,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 			
 				
 				if (info.getSSID().equals(r[1]) || info.getSSID().equals('"' + r[1] + '"')||hpc.SSID.equals('"' + r[1] + '"')||r[1].equals('"' + hpc.SSID + '"')) {
-					ArrayList<String> qrlist = new ArrayList<String>();
+					ArrayList<String> qrlist = new ArrayList<>();
 					for (int i = 2; i < r.length; i++) {
 
 						qrlist.add(r[i]);
@@ -312,7 +312,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 				}
 
 				else if (info.getSSID().equals("<unknown ssid>") || info.getSSID().equals("0x")) {
-					Toast.makeText(this, r[1],Toast.LENGTH_SHORT).show();;
+					Toast.makeText(this, r[1],Toast.LENGTH_SHORT).show();
 					if (r[1].equals("fileplore")) {
 						Log.e("<unknown ssid>", "<unknown ssid>");
 						WifiAutoConnectManager wificonnect = new WifiAutoConnectManager(wifiManager);
@@ -323,7 +323,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 							try {
 								Thread.sleep(300);
 								if(wifiManager.getConnectionInfo().getSSID().equals('"' + "fileplore" + '"')){
-									ArrayList<String> qrlist = new ArrayList<String>();
+									ArrayList<String> qrlist = new ArrayList<>();
 									for (int i = 2; i < r.length; i++) {
 
 										qrlist.add(r[i]);
@@ -337,14 +337,14 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 									break;
 								}
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
+
 								e.printStackTrace();
 							}
-							
-							
+
+
 						}
-							
-						
+
+
 					}
 					else {
 						Toast.makeText(CaptureActivity.this, "不在同一局域网", Toast.LENGTH_SHORT).show();
@@ -361,7 +361,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 					try {
 						Thread.sleep(300);
 						if(wifiManager.getConnectionInfo().getSSID().equals('"' + "fileplore" + '"')){
-							ArrayList<String> qrlist = new ArrayList<String>();
+							ArrayList<String> qrlist = new ArrayList<>();
 							for (int i = 2; i < r.length; i++) {
 
 								qrlist.add(r[i]);
@@ -375,7 +375,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 							break;
 						}
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 					
@@ -394,10 +394,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
 	/**
 	 * 在扫描图片结果中绘制绿色的点
-	 * 
-	 * @param barcode
-	 * @param scaleFactor
-	 * @param rawResult
+	 *
 	 */
 	private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
 		ResultPoint[] points = rawResult.getResultPoints();
@@ -425,12 +422,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
 	/**
 	 * 在扫描图片结果中绘制绿色的线
-	 * 
-	 * @param canvas
-	 * @param paint
-	 * @param a
-	 * @param b
-	 * @param scaleFactor
+	 *
 	 */
 	private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
 		if (a != null && b != null) {
@@ -444,7 +436,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 	 */
 
 	private void qrcodeSetting() {
-		decodeFormats = new Vector<BarcodeFormat>(2);
+		decodeFormats = new Vector<>(2);
 		decodeFormats.clear();
 		decodeFormats.add(BarcodeFormat.QR_CODE);
 		decodeFormats.add(BarcodeFormat.DATA_MATRIX);
@@ -496,24 +488,13 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
 	/**
 	 * 在经过一段延迟后重置相机以进行下一次扫描。 成功扫描过后可调用此方法立刻准备进行下次扫描
-	 * 
-	 * @param delayMS
 	 */
-	public void restartPreviewAfterDelay(long delayMS) {
-		if (mHandler != null) {
-			mHandler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
-		}
-		resetStatusView();
-	}
-	//
-	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// switch (keyCode) {
-	// case KeyEvent.KEYCODE_BACK: // 拦截返回键
-	//
-	// restartPreviewAfterDelay(0L);
-	// return true;
-	// }
-	// return super.onKeyDown(keyCode, event);
-	// }
+//	public void restartPreviewAfterDelay(long delayMS) {
+//		if (mHandler != null) {
+//			mHandler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
+//		}
+//		resetStatusView();
+//	}
+
 
 }

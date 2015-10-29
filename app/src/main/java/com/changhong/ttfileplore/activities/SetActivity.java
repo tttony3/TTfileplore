@@ -33,7 +33,7 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 	private void initView() {
 		sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
 		boolean night=sharedPreferences.getBoolean("night",false);
-		boolean hide=sharedPreferences.getBoolean("hide",false);
+		boolean hide=sharedPreferences.getBoolean("showhidefile",false);
 		boolean share=sharedPreferences.getBoolean("share",true);
 		tb_setnight.setChecked(night);
 		tb_sethide.setChecked(hide);
@@ -63,7 +63,7 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 			editor.commit();//提交修改
 			break;
 		case R.id.tb_showhide:
-			editor.putBoolean("hide",isChecked);
+			editor.putBoolean("showhidefile",isChecked);
 			editor.commit();//提交修改
 			break;
 		case R.id.tb_setshare:

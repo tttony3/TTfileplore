@@ -68,7 +68,7 @@ public class CircleProgress extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int defaultSize = getResources().getDimensionPixelSize(R.dimen.default_circle_view_size);
+        int defaultSize = getResources().getDimensionPixelSize(R.dimen.circle_view_size);
         int width = getDefaultSize(defaultSize, widthMeasureSpec);
         int height = getDefaultSize(defaultSize, heightMeasureSpec);
         mViewSize = Math.min(width, height);

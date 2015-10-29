@@ -75,13 +75,13 @@ public class Player implements OnBufferingUpdateListener,
 			mediaPlayer.prepare();//prepare之后自动播放
 			//mediaPlayer.start();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -141,7 +141,7 @@ public class Player implements OnBufferingUpdateListener,
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		// TODO Auto-generated method stub
+
 		
 	}
 

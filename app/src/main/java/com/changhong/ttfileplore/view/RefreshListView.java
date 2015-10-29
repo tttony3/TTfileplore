@@ -65,7 +65,7 @@ public class RefreshListView extends ListView implements OnScrollListener {
 
 	public RefreshListView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+
 		init(context);
 	}
 
