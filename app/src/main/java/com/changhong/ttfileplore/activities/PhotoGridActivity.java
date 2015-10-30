@@ -18,9 +18,11 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +49,11 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
+        if(!sharedPreferences.getBoolean("night",false)){
+            setTheme(R.style.DayTheme);
+        }else
+            setTheme(R.style.NightTheme);
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(false);

@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import com.changhong.ttfileplore.adapter.ClassifyListAdapter;
 import com.changhong.ttfileplore.application.MyApp;
+import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.utils.Content;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
@@ -12,7 +13,6 @@ import com.changhong.ttfileplore.view.RefreshListView;
 import com.chobit.corestorage.CoreApp;
 import com.changhong.ttfileplore.R;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,7 +33,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class ClassifyListActivity extends Activity implements RefreshListView.IOnRefreshListener {
+public class ClassifyListActivity extends BaseActivity implements RefreshListView.IOnRefreshListener {
 	static private final int APK = 1;
 	static private final int DOC = 2;
 	static private final int ZIP = 3;
@@ -247,7 +247,8 @@ public class ClassifyListActivity extends Activity implements RefreshListView.IO
 
 	}
 
-	private void findView() {
+	@Override
+	public void findView() {
 		inflater = getLayoutInflater();
 		lv_classify = (RefreshListView) findViewById(R.id.file_list);
 		tv_dir = (TextView) findViewById(R.id.path);

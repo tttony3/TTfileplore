@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background" >
+    android:background="?attr/main_bg" >
 
     <RelativeLayout
         android:id="@+id/rl_set_night"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector" >
+        android:background="?shape_select" >
 
         <TextView
             android:id="@+id/tv__set_night"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector" >
+        android:background="?shape_select" >
 
         <TextView
             android:id="@+id/tv_set_showhide"
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector" >
+        android:background="?shape_select" >
 
         <TextView
             android:id="@+id/tv_set_setshare"

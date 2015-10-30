@@ -12,6 +12,8 @@ import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.data.AppInfo;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
@@ -50,6 +52,11 @@ public class BrowseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
+		if(!sharedPreferences.getBoolean("night",false)){
+			setTheme(R.style.DayTheme);
+		}else
+			setTheme(R.style.NightTheme);
 		setContentView(R.layout.activity_browse);
 		MyApp myapp = (MyApp) getApplication();
 		myapp.setContext(this);

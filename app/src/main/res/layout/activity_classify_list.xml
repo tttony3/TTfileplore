@@ -10,7 +10,7 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_background" >
+        android:background="?attr/main_bg" >
 
         <TextView
             android:id="@+id/path"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
-        android:background="@color/main_background"
+        android:background="?attr/main_bg"
         android:orientation="vertical"
         android:paddingEnd="5dp"
         android:paddingStart="5dp" >
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/main_background"
+            android:divider="?attr/main_bg"
             android:dividerHeight="4dp"
             android:fadingEdge="none" />
     </LinearLayout>

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/main_background"
+    android:background="?attr/main_bg"
     android:orientation="vertical"
     tools:context="com.changhong.fileplore.activities.PloreActivity" >
 
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:layout_marginTop="4dp"
-        android:background="@color/main_background" >
+        android:background="?attr/main_bg" >
 
         <ImageView
             android:id="@+id/iv_back"
@@ -34,10 +34,11 @@
             android:layout_marginStart="7dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/iv_back"
-            android:background="@drawable/corners_bg"
+            android:background="?shape_bg"
             android:maxEms="20"
             android:paddingEnd="3dp"
             android:paddingStart="3dp"
+            android:textColor="?main_textcolor"
             android:text="@string/default_path"
             android:textSize="@dimen/top_textsize" />
 
@@ -46,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:textColor="?main_textcolor"
             android:text="@string/default_count"
             android:textSize="@dimen/top_textsize" />
     </RelativeLayout>
@@ -58,7 +60,7 @@
         android:layout_below="@+id/top"
         android:layout_marginTop="2dp"
          android:paddingBottom="2dp"
-        android:background="@color/main_background"
+        android:background="?attr/main_bg"
         android:orientation="vertical"
         android:paddingEnd="5dp"
         android:paddingStart="5dp" >
@@ -69,7 +71,7 @@
             android:layout_height="wrap_content"
              
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@color/main_background"
+            android:divider="?attr/main_bg"
             android:dividerHeight="4dp"
             android:fadingEdge="none" />
     </LinearLayout>
@@ -92,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:textColor="@color/main_background"
+            android:textColor="?attr/item_bg_deep"
             android:text="@string/selectall" />
 
         <Button
@@ -101,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/cut" />
 
         <Button
@@ -110,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/copy" />
 
         <Button
@@ -119,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/more" />
     </LinearLayout>
  <LinearLayout
@@ -140,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:textColor="@color/main_background"
+            android:textColor="?attr/item_bg_deep"
             android:text="@string/newfile" />
 
         <Button
@@ -149,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/paste" />
 
         <Button
@@ -158,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/sort" />
 
         <Button
@@ -167,7 +169,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-             android:textColor="@color/main_background"
+             android:textColor="?attr/item_bg_deep"
             android:text="@string/seach" />
     </LinearLayout>
 </RelativeLayout>

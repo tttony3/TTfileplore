@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.changhong.ttfileplore.adapter.SambaListAdapter;
 import com.changhong.ttfileplore.R;
+import com.changhong.ttfileplore.base.BaseActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -28,7 +29,7 @@ import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
 
-public class SambaActivity extends Activity {
+public class SambaActivity extends BaseActivity {
 	SmbFile[] fileList;
 	String ip;
 	String password;
@@ -41,6 +42,14 @@ public class SambaActivity extends Activity {
 	myItemListener mylistener = new myItemListener();
 
 	@Override
+	protected void findView() {
+		mListView = (ListView) findViewById(R.id.file_list);
+		mPathView = (TextView) findViewById(R.id.path);
+		mItemCount = (TextView) findViewById(R.id.item_count);
+		iv_back = (ImageView) findViewById(R.id.iv_back);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActionBar actionBar = getActionBar();
@@ -51,14 +60,12 @@ public class SambaActivity extends Activity {
 		user = intent.getStringExtra("user");
 		dir = intent.getStringExtra("dir");
 		setContentView(R.layout.activity_plore);
+		findView();
 		initView();
 	}
 
 	private void initView() {
-		mListView = (ListView) findViewById(R.id.file_list);
-		mPathView = (TextView) findViewById(R.id.path);
-		mItemCount = (TextView) findViewById(R.id.item_count);
-		iv_back = (ImageView) findViewById(R.id.iv_back);
+
 		initData(ip, user, password, dir);
 		mListView.setOnItemClickListener(mylistener);
 	}

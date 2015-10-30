@@ -2,29 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background" >
+    android:background="?attr/main_bg">
 
     <TableLayout
         android:id="@+id/browse_tab_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_tablebg" >
+        android:background="?shape_tablebg">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@drawable/corners_lefttop"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
+                android:background="?attr/corners_lefttop"
                 android:paddingBottom="@dimen/browse_rl_paddingbot"
-                 >
-               
+                android:paddingTop="@dimen/browse_rl_paddingtop">
+
                 <ImageView
                     android:id="@+id/img_movie"
                     android:layout_width="@dimen/browse_pic_width"
@@ -33,18 +32,16 @@
                     android:clickable="true"
                     android:contentDescription="@string/movie"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_movie_selector" >
-                </ImageView>
+                    android:src="@drawable/icon_movie_selector"></ImageView>
 
                 <TextView
-                    android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_movie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_movie"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/movie" >
-                </TextView>
+                    android:text="@string/movie"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -52,9 +49,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?item_bg"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_photo"
@@ -63,19 +60,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/photo"
-                   android:scaleType="centerInside"
-                    android:src="@drawable/icon_photo_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_photo_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_photo"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/photo" >
-                </TextView>
+                    android:text="@string/photo"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -83,9 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@drawable/corners_righttop"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot">
+                android:background="?corners_righttop"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_txt"
@@ -95,33 +90,31 @@
                     android:clickable="true"
                     android:contentDescription="@string/txt"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_txt_selector" >
-                </ImageView>
+                    android:src="@drawable/icon_txt_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_doc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_txt"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/txt" >
-                </TextView>
+                    android:text="@string/txt"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?item_bg"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_music"
@@ -130,19 +123,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/music"
-                   android:scaleType="centerInside"
-                    android:src="@drawable/icon_music_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_music_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_music"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_music"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/music" >
-                </TextView>
+                    android:text="@string/music"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -150,9 +141,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@color/white"
-                 android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?item_bg"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_zip"
@@ -161,19 +152,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/zip"
-                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_zip_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_zip_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_zip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_zip"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/zip" >
-                </TextView>
+                    android:text="@string/zip"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -181,9 +170,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?item_bg"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_apk"
@@ -192,34 +181,32 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/apk"
-                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_apk_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_apk_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_apk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_apk"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/apk" >
-                </TextView>
+                    android:text="@string/apk"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@drawable/corners_leftbot"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?corners_leftbot"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_wechat"
@@ -228,19 +215,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/img_description"
-                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_wechat_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_wechat_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_wechat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_wechat"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/wechat_vedio" >
-                </TextView>
+                    android:text="@string/wechat_vedio"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -248,9 +233,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?item_bg"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_qq"
@@ -259,19 +244,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/zip"
-                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_qq_selector" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_qq_selector"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_qq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_qq"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/qq_file" >
-                </TextView>
+                    android:text="@string/qq_file"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -279,9 +262,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1px"
                 android:layout_weight="1"
-                android:background="@drawable/corners_rightbot"
-                android:paddingTop="@dimen/browse_rl_paddingtop"
-                android:paddingBottom="@dimen/browse_rl_paddingbot" >
+                android:background="?corners_rightbot"
+                android:paddingBottom="@dimen/browse_rl_paddingbot"
+                android:paddingTop="@dimen/browse_rl_paddingtop">
 
                 <ImageView
                     android:id="@+id/img_app"
@@ -290,19 +273,17 @@
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/apk"
-                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_launcher2" >
-                </ImageView>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_launcher2"></ImageView>
 
                 <TextView
-                     android:textSize="@dimen/browse_pic_textsize"
                     android:id="@+id/tv_app"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_app"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/app" >
-                </TextView>
+                    android:text="@string/app"
+                    android:textSize="@dimen/browse_pic_textsize"></TextView>
             </RelativeLayout>
         </TableRow>
     </TableLayout>
@@ -313,22 +294,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/browse_tab_1"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector"
+        android:background="?shape_select"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
+        android:paddingTop="10dp">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp" >
+            android:layout_marginStart="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:text="@string/PhoneCapacity"
-                android:textSize="@dimen/browse_table_textsize" >
-            </TextView>
+                android:textSize="@dimen/browse_table_textsize"></TextView>
 
             <ProgressBar
                 android:id="@+id/browse_phone"
@@ -343,11 +323,11 @@
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp" >
+                android:layout_marginStart="5dp">
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -364,7 +344,7 @@
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -384,15 +364,14 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp" >
+            android:layout_marginStart="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:text="@string/SdCapacity"
-                 android:textSize="@dimen/browse_table_textsize" >
-            </TextView>
+                android:textSize="@dimen/browse_table_textsize"></TextView>
 
             <ProgressBar
                 android:id="@+id/browse_sd"
@@ -407,11 +386,11 @@
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp" >
+                android:layout_marginStart="5dp">
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -428,7 +407,7 @@
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -452,9 +431,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/browse_tab_2"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector"
+        android:background="?shape_select"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/tv_browsenet"
@@ -481,9 +460,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/browse_rl_net"
         android:layout_margin="5dp"
-        android:background="@drawable/corners_selector"
+        android:background="?shape_select"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/tv_downlist"
@@ -491,7 +470,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/downlist"
-             android:textSize="@dimen/browse_table_textsize" />
+            android:textSize="@dimen/browse_table_textsize" />
 
         <ImageView
             android:layout_width="wrap_content"

@@ -7,5 +7,18 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
     </style>
-
+    <style name="DayTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="main_bg">@color/main_background_day</item>
+        <item name="main_bg_deep">@color/main_background_deep_day</item>
+        <item name="item_bg">@color/item_background_day</item>
+        <item name="item_bg_deep">@color/item_background_deep_day</item>
+        <item name="main_textcolor">@color/main_textcolor_day</item>
+    </style>
+    <style name="NightTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="main_bg">@color/main_background_night</item>
+        <item name="main_bg_deep">@color/main_background_deep_night</item>
+        <item name="item_bg">@color/item_background_night</item>
+        <item name="item_bg_deep">@color/item_background_deep_night</item>
+        <item name="main_textcolor">@color/main_textcolor_night</item>
+    </style>
 </resources>

@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <TableLayout
+        android:background="?main_bg"
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
@@ -21,7 +22,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/titlename_1"
-                android:textColor="@color/black"
+                android:textColor="?main_textcolor"
                 android:textSize="@dimen/title_textsize" />
 
             <TextView
@@ -31,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/titlename_2"
-                android:textColor="@color/black"
+                android:textColor="?main_textcolor"
                 android:textSize="@dimen/title_textsize" />
         </TableRow>
 

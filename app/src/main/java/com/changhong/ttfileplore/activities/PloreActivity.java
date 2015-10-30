@@ -105,6 +105,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     protected void onCreate(Bundle savedInstanceState) {
         Tencent.createInstance("1104922716", this.getApplicationContext());
         super.onCreate(savedInstanceState);
+        setTheme(R.style.NightTheme);
         setContentView(R.layout.activity_plore);
         MyApp myapp = (MyApp) getApplication();
         myapp.setContext(myapp.getMainContext());
@@ -247,20 +248,20 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 else {
                     String path = mPathView.getText().toString();
                     if (!isCopy) {
-                        for (int i = 0; i < fileList.size(); i++) {
-                            File file = fileList.get(i);
+                        for (File file :fileList) {
                             file.renameTo(new File(path + "/" + file.getName()));
                         }
                         fileList.clear();
                         File folder = new File(mPathView.getText().toString());
                         loadData(folder, sorttype);
                     } else {
-                        for (int i = 0; i < fileList.size(); i++) {
-                            File file = fileList.get(i);
+                        for (File file :fileList) {
                             File newFile = new File(path + "/" + file.getName());
                             if (!newFile.exists()) {
                                 try {
-                                    newFile.createNewFile();
+                                    if(!newFile.createNewFile()){
+                                        Toast.makeText(PloreActivity.this, newFile.getName()+"创建失败", Toast.LENGTH_SHORT).show();
+                                    }
                                 } catch (IOException e) {
 
                                     e.printStackTrace();
@@ -690,8 +691,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             }
         }
         if(matchfiles.size()>0){
-            mPathView.setText("/");
-            mItemCount.setText(matchfiles.size()+"项");
+            mPathView.setText(getResources().getText(R.string.default_path));
+            mItemCount.setText(matchfiles.size()+""+getResources().getText(R.string.default_count));
             mFileAdpter.updateList(matchfiles);
             return true;
         }else

@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.chobit.corestorage.CoreApp;
@@ -32,7 +33,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClassifyGridActivity extends Activity {
+public class ClassifyGridActivity extends BaseActivity {
     GridView gv_classify;
     TextView tv_dir;
     int flg;
@@ -61,7 +62,8 @@ public class ClassifyGridActivity extends Activity {
         initView(flg);
     }
 
-    void findView() {
+    @Override
+    public void findView() {
         inflater = getLayoutInflater();
         gv_classify = (GridView) findViewById(R.id.gv_classify);
         tv_dir = (TextView) findViewById(R.id.tv_classify_dir);

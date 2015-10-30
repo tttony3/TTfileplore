@@ -19,6 +19,8 @@ import com.changhong.ttfileplore.fragment.MenuFragment;
 import com.changhong.ttfileplore.utils.BaseUiListener;
 import com.changhong.ttfileplore.utils.Utils;
 
+import android.animation.Animator;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Binder;
 import android.os.Bundle;
 
@@ -99,11 +101,16 @@ public class MainActivity extends SlidingFragmentActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
+        if(!sharedPreferences.getBoolean("night",false)){
+            setTheme(R.style.DayTheme);
+        }else
+            setTheme(R.style.NightTheme);
         ActionBar actionBar = getActionBar();
         if (actionBar != null)
             actionBar.setDisplayShowHomeEnabled(false);
+
         mTencent = Tencent.createInstance("1104922716", this.getApplicationContext());
         setContentView(R.layout.activity_main);
         myapp = (MyApp) getApplication();
@@ -114,7 +121,6 @@ public class MainActivity extends SlidingFragmentActivity
 
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE);
         MyApp app = (MyApp) this.getApplicationContext();
         app.setConnectedService(new ConnectedService() {
 

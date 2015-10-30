@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="main_bg" format="reference|color"/>
+    <attr name="main_bg_deep" format="reference|color"/>
+    <attr name="main_textcolor" format="reference|color"/>
+    <attr name="item_bg" format="reference|color"/>
+    <attr name="item_bg_deep" format="reference|color"/>
+    <attr name="shape_select" format="reference"/>
+    <attr name="shape_tablebg" format="reference"/>
+    <attr name="item_shape" format="reference"/>
+    <attr name="shape_bg" format="reference"/>
+    <attr name="corners_leftbot" format="reference"/>
+    <attr name="corners_lefttop" format="reference"/>
+    <attr name="corners_rightbot" format="reference"/>
+    <attr name="corners_righttop" format="reference"/>
+</resources>
