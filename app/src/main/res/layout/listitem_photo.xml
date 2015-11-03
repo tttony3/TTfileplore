@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?main_bg"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+
+  >
+
+
+        <ImageView
+            android:id="@+id/left_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/circle" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_below="@+id/left_imageview"
+            android:layout_width="1dp"
+            android:layout_alignBottom="@+id/flowlayout_photo"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/left_imageview"
+            android:layout_marginStart="5dp"
+            android:background="#A6A6A6" />
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_alignTop="@+id/left_imageview"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?main_textcolor"
+            android:layout_toStartOf="@+id/view"
+            android:textSize="@dimen/top_textsize"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:maxLines="2"
+            android:text="timssaa"/>
+    <TextView
+        android:id="@+id/tv_right"
+        android:layout_alignTop="@+id/left_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?main_textcolor"
+        android:layout_toEndOf="@+id/view"
+        android:textSize="13sp"
+        android:layout_marginStart="10dp"
+        android:maxLines="2"
+        android:text="timssaa"/>
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?main_textcolor"
+        android:layout_toEndOf="@+id/tv_right"
+        android:layout_alignParentEnd="true"
+        android:textSize="13sp"
+        android:gravity="end"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="10dp"
+        android:maxLines="1"
+        android:text="timssaa"/>
+
+    <com.changhong.ttfileplore.view.FlowLayout
+        android:background="?item_shape"
+        android:id="@+id/flowlayout_photo"
+        android:layout_below="@+id/tv_right"
+
+        android:layout_alignStart="@+id/tv_right"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp">
+
+    </com.changhong.ttfileplore.view.FlowLayout>
+
+
+    </RelativeLayout>

@@ -94,7 +94,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private SharedPreferences sharedPreferences;
     public boolean showhidefile;
     private int sorttype = PloreData.NAME;
-
+int theme ;
+    MyApp myapp;
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         pauseOnScroll = savedInstanceState.getBoolean(STATE_PAUSE_ON_SCROLL, false);
@@ -105,16 +106,29 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     protected void onCreate(Bundle savedInstanceState) {
         Tencent.createInstance("1104922716", this.getApplicationContext());
         super.onCreate(savedInstanceState);
-        setTheme(R.style.NightTheme);
         setContentView(R.layout.activity_plore);
-        MyApp myapp = (MyApp) getApplication();
+        myapp = (MyApp) getApplication();
         myapp.setContext(myapp.getMainContext());
         fileList = myapp.getFileList();
+        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); // 私有数据
+        showhidefile = sharedPreferences.getBoolean("showhidefile", false);
+        theme = sharedPreferences.getInt("Theme", R.style.DayTheme);
         findView();
         initView();
 
     }
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        int tmptheme =sharedPreferences.getInt("Theme",theme);
+        if(theme !=  tmptheme){
+            theme = tmptheme ;
+            setTheme(theme);
+            setContentView(R.layout.activity_plore);
+            findView();
+            initView();
+        }
+    }
     @Override
     protected void findView() {
         mListView = findView(R.id.file_list);
@@ -138,8 +152,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
     private void initView() {
-        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); // 私有数据
-        showhidefile = sharedPreferences.getBoolean("showhidefile", false);
+
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mListView.setOnRefreshListener(this);
@@ -164,6 +177,14 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     @Override
     protected void onStart() {
         showhidefile = sharedPreferences.getBoolean("showhidefile", false);
+        int tmptheme =sharedPreferences.getInt("Theme",theme);
+        if(theme !=  tmptheme){
+            theme = tmptheme ;
+            setTheme(theme);
+            setContentView(R.layout.activity_plore);
+            findView();
+            initView();
+        }
         super.onStart();
     }
 
@@ -321,7 +342,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
             case R.id.plore_btn_seach:
                 SearchDialogFragment searchDialogFragment= new SearchDialogFragment();
-                searchDialogFragment.show(getFragmentManager(),"searchdialog");
+                searchDialogFragment.show(((MainActivity)myapp.getMainContext()).getFragmentManager(),"searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
@@ -545,7 +566,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                             WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                             ssid = wificonf.SSID;
                             Thread.sleep(500);
-                            MyApp app = (MyApp) PloreActivity.this.getApplicationContext();
+                            final MyApp app = (MyApp) PloreActivity.this.getApplicationContext();
                             app.unbindService(new ServiceConnection() {
 
                                 @Override
@@ -564,7 +585,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                                 public void onConnected(Binder b) {
                                     CoreServiceBinder binder = (CoreServiceBinder) b;
                                     binder.init();
-                                    binder.setCoreHttpServerCBFunction(httpServerCB);
+                                    binder.setCoreHttpServerCBFunction(app.httpServerCB);
                                     binder.StartHttpServer("/", MyApp.context);
                                 }
                             });
@@ -650,7 +671,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         String time = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(detailfile.lastModified());
                         String name = detailfile.getName();
 
-                  //      DetailDialogFragment detailDialog = new DetailDialogFragment(name, path, time, space);
                         DetailDialogFragment detailDialog = new DetailDialogFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("name",name);
@@ -658,7 +678,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         bundle.putString("time",time);
                         bundle.putString("space",space);
                         detailDialog.setArguments(bundle);
-                        detailDialog.show(getFragmentManager(), "detailDialog");
+                        detailDialog.show(((MainActivity)myapp.getMainContext()).getFragmentManager(), "detailDialog");
 
                     }
 
@@ -721,57 +741,56 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     }
 
-    private CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
-
-        @Override
-        public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
-            Log.e("onTransportUpdata",
-                    "agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
-
-        }
-
-        @Override
-        public void onHttpServerStop() {
-
-        }
-
-        @Override
-        public void onHttpServerStart(String ip, int port) {
-            MyApp myapp = (MyApp) getApplication();
-            myapp.setIp(ip);
-            myapp.setPort(port);
-            // Log.i("tl", ip + "port" + port);
-
-        }
-
-        @Override
-        public String onGetRealFullPath(String arg0) {
-            Log.e("onGetRealFullPath", arg0);
-            return null;
-        }
-
-        @Override
-        public void recivePushResources(List<String> pushlist) {
-            final MyApp myapp = (MyApp) getApplication();
-            final List<String> list = pushlist;
-            AlertDialog.Builder dialog = new AlertDialog.Builder(myapp.getContext());
-
-            AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
-                    .setNegativeButton("查看", new OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent();
-
-                            intent.setClass(myapp.getContext(), ShowPushFileActivity.class);
-                            intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-                            startActivity(intent);
-                        }
-                    }).setPositiveButton("取消", null).create();
-            alert.show();
-
-        }
-    };
+//    private CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
+//
+//        @Override
+//        public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
+//            Log.e("onTransportUpdata",
+//                    "agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
+//
+//        }
+//
+//        @Override
+//        public void onHttpServerStop() {
+//
+//        }
+//
+//        @Override
+//        public void onHttpServerStart(String ip, int port) {
+//            MyApp myapp = (MyApp) getApplication();
+//            myapp.setIp(ip);
+//            myapp.setPort(port);
+//            // Log.i("tl", ip + "port" + port);
+//
+//        }
+//
+//        @Override
+//        public String onGetRealFullPath(String arg0) {
+//            return null;
+//        }
+//
+//        @Override
+//        public void recivePushResources(List<String> pushlist) {
+//            final MyApp myapp = (MyApp) getApplication();
+//            final List<String> list = pushlist;
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(myapp.getContext());
+//
+//            AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
+//                    .setNegativeButton("查看", new OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Intent intent = new Intent();
+//
+//                            intent.setClass(myapp.getContext(), ShowPushFileActivity.class);
+//                            intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+//                            startActivity(intent);
+//                        }
+//                    }).setPositiveButton("取消", null).create();
+//            alert.show();
+//
+//        }
+//    };
 
     @Override
     public void onClick(View v, File file) {

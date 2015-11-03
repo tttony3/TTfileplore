@@ -36,7 +36,6 @@ public class ShowNetDevActivity extends BaseActivity {
 	Context context = ShowNetDevActivity.this;
 	ProgressDialog dialog;
 	ListView netList;
-	ArrayList<String> shareList;
 	NetDevListAdapter netListAdapter;
 	AlertDialog alertDialog;
 	AlertDialog.Builder builder;
@@ -77,7 +76,7 @@ public class ShowNetDevActivity extends BaseActivity {
 				if (pushList != null) {
 					final DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
 					LayoutInflater inflater = getLayoutInflater();
-					final View layout = inflater.inflate(R.layout.fragment_pushdialog, null);
+					final View layout = inflater.inflate(R.layout.fragment_pushdialog, netList);
 					new AlertDialog.Builder(ShowNetDevActivity.this).setTitle("推送到此设备").setView(layout)
 							.setNegativeButton("确定", new DialogInterface.OnClickListener() {
 

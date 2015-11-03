@@ -38,10 +38,13 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 
 	private void initView() {
 		sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-		boolean night=sharedPreferences.getBoolean("night",false);
+		int mode=sharedPreferences.getInt("Theme",R.style.DayTheme);
 		boolean hide=sharedPreferences.getBoolean("showhidefile",false);
 		boolean share=sharedPreferences.getBoolean("share",true);
-		tb_setnight.setChecked(night);
+		if(mode == R.style.DayTheme)
+			tb_setnight.setChecked(false);
+		else if(mode == R.style.NightTheme)
+			tb_setnight.setChecked(true);
 		tb_sethide.setChecked(hide);
 		tb_setshare.setChecked(share);
 		
@@ -63,8 +66,11 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 	
 		Editor editor = sharedPreferences.edit();//获取编辑器
 		switch (buttonView.getId()) {		
-		case R.id.tb_setnight:		
-			editor.putBoolean("night",isChecked);
+		case R.id.tb_setnight:
+			if(!isChecked)
+				editor.putInt("Theme", R.style.DayTheme);
+			else
+				editor.putInt("Theme", R.style.NightTheme);
 			editor.commit();
 			final View rootView = getWindow().getDecorView();
 				rootView.setDrawingCacheEnabled(true);
@@ -73,10 +79,8 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 				rootView.setDrawingCacheEnabled(false);
 
 				if(!isChecked) {
-
 					setTheme(R.style.DayTheme);
 				} else {
-
 					setTheme(R.style.NightTheme);
 				}
 				if (null != localBitmap && rootView instanceof ViewGroup) {

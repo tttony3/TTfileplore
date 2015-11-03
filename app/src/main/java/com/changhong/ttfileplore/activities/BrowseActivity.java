@@ -48,21 +48,40 @@ public class BrowseActivity extends Activity {
 	TextView tv_app;
 	TextView tv_wechat;
 	TextView tv_qq;
-
+	SharedPreferences sharedPreferences;
+	int theme ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SharedPreferences sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-		if(!sharedPreferences.getBoolean("night",false)){
-			setTheme(R.style.DayTheme);
-		}else
-			setTheme(R.style.NightTheme);
+
+		sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
+		switch(theme =sharedPreferences.getInt("Theme",R.style.DayTheme)){
+			case R.style.DayTheme:
+				setTheme(R.style.DayTheme);
+				break;
+			case R.style.NightTheme:
+				setTheme(R.style.NightTheme);
+				break;
+		}
 		setContentView(R.layout.activity_browse);
 		MyApp myapp = (MyApp) getApplication();
 		myapp.setContext(this);
 		findView();
 		setView();
 
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		int tmptheme =sharedPreferences.getInt("Theme",theme);
+		if(theme !=  tmptheme){
+			theme = tmptheme ;
+			setTheme(theme);
+			setContentView(R.layout.activity_browse);
+			findView();
+			setView();
+		}
 	}
 
 	public void callupdate() {

@@ -3,7 +3,8 @@
     xmlns:circleprogress="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_progress"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/circle_view_size" >
+    android:layout_height="@dimen/circle_view_size"
+    android:background="?item_bg">
 
     <com.changhong.ttfileplore.view.CircleProgress
         android:id="@+id/progress"
@@ -16,6 +17,7 @@
         circleprogress:color3="@android:color/holo_blue_light" />
 
     <TextView
+        android:textColor="?main_textcolor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

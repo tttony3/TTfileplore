@@ -3,14 +3,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" 
-    android:id="@+id/samba_op">
-    <TableRow >
+    android:id="@+id/samba_op"
+    android:background="?item_bg_deep">
+    <TableRow
+        android:background="?item_bg"
+        android:layout_margin="1dp">
        <TextView
+           android:textColor="?main_textcolor"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/server_url"> 
        </TextView>
-       <EditText 
+       <EditText
+           android:textColor="?main_textcolor"
            android:inputType="text"
            android:labelFor="@+id/ip"
            android:layout_marginStart="5dp"
@@ -22,13 +27,17 @@
            />
                
     </TableRow>
-    <TableRow >
+    <TableRow
+        android:background="?item_bg"
+        android:layout_margin="1dp">
        <TextView
+           android:textColor="?main_textcolor"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/username"> 
        </TextView>
-       <EditText 
+       <EditText
+           android:textColor="?main_textcolor"
            android:inputType="text"
              android:labelFor="@+id/user"
            android:layout_marginStart="5dp"
@@ -40,13 +49,17 @@
            />
                
     </TableRow>
-    <TableRow >
+    <TableRow
+        android:background="?item_bg"
+        android:layout_margin="1dp">
        <TextView
+           android:textColor="?main_textcolor"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/password"> 
        </TextView>
-       <EditText 
+       <EditText
+           android:textColor="?main_textcolor"
            android:labelFor="@+id/password"
            android:layout_marginStart="5dp"
            android:id="@+id/password"
@@ -58,13 +71,17 @@
            />
                
     </TableRow>
-    <TableRow >
+    <TableRow
+        android:background="?item_bg"
+        android:layout_margin="1dp">
        <TextView
+           android:textColor="?main_textcolor"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/folder"> 
        </TextView>
-       <EditText 
+       <EditText
+           android:textColor="?main_textcolor"
            android:inputType="text"
            android:labelFor="@+id/dir"
            android:layout_marginStart="5dp"

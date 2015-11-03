@@ -45,15 +45,20 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
     PhotoGirdAdapter imageAdapter;
     String[] content;
     ProgressDialog dialog;
-
+    SharedPreferences sharedPreferences ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-        if(!sharedPreferences.getBoolean("night",false)){
-            setTheme(R.style.DayTheme);
-        }else
-            setTheme(R.style.NightTheme);
+
+        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
+        switch(sharedPreferences.getInt("Theme",R.style.DayTheme)){
+            case R.style.DayTheme:
+                setTheme(R.style.DayTheme);
+                break;
+            case R.style.NightTheme:
+                setTheme(R.style.NightTheme);
+                break;
+        }
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(false);

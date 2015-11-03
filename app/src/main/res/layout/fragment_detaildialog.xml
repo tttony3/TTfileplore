@@ -2,78 +2,89 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
-    <TableRow >
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           
-           android:text="文件名     ："
-           >
-       </TextView>
-       <TextView 
-           android:layout_marginStart="5dp"
-           android:id="@+id/tv_detail_name"
-           android:layout_width="wrap_content"
-           android:ems="10"
-        
-           android:layout_height="wrap_content"          
-           />
-               
+    android:orientation="vertical"
+    android:background="?main_bg">
+
+    <TableRow
+        android:background="?item_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文件名     ："
+            android:textColor="?main_textcolor"></TextView>
+
+        <TextView
+            android:id="@+id/tv_detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:ems="10"
+            android:textColor="?main_textcolor" />
+
     </TableRow>
-    <TableRow >
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="文件路径 ："> 
-       </TextView>
-       <TextView 
-         
-             android:labelFor="@+id/user"
-           android:layout_marginStart="5dp"
-           android:id="@+id/tv_detail_url"
-           android:layout_width="wrap_content"
-              android:ems="10"
-        
-           android:layout_height="wrap_content"          
-           />
-               
+
+    <TableRow
+        android:background="?item_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文件路径 ："
+            android:textColor="?main_textcolor"></TextView>
+
+        <TextView
+            android:id="@+id/tv_detail_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:ems="10"
+            android:labelFor="@+id/user"
+
+            android:textColor="?main_textcolor" />
+
     </TableRow>
-    <TableRow >
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="文件大小 ："> 
-       </TextView>
-       <TextView 
-           android:labelFor="@+id/password"
-           android:layout_marginStart="5dp"
-           android:id="@+id/tv_detail_space"
-         
-           android:layout_width="wrap_content"
-              android:ems="10"
-        
-           android:layout_height="wrap_content"          
-           />
-               
+
+    <TableRow
+        android:background="?item_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文件大小 ："
+            android:textColor="?main_textcolor"></TextView>
+
+        <TextView
+            android:id="@+id/tv_detail_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="5dp"
+            android:ems="10"
+            android:labelFor="@+id/password"
+            android:textColor="?main_textcolor" />
+
     </TableRow>
-    <TableRow >
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="修改时间 ："> 
-       </TextView>
-       <TextView 
-         
-           android:labelFor="@+id/dir"
-           android:layout_marginStart="5dp"
-           android:id="@+id/tv_detail_time"
-           android:layout_width="wrap_content"
-           android:ems="10"       
-           android:layout_height="wrap_content"          
-           />
-               
+
+    <TableRow
+        android:background="?item_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改时间 ："
+            android:textColor="?main_textcolor"></TextView>
+
+        <TextView
+            android:id="@+id/tv_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:ems="10"
+            android:labelFor="@+id/dir"
+            android:textColor="?main_textcolor" />
+
     </TableRow>
-    
+
 
 </TableLayout>

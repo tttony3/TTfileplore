@@ -20,7 +20,7 @@ public class NetDevListAdapter extends BaseAdapter {
 	public NetDevListAdapter(List<DeviceInfo> list, Context context) {
 		super();
 		if (null==list)
-			this.list=new ArrayList<DeviceInfo>();
+			this.list=new ArrayList<>();
 		else 
 			this.list = list;
 		inflater = LayoutInflater.from(context);

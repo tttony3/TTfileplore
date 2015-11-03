@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:background="?shape_select"
     android:orientation="horizontal"
-    android:paddingBottom="0dp"
-    android:paddingTop="0dp" >
+
+  >
 
     <CheckBox
         android:layout_marginTop="5dp"
@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/fileimg"
+        android:textColor="?main_textcolor"
         android:ellipsize="end"
         android:ems="10"
         android:maxLines="2"

@@ -9,6 +9,7 @@
     <dimen name="griditem_item">110dp</dimen>
     <dimen name="griditem_img">140dp</dimen>
     <dimen name="griditem_img_">145dp</dimen>
+    <dimen name="photo_griditem">68dp</dimen>
     <dimen name="slidingmenu_offset">180dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>

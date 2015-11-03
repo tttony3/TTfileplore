@@ -195,7 +195,8 @@ public class ClassifyGridActivity extends BaseActivity {
             Intent intent = new Intent();
             String[] s = new String[]{content.getDir(), content.getTitle()};
             intent.putExtra("content", s);
-            intent.setClass(ClassifyGridActivity.this, PhotoGridActivity.class);
+        //    intent.setClass(ClassifyGridActivity.this, PhotoGridActivity.class);
+            intent.setClass(ClassifyGridActivity.this, PhotoActivity.class);
             startActivity(intent);
 
         }

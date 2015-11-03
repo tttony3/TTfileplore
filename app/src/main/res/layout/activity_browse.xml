@@ -32,7 +32,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/movie"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_movie_selector"></ImageView>
+                    android:src="@drawable/icon_movie_selector"/>
 
                 <TextView
                     android:id="@+id/tv_movie"
@@ -41,7 +41,8 @@
                     android:layout_below="@+id/img_movie"
                     android:layout_centerHorizontal="true"
                     android:text="@string/movie"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -61,7 +62,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/photo"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_photo_selector"></ImageView>
+                    android:src="@drawable/icon_photo_selector"/>
 
                 <TextView
                     android:id="@+id/tv_photo"
@@ -70,7 +71,8 @@
                     android:layout_below="@+id/img_photo"
                     android:layout_centerHorizontal="true"
                     android:text="@string/photo"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -90,7 +92,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/txt"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_txt_selector"></ImageView>
+                    android:src="@drawable/icon_txt_selector"/>
 
                 <TextView
                     android:id="@+id/tv_doc"
@@ -99,7 +101,8 @@
                     android:layout_below="@+id/img_txt"
                     android:layout_centerHorizontal="true"
                     android:text="@string/txt"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
         </TableRow>
 
@@ -124,7 +127,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/music"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_music_selector"></ImageView>
+                    android:src="@drawable/icon_music_selector"/>
 
                 <TextView
                     android:id="@+id/tv_music"
@@ -133,7 +136,8 @@
                     android:layout_below="@+id/img_music"
                     android:layout_centerHorizontal="true"
                     android:text="@string/music"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -153,7 +157,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/zip"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_zip_selector"></ImageView>
+                    android:src="@drawable/icon_zip_selector"/>
 
                 <TextView
                     android:id="@+id/tv_zip"
@@ -162,7 +166,8 @@
                     android:layout_below="@+id/img_zip"
                     android:layout_centerHorizontal="true"
                     android:text="@string/zip"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -182,7 +187,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/apk"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_apk_selector"></ImageView>
+                    android:src="@drawable/icon_apk_selector"/>
 
                 <TextView
                     android:id="@+id/tv_apk"
@@ -191,7 +196,8 @@
                     android:layout_below="@+id/img_apk"
                     android:layout_centerHorizontal="true"
                     android:text="@string/apk"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
         </TableRow>
 
@@ -216,7 +222,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/img_description"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_wechat_selector"></ImageView>
+                    android:src="@drawable/icon_wechat_selector"/>
 
                 <TextView
                     android:id="@+id/tv_wechat"
@@ -225,7 +231,8 @@
                     android:layout_below="@+id/img_wechat"
                     android:layout_centerHorizontal="true"
                     android:text="@string/wechat_vedio"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -245,7 +252,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/zip"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_qq_selector"></ImageView>
+                    android:src="@drawable/icon_qq_selector"/>
 
                 <TextView
                     android:id="@+id/tv_qq"
@@ -254,7 +261,8 @@
                     android:layout_below="@+id/img_qq"
                     android:layout_centerHorizontal="true"
                     android:text="@string/qq_file"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -274,7 +282,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/apk"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_launcher2"></ImageView>
+                    android:src="@drawable/ic_launcher2"/>
 
                 <TextView
                     android:id="@+id/tv_app"
@@ -283,7 +291,8 @@
                     android:layout_below="@+id/img_app"
                     android:layout_centerHorizontal="true"
                     android:text="@string/app"
-                    android:textSize="@dimen/browse_pic_textsize"></TextView>
+                    android:textColor="?main_textcolor"
+                    android:textSize="@dimen/browse_pic_textsize"/>
             </RelativeLayout>
         </TableRow>
     </TableLayout>
@@ -293,8 +302,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/browse_tab_1"
-        android:layout_margin="5dp"
+
         android:background="?shape_select"
+        android:layout_margin="5dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
 
@@ -308,7 +318,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:text="@string/PhoneCapacity"
-                android:textSize="@dimen/browse_table_textsize"></TextView>
+                android:textColor="?main_textcolor"
+                android:textSize="@dimen/browse_table_textsize"/>
 
             <ProgressBar
                 android:id="@+id/browse_phone"
@@ -333,12 +344,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/capacity"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
 
                     <TextView
                         android:id="@+id/tv_phonetotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
                 </TableRow>
 
@@ -350,12 +363,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/notuse_capacity"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
 
                     <TextView
                         android:id="@+id/tv_phonenotuse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
                 </TableRow>
             </TableLayout>
@@ -371,7 +386,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:text="@string/SdCapacity"
-                android:textSize="@dimen/browse_table_textsize"></TextView>
+                android:textColor="?main_textcolor"
+                android:textSize="@dimen/browse_table_textsize"/>
 
             <ProgressBar
                 android:id="@+id/browse_sd"
@@ -381,7 +397,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:max="100"
-                android:progress="50" />
+                android:progress="50"
+                android:textColor="?main_textcolor" />
 
             <TableLayout
                 android:layout_width="wrap_content"
@@ -396,12 +413,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/capacity"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
 
                     <TextView
                         android:id="@+id/tv_sdtotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
                 </TableRow>
 
@@ -413,12 +432,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/notuse_capacity"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
 
                     <TextView
                         android:id="@+id/tv_sdnotuse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="?main_textcolor"
                         android:textSize="@dimen/browse_txtcapacity_size" />
                 </TableRow>
             </TableLayout>
@@ -441,6 +462,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/netshare"
+            android:textColor="?main_textcolor"
             android:textSize="@dimen/browse_table_textsize" />
 
         <ImageView
@@ -470,6 +492,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/downlist"
+            android:textColor="?main_textcolor"
             android:textSize="@dimen/browse_table_textsize" />
 
         <ImageView

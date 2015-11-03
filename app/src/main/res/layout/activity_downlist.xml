@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?main_bg"
     android:orientation="vertical"
     tools:context="com.changhong.fileplore.activities.PloreActivity" >
 
@@ -14,6 +14,7 @@
 
         <TextView
             android:id="@+id/path"
+            android:textColor="?main_textcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -23,6 +24,7 @@
 
         <TextView
             android:id="@+id/item_count"
+            android:textColor="?main_textcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

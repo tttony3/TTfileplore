@@ -20,6 +20,8 @@ import com.changhong.ttfileplore.utils.BaseUiListener;
 import com.changhong.ttfileplore.utils.Utils;
 
 import android.animation.Animator;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Binder;
 import android.os.Bundle;
@@ -98,15 +100,21 @@ public class MainActivity extends SlidingFragmentActivity
     private int bmpW;// 动画图片宽度
     private ImageView cursor1;// 动画图片
     private long curtime = 0;
-
+    int theme ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-        if(!sharedPreferences.getBoolean("night",false)){
-            setTheme(R.style.DayTheme);
-        }else
-            setTheme(R.style.NightTheme);
+        switch(sharedPreferences.getInt("Theme",R.style.DayTheme)){
+            case R.style.DayTheme:
+                setTheme(R.style.DayTheme);
+                theme = R.style.DayTheme;
+                break;
+            case R.style.NightTheme:
+                setTheme(R.style.NightTheme);
+                theme = R.style.NightTheme;
+                break;
+        }
         ActionBar actionBar = getActionBar();
         if (actionBar != null)
             actionBar.setDisplayShowHomeEnabled(false);
@@ -197,7 +205,7 @@ public class MainActivity extends SlidingFragmentActivity
      */
     private void initPagerViewer() {
         pager = (ViewPager) findViewById(R.id.viewpage);
-
+        list.clear();
         Intent intent1 = new Intent(context, BrowseActivity.class);
         list.add(0, getView("A", intent1));
 
@@ -360,18 +368,23 @@ public class MainActivity extends SlidingFragmentActivity
         @Override
         public void onPageSelected(int arg0) {
             Animation animation1 ;
+            TypedArray array = getTheme().obtainStyledAttributes(new int[]{
+                    R.attr.main_textcolor
+            });
+            int textColor = array.getColor(0, getResources().getColor(R.color.main_textcolor_day));
+            array.recycle();
             switch (arg0) {
                 case 0:
                     getSlidingMenu().removeIgnoredView(pager);
                     t1.setTextColor(getResources().getColor(R.color.green));
-                    t2.setTextColor(getResources().getColor(R.color.black));
+                    t2.setTextColor(textColor);
                     animation1 = new TranslateAnimation(one, 0, 0, 0);
 
                     break;
                 case 1:
                     getSlidingMenu().addIgnoredView(pager);
                     t2.setTextColor(getResources().getColor(R.color.green));
-                    t1.setTextColor(getResources().getColor(R.color.black));
+                    t1.setTextColor(textColor);
                     animation1 = new TranslateAnimation(offset, one, 0, 0);
 
                     break;
@@ -523,6 +536,56 @@ public class MainActivity extends SlidingFragmentActivity
         myapp = (MyApp) getApplication();
         myapp.setContext(this);
         ((BrowseActivity) list.get(0).getContext()).callupdate();
+        int tmptheme =sharedPreferences.getInt("Theme",theme);
+        if(theme !=  tmptheme){
+            final View rootView = getWindow().getDecorView();
+            rootView.setDrawingCacheEnabled(true);
+            rootView.buildDrawingCache(true);
+            final Bitmap localBitmap = Bitmap.createBitmap(rootView.getDrawingCache());
+            rootView.setDrawingCacheEnabled(false);
+            setTheme(tmptheme);
+            theme = tmptheme;
+            if (null != localBitmap && rootView instanceof ViewGroup) {
+                final View localView2 = new View(getApplicationContext());
+                //   localView2.setBackgroundColor(getResources().getColor(R.color.dark_model));
+                localView2.setBackground(new BitmapDrawable(getResources(), localBitmap));
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                ((ViewGroup) rootView).addView(localView2, params);
+                localView2.animate().alpha(0).setDuration(500).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        setContentView(R.layout.activity_main);
+                 //       setSlidingMenu();
+                        InitImageView();
+                        initTextView();
+
+                        ((BrowseActivity)view0.getContext()).onRestart();
+                        ((PloreActivity)view1.getContext()).onRestart();
+                        initPagerViewer();
+
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+
+                        ((ViewGroup) rootView).removeView(localView2);
+
+                        localBitmap.recycle();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).start();
+            }
+        }
         super.onStart();
     }
 
