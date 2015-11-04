@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="?main_bg">
 
     <RelativeLayout
         android:id="@+id/rl_sharefileactivity"
@@ -12,6 +13,7 @@
         android:background="?attr/main_bg" >
 
         <TextView
+            android:textColor="?main_textcolor"
             android:id="@+id/tv_sharefilepath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,6 +27,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:textColor="?main_textcolor"
             android:id="@+id/tv_sharefilenum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

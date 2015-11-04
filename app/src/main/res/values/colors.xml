@@ -6,13 +6,13 @@
     <color name="item_background_deep_day">#e3e3e3</color>
     <color name="main_background_day">#f3f3f3</color>
     <color name="main_background_deep_day">#e3e3e3</color>
-
+    <color name="border_onchose_day">#838383</color>
     <color name="main_textcolor_night">#838383</color>
     <color name="item_background_night">#3e3e3e</color>
-    <color name="item_background_deep_night">#757575</color>
+    <color name="item_background_deep_night">#656565</color>
     <color name="main_background_night">#09090b</color>
     <color name="main_background_deep_night">#8b8b8b</color>
-
+    <color name="border_onchose_night">#838383</color>
     <color name="griditem_text_color">#51D6ED</color>
     <color name="timetext_color">#838383</color>
     <color name="white">#ffffff</color>

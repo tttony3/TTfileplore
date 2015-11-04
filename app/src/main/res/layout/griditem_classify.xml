@@ -2,10 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?main_bg_deep"
-    android:padding="2dp">
+   >
 
     <ImageView
+        android:background="?item_select"
+        android:padding="2dp"
         android:id="@+id/griditem_img"
         android:layout_width="@dimen/griditem_img"
         android:layout_height="@dimen/griditem_img"
@@ -22,6 +23,7 @@
         android:ellipsize="end"
         android:maxEms="10"
         android:maxLines="1"
+
         android:paddingBottom="2dp"
         android:paddingStart="3dp"
         android:paddingTop="1dp"

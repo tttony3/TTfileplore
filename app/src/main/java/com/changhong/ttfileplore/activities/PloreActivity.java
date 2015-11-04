@@ -13,6 +13,7 @@ import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.data.PloreData;
 import com.changhong.ttfileplore.fragment.DetailDialogFragment;
+import com.changhong.ttfileplore.fragment.NewfileDialogFragment;
 import com.changhong.ttfileplore.fragment.SearchDialogFragment;
 import com.changhong.ttfileplore.implement.PloreInterface;
 import com.changhong.ttfileplore.view.RefreshListView;
@@ -64,14 +65,15 @@ import android.widget.Toast;
 import com.changhong.ttfileplore.utils.*;
 
 public class PloreActivity extends BaseActivity implements RefreshListView.IOnRefreshListener, View.OnClickListener,
-        PloreInterface, OnItemClickListener, OnItemLongClickListener, OnMenuItemClickListener, ImgOnClick,SearchDialogFragment.OnClickSearchDialog {
+        PloreInterface, OnItemClickListener, OnItemLongClickListener,
+        OnMenuItemClickListener, ImgOnClick, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
     protected ImageLoader imageLoader = ImageLoader.getInstance();
     protected static final String STATE_PAUSE_ON_SCROLL = "STATE_PAUSE_ON_SCROLL";
     protected static final String STATE_PAUSE_ON_FLING = "STATE_PAUSE_ON_FLING";
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
     private ArrayList<File> fileList;
-   
+
     private RefreshListView mListView;
     private TextView mPathView;
     private ImageView iv_back;
@@ -94,8 +96,9 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private SharedPreferences sharedPreferences;
     public boolean showhidefile;
     private int sorttype = PloreData.NAME;
-int theme ;
+    int theme;
     MyApp myapp;
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         pauseOnScroll = savedInstanceState.getBoolean(STATE_PAUSE_ON_SCROLL, false);
@@ -117,18 +120,20 @@ int theme ;
         initView();
 
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
-        int tmptheme =sharedPreferences.getInt("Theme",theme);
-        if(theme !=  tmptheme){
-            theme = tmptheme ;
+        int tmptheme = sharedPreferences.getInt("Theme", theme);
+        if (theme != tmptheme) {
+            theme = tmptheme;
             setTheme(theme);
             setContentView(R.layout.activity_plore);
             findView();
             initView();
         }
     }
+
     @Override
     protected void findView() {
         mListView = findView(R.id.file_list);
@@ -177,9 +182,9 @@ int theme ;
     @Override
     protected void onStart() {
         showhidefile = sharedPreferences.getBoolean("showhidefile", false);
-        int tmptheme =sharedPreferences.getInt("Theme",theme);
-        if(theme !=  tmptheme){
-            theme = tmptheme ;
+        int tmptheme = sharedPreferences.getInt("Theme", theme);
+        if (theme != tmptheme) {
+            theme = tmptheme;
             setTheme(theme);
             setContentView(R.layout.activity_plore);
             findView();
@@ -214,28 +219,8 @@ int theme ;
         switch (v.getId()) {
 
             case R.id.plore_btn_newfile:
-                fileList.clear();
-                final EditText ed = new EditText(PloreActivity.this);
-                builder = new AlertDialog.Builder(PloreActivity.this);
-                builder.setTitle("输入文件夹名称").setView(ed).setNegativeButton("确定", new DialogInterface.OnClickListener() {
-
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        File file = new File(mPathView.getText().toString() + "/" + ed.getText());
-                        if (file.exists())
-                            Toast.makeText(PloreActivity.this, "文件夹已存在", Toast.LENGTH_SHORT).show();
-                        else {
-                            if (file.mkdir())
-                                Toast.makeText(PloreActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
-                            else {
-                                Toast.makeText(PloreActivity.this, "创建失败", Toast.LENGTH_SHORT).show();
-                            }
-                            File folder = new File(mPathView.getText().toString());
-                            loadData(folder, sorttype);
-                        }
-                    }
-                }).setPositiveButton("取消", null).create().show();
+                NewfileDialogFragment newFileDialogFragment = new NewfileDialogFragment();
+                newFileDialogFragment.show(getFragmentManager(), "newfiledialog");
 
                 break;
 
@@ -269,19 +254,19 @@ int theme ;
                 else {
                     String path = mPathView.getText().toString();
                     if (!isCopy) {
-                        for (File file :fileList) {
+                        for (File file : fileList) {
                             file.renameTo(new File(path + "/" + file.getName()));
                         }
                         fileList.clear();
                         File folder = new File(mPathView.getText().toString());
                         loadData(folder, sorttype);
                     } else {
-                        for (File file :fileList) {
+                        for (File file : fileList) {
                             File newFile = new File(path + "/" + file.getName());
                             if (!newFile.exists()) {
                                 try {
-                                    if(!newFile.createNewFile()){
-                                        Toast.makeText(PloreActivity.this, newFile.getName()+"创建失败", Toast.LENGTH_SHORT).show();
+                                    if (!newFile.createNewFile()) {
+                                        Toast.makeText(PloreActivity.this, newFile.getName() + "创建失败", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (IOException e) {
 
@@ -341,8 +326,8 @@ int theme ;
                 popup.show();
                 break;
             case R.id.plore_btn_seach:
-                SearchDialogFragment searchDialogFragment= new SearchDialogFragment();
-                searchDialogFragment.show(((MainActivity)myapp.getMainContext()).getFragmentManager(),"searchdialog");
+                SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
+                searchDialogFragment.show(getFragmentManager(), "searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
@@ -667,18 +652,18 @@ int theme ;
                         File detailfile = detailList.get(0);
                         String space = Formatter.formatFileSize(PloreActivity.this, detailfile.getTotalSpace());
                         String path = detailfile.getPath();
-                        
+
                         String time = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(detailfile.lastModified());
                         String name = detailfile.getName();
 
                         DetailDialogFragment detailDialog = new DetailDialogFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("name",name);
-                        bundle.putString("path",path);
-                        bundle.putString("time",time);
-                        bundle.putString("space",space);
+                        bundle.putString("name", name);
+                        bundle.putString("path", path);
+                        bundle.putString("time", time);
+                        bundle.putString("space", space);
                         detailDialog.setArguments(bundle);
-                        detailDialog.show(((MainActivity)myapp.getMainContext()).getFragmentManager(), "detailDialog");
+                        detailDialog.show(((MainActivity) myapp.getMainContext()).getFragmentManager(), "detailDialog");
 
                     }
 
@@ -703,21 +688,41 @@ int theme ;
 
     @Override
     public boolean onSearch(String filename) {
-        List<File> files =mFileAdpter.getAllFiles();
+        List<File> files = mFileAdpter.getAllFiles();
         List<File> matchfiles = new ArrayList<>();
-        for(File file :files){
-            if(file.getName().toLowerCase().contains(filename.toLowerCase())){
+        for (File file : files) {
+            if (file.getName().toLowerCase().contains(filename.toLowerCase())) {
                 matchfiles.add(file);
             }
         }
-        if(matchfiles.size()>0){
+        if (matchfiles.size() > 0) {
             mPathView.setText(getResources().getText(R.string.default_path));
-            mItemCount.setText(matchfiles.size()+""+getResources().getText(R.string.default_count));
+            mItemCount.setText(matchfiles.size() + "" + getResources().getText(R.string.default_count));
             mFileAdpter.updateList(matchfiles);
             return true;
-        }else
-            return  false;
+        } else {
+            Toast.makeText(this,"未找到文件",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
+    @Override
+    public boolean onNewfile(String filename) {
+        if(filename.isEmpty())
+            return false;
+        File file = new File(mPathView.getText().toString() + "/" + filename);
+        if (file.exists())
+            Toast.makeText(PloreActivity.this, "文件夹已存在", Toast.LENGTH_SHORT).show();
+        else {
+            if (file.mkdir())
+                Toast.makeText(PloreActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(PloreActivity.this, "创建失败", Toast.LENGTH_SHORT).show();
+            }
+            File folder = new File(mPathView.getText().toString());
+            loadData(folder, sorttype);
+        }
+        return true;
     }
 
     class RefreshDataAsynTask extends AsyncTask<Void, Void, Void> {

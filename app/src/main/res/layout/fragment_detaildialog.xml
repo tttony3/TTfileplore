@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?main_bg">
+    android:padding="5dp"
+    android:background="?item_bg">
 
     <TableRow
         android:background="?item_bg">
@@ -12,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="文件名     ："
-            android:textColor="?main_textcolor"></TextView>
+            android:textColor="?main_textcolor"/>
 
         <TextView
             android:id="@+id/tv_detail_name"
@@ -31,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="文件路径 ："
-            android:textColor="?main_textcolor"></TextView>
+            android:textColor="?main_textcolor"/>
 
         <TextView
             android:id="@+id/tv_detail_url"
@@ -52,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="文件大小 ："
-            android:textColor="?main_textcolor"></TextView>
+            android:textColor="?main_textcolor"/>
 
         <TextView
             android:id="@+id/tv_detail_space"
@@ -73,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="修改时间 ："
-            android:textColor="?main_textcolor"></TextView>
+            android:textColor="?main_textcolor"/>
 
         <TextView
             android:id="@+id/tv_detail_time"

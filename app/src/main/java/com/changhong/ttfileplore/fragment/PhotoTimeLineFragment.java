@@ -62,6 +62,16 @@ public class PhotoTimeLineFragment extends Fragment {
 
     private void mapFile() {
         fileitems.clear();
+        if(listFiles.length==1){
+            if(Utils.getMIMEType(listFiles[0]).equals("image/*")){
+                ArrayList<File> tmp = new ArrayList<>();
+                tmp.add(listFiles[0]);
+                PhotoItem photoItem=new PhotoItem();
+                photoItem.setTime(tmp.get(0).lastModified());
+                photoItem.setFiles(tmp);
+                fileitems.add(photoItem);
+            }
+        }
         boolean isquit = false;
         for(int i =0 ;i<listFiles.length-1 && !isquit;i++) {
             ArrayList<File> tmp = new ArrayList<>();
@@ -163,7 +173,7 @@ public class PhotoTimeLineFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.listitem_photo, null);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.listitem_photo_timeline, null);
                 viewHolder = new ViewHolder();
                 viewHolder.tv_left = (TextView) convertView.findViewById(R.id.tv_left);
                 viewHolder.tv_right = (TextView) convertView.findViewById(R.id.tv_right);
@@ -177,7 +187,7 @@ public class PhotoTimeLineFragment extends Fragment {
             PhotoItem tmp =fileitems.get(position);
             int size =tmp.getFiles().size();
             Log.e(size + "项", tmp.getFiles().toString());
-            viewHolder.tv_left.setText(DateFormat.getDateInstance().format((new Date(tmp.getTime()))));
+            viewHolder.tv_left.setText(DateFormat.getDateInstance(DateFormat.SHORT).format((new Date(tmp.getTime()))));
 
             viewHolder.tv_right.setText(DateFormat.getDateInstance().format((new Date(tmp.getFiles().get(size - 1).lastModified()))));
             viewHolder.tv_right.append("-");

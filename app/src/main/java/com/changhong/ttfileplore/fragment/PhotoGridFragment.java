@@ -66,7 +66,7 @@ public class PhotoGridFragment extends Fragment implements AdapterView.OnItemLon
             Bundle bundle = new Bundle();
             bundle.putString("filePath", file.getPath());
             moreDialog.setArguments(bundle);
-            moreDialog.show(getActivity().getFragmentManager(), "detailDialog");
+            moreDialog.show(getActivity().getFragmentManager(), "moreDialog");
             return true;
 
 

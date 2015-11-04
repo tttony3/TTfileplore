@@ -4,6 +4,7 @@
     <string name="app_name">FilePlore</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="change_view">切换试图</string>
     <string name="titlename_1">分类浏览</string>
     <string name="titlename_2">目录浏览</string>
     <string name="movie">视频</string>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TableRow android:background="@color/btnblack">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:text="@string/newfile"
+            android:textColor="@color/bright_foreground_disabled_material_dark"
+            android:textSize="15sp"/>
+    </TableRow>
+
+    <TableRow
+        android:background="?item_bg_deep"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="@string/filename"/>
+
+        <EditText
+            android:id="@+id/et_filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:ems="10"
+            android:hint=""
+            android:inputType="text"
+            android:labelFor="@+id/et_filename"
+            android:lines="1"
+            android:maxLines="3"
+            android:textColor="?main_textcolor" />
+    </TableRow>
+
+    <LinearLayout
+
+        android:id="@+id/ll_btn_default"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:background="@color/btnblack"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btn_newfiledialog_newfile"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/newfile"
+            android:textColor="?attr/main_bg"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_newfiledialog_cancel"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textColor="?attr/main_bg"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+</TableLayout>

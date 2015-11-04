@@ -7,6 +7,7 @@ import com.changhong.alljoyn.simpleservice.FC_GetShareFile;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.utils.Utils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,7 +29,7 @@ public class ShowSharefileActivity extends BaseActivity {
 	ListView lv_sharelist;
 	TextView tv_listnum;
 	SharefileAdapter mSharefileAdapter;
-
+	ImageLoader imageLoader = ImageLoader.getInstance();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,7 +135,7 @@ public class ShowSharefileActivity extends BaseActivity {
 			File file = new File(loc);
 			if (file.exists()) {
 				if (file.isDirectory()) {
-					viewHolder.iv.setBackgroundResource(R.drawable.file_icon_folder);
+					viewHolder.iv.setImageResource(R.drawable.file_icon_folder);
 				} else {
 					String type = Utils.getMIMEType(loc);
 					if (type == "video") {
@@ -142,7 +143,7 @@ public class ShowSharefileActivity extends BaseActivity {
 					} else if (type == "audio") {
 						viewHolder.iv.setImageResource(R.drawable.file_icon_music);
 					} else if (type == "image") {
-						viewHolder.iv.setImageResource(R.drawable.file_icon_photo);
+						imageLoader.displayImage("File://" + loc, viewHolder.iv);
 					} 
 					else if (type == "zip") {
 						viewHolder.iv.setImageResource(R.drawable.file_icon_zip);

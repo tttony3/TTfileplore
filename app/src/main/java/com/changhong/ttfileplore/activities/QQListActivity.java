@@ -12,6 +12,7 @@ import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.data.AppInfo;
 import com.changhong.ttfileplore.data.PloreData;
+import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.changhong.ttfileplore.view.RefreshListView;
@@ -37,7 +38,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QQListActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener {
+public class QQListActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener,MoreDialogFragment.UpDate {
 	private RefreshDataAsynTask mRefreshAsynTask;
 	LayoutInflater inflater;
 	AlertDialog alertDialog;
@@ -53,7 +54,7 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 	private AppListAdapter appAdapter;
 	private ArrayList<AppInfo> appList = new ArrayList<AppInfo>();
 	private int flag;
-
+	File file;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -211,78 +212,13 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 		if (flag != R.id.img_app) {
 
-			final File file = (File) parent.getItemAtPosition(position);
-			String[] data = { "打开", "删除", "共享", "推送" };
-			new AlertDialog.Builder(QQListActivity.this).setTitle("选择操作").setItems(data, new OnClickListener() {
+			  file = (File) parent.getItemAtPosition(position);
+			MoreDialogFragment moreDialog = new MoreDialogFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString("filePath", file.getPath());
+			moreDialog.setArguments(bundle);
+			moreDialog.show(getFragmentManager(), "detailDialog");
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch (which) {
-					case 0:
-						if (file.isDirectory()) {
-							PloreData mPloreData = new PloreData(file,true);
-							files.clear();
-							files.addAll(mPloreData.getfiles());
-							for (int i = 0; i < files.size(); i++) {
-								if (files.get(i).getName().startsWith(".")) {
-									files.remove(i);
-									i--;
-								}
-							}
-							qqAdapter.updateList(files);
-							father.add(file.getParentFile());
-						} else {
-							Intent intent = Utils.openFile(file);
-							startActivity(intent);
-						}
-						break;
-					case 1:
-						if (file.exists()) {
-							if (file.delete()) {
-								files.remove(file);
-								qqAdapter.updateList(files);
-								Toast.makeText(QQListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-
-							} else {
-								Toast.makeText(QQListActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
-							}
-						} else {
-							Toast.makeText(QQListActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
-						}
-						break;
-					case 2:
-						if (CoreApp.mBinder.isBinderAlive()) {
-							String s = CoreApp.mBinder.AddShareFile(file.getPath());
-							Toast.makeText(QQListActivity.this, "AddShareFile  " + s, Toast.LENGTH_SHORT).show();
-						} else {
-							Toast.makeText(QQListActivity.this, "服务未开启", Toast.LENGTH_SHORT).show();
-						}
-						break;
-					case 3:
-						ArrayList<String> pushList = new ArrayList<String>();
-						if (!file.isDirectory()) {
-							MyApp myapp = (MyApp) getApplication();
-							String ip = myapp.getIp();
-							int port = myapp.getPort();
-							pushList.add("http://" + ip + ":" + port + file.getPath());
-						} else {
-							Toast.makeText(QQListActivity.this, "文件夹暂不支持推送", Toast.LENGTH_SHORT).show();
-						}
-
-						Intent intent = new Intent();
-						Bundle b = new Bundle();
-						b.putStringArrayList("pushList", pushList);
-						intent.putExtra("pushList", b);
-						intent.setClass(QQListActivity.this, ShowNetDevActivity.class);
-						startActivity(intent);
-
-						break;
-					default:
-						break;
-					}
-
-				}
-			}).create().show();
 		}
 		return true;
 	}
@@ -295,6 +231,12 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void update() {
+		files.remove(file);
+		qqAdapter.updateList(files);
 	}
 
 	class RefreshDataAsynTask extends AsyncTask<Void, Void, Void> {

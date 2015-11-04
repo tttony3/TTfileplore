@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import com.changhong.ttfileplore.base.BaseActivity;
+import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.chobit.corestorage.CoreApp;
@@ -33,7 +34,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClassifyGridActivity extends BaseActivity {
+public class ClassifyGridActivity extends BaseActivity implements MoreDialogFragment.UpDate{
     GridView gv_classify;
     TextView tv_dir;
     int flg;
@@ -98,65 +99,11 @@ public class ClassifyGridActivity extends BaseActivity {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         final Content content = (Content) parent.getItemAtPosition(position);
-                        final File file = new File(content.getDir());
-                        String[] data = {"打开", "删除", "共享", "推送"};
-                        new AlertDialog.Builder(ClassifyGridActivity.this).setTitle("选择操作")
-                                .setItems(data, new OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which) {
-                                            case 0:
-                                                Intent intent = Utils.openFile(file);
-                                                startActivity(intent);
-                                                break;
-                                            case 1:
-                                                if (file.exists()) {
-                                                    if (file.delete()) {
-                                                        Toast.makeText(ClassifyGridActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                                        ArrayList<Content> videos = Utils.getVideo(ClassifyGridActivity.this);
-                                                        gridAdapter.updateList(videos);
-                                                    } else {
-                                                        Toast.makeText(ClassifyGridActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } else {
-                                                    Toast.makeText(ClassifyGridActivity.this, "文件不存在", Toast.LENGTH_SHORT).show();
-                                                }
-                                                break;
-                                            case 2:
-                                                if (CoreApp.mBinder.isBinderAlive()) {
-                                                    String s = CoreApp.mBinder.AddShareFile(file.getPath());
-                                                    Toast.makeText(ClassifyGridActivity.this, "AddShareFile  " + s, Toast.LENGTH_SHORT)
-                                                            .show();
-                                                } else {
-                                                    Toast.makeText(ClassifyGridActivity.this, "服务未开启", Toast.LENGTH_SHORT).show();
-                                                }
-                                                break;
-                                            case 3:
-                                                ArrayList<String> pushList = new ArrayList<>();
-                                                if (!file.isDirectory()) {
-                                                    MyApp myapp = (MyApp) getApplication();
-                                                    String ip = myapp.getIp();
-                                                    int port = myapp.getPort();
-                                                    pushList.add("http://" + ip + ":" + port + file.getPath());
-                                                } else {
-                                                    Toast.makeText(ClassifyGridActivity.this, "文件夹暂不支持推送", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                intent = new Intent();
-                                                Bundle b = new Bundle();
-                                                b.putStringArrayList("pushList", pushList);
-                                                intent.putExtra("pushList", b);
-                                                intent.setClass(ClassifyGridActivity.this, ShowNetDevActivity.class);
-                                                startActivity(intent);
-
-                                                break;
-                                            default:
-                                                break;
-                                        }
-
-                                    }
-                                }).create().show();
+                        MoreDialogFragment moreDialog = new MoreDialogFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("filePath", content.getDir());
+                        moreDialog.setArguments(bundle);
+                        moreDialog.show(getFragmentManager(), "moreDialog");
                         return true;
                     }
                 });
@@ -184,6 +131,11 @@ public class ClassifyGridActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void update() {
+        new Thread(new GridRunnable(R.id.img_movie)).start();
     }
 
     class OnPhotoItemClickListener implements OnItemClickListener {
@@ -252,11 +204,13 @@ public class ClassifyGridActivity extends BaseActivity {
                         data = (ArrayList<Content>) msg.getData().get("data");
                         theActivity.gridAdapter = new ClassifyGridAdapter(data, theActivity, R.id.img_movie);
                         theActivity.gv_classify.setAdapter(theActivity.gridAdapter);
+                        theActivity. gridAdapter.notifyDataSetChanged();
                         break;
                     case R.id.img_photo:
                         data = (ArrayList<Content>) msg.getData().get("data");
                         theActivity. gridAdapter = new ClassifyGridAdapter(data, theActivity, R.id.img_movie);
                         theActivity.gv_classify.setAdapter(theActivity.gridAdapter);
+                        theActivity. gridAdapter.notifyDataSetChanged();
                         break;
 
                     default:

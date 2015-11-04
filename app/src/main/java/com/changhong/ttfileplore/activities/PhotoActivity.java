@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
+import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.fragment.PhotoGridFragment;
 import com.changhong.ttfileplore.fragment.PhotoTimeLineFragment;
 import com.changhong.ttfileplore.view.CircleProgress;
@@ -21,7 +23,7 @@ import com.changhong.ttfileplore.view.CircleProgress;
 /**
  * Created by tangli on 2015/11/2.
  */
-public class PhotoActivity extends BaseActivity {
+public class PhotoActivity extends BaseActivity implements MoreDialogFragment.UpDate{
     private PhotoTimeLineFragment mTimeLineFragment;
     private PhotoGridFragment mGridFragment;
     private String[] content;
@@ -30,6 +32,8 @@ public class PhotoActivity extends BaseActivity {
     AlertDialog.Builder builder;
     CircleProgress mProgressView;
     private TextView tv_num;
+
+    boolean isdefault = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,8 @@ public class PhotoActivity extends BaseActivity {
         content = getIntent().getStringArrayExtra("content");
         findView();
         initView();
-       // setGridFragment();
-       setDefaultFragment();
+        // setGridFragment();
+        setDefaultFragment();
         showDialog();
 
     }
@@ -59,6 +63,8 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private void initView() {
+
+
         layout = LayoutInflater.from(this).inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
         builder = new AlertDialog.Builder(PhotoActivity.this).setView(layout);
         alertDialog = builder.create();
@@ -66,7 +72,6 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private void setDefaultFragment() {
-
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         mTimeLineFragment = new PhotoTimeLineFragment();
@@ -75,11 +80,11 @@ public class PhotoActivity extends BaseActivity {
         mTimeLineFragment.setArguments(b);
         transaction.replace(R.id.framelayout_photo, mTimeLineFragment);
         transaction.commit();
+        isdefault = true;
 
     }
 
     private void setGridFragment() {
-
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         mGridFragment = new PhotoGridFragment();
@@ -88,6 +93,7 @@ public class PhotoActivity extends BaseActivity {
         mGridFragment.setArguments(b);
         transaction.replace(R.id.framelayout_photo, mGridFragment);
         transaction.commit();
+        isdefault = false;
 
     }
 
@@ -102,14 +108,34 @@ public class PhotoActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                return true;
+            case R.id.change_view:
+                if (isdefault) {
+                    setGridFragment();
+                } else
+                    setDefaultFragment();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photo, menu);
+        return true;
+    }
+
+
     public void setPhotoNumText(String string) {
         tv_num.setText(string);
     }
-    public void update(){}
+
+    @Override
+    public void update() {
+        if (isdefault) {
+            setDefaultFragment();
+        } else
+            setGridFragment();
+    }
 
 }

@@ -34,8 +34,8 @@
             android:textColor="?main_textcolor"
             android:layout_toStartOf="@+id/view"
             android:textSize="@dimen/top_textsize"
-            android:paddingStart="3dp"
-            android:paddingEnd="3dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
             android:maxLines="2"
             android:text="timssaa"/>
     <TextView

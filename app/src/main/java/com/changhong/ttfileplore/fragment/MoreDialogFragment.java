@@ -51,6 +51,9 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     private AlertDialog alertDialog_qr;
     private ImageView iv_qr;
 
+    public interface UpDate{
+        void update();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -95,7 +98,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
             case R.id.rl_moreoption_delete:
                 if (file.exists()) {
                     if (file.delete()) {
-                        ((PhotoActivity) baseContext).update();
+                        ((UpDate) baseContext).update();
                         Toast.makeText(baseContext, "删除成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(baseContext, "删除失败", Toast.LENGTH_SHORT).show();

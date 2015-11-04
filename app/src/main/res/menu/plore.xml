@@ -1,32 +1,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.changhong.ttfileplore.MainActivity" >
+    tools:context="com.changhong.ttfileplore.MainActivity">
 
 <item
         android:id="@+id/action_net"
         android:orderInCategory="100"
-        android:showAsAction="never"
+    android:showAsAction="never"
         android:title="@string/netfile"/>
 <item
         android:id="@+id/action_samba"
         android:orderInCategory="100"
-        android:showAsAction="never"
+    android:showAsAction="never"
         android:title="@string/sambafile"/>
  <item
         android:id="@+id/action_sharefile"
         android:orderInCategory="100"
-        android:showAsAction="never"
+     android:showAsAction="never"
         android:title="@string/sharefile"/>
 <item
         android:id="@+id/action_scanner"
         android:orderInCategory="100"
-          android:icon="@drawable/action_qr" 
-        android:showAsAction="ifRoom"
+          android:icon="@drawable/action_qr"
+    android:showAsAction="ifRoom"
         android:title="@string/scanner"/>
  <item
         android:id="@+id/action_share"
         android:orderInCategory="100"
-        android:showAsAction="never"
+     android:showAsAction="never"
         android:title="@string/shareto"/>
  
     <item
