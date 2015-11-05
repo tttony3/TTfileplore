@@ -38,7 +38,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QQListActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener,MoreDialogFragment.UpDate {
+public class QQListActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener,
+		MoreDialogFragment.UpDate ,PloreListAdapter.ImgOnClick{
 	private RefreshDataAsynTask mRefreshAsynTask;
 	LayoutInflater inflater;
 	AlertDialog alertDialog;
@@ -128,19 +129,14 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 				
 
 				if (file.exists() && file.isDirectory()) {
-					PloreData mPloreData = new PloreData(file,true);
+					PloreData mPloreData = new PloreData(file,false);
 					files.addAll(mPloreData.getfiles());
 				}
 				if (sdfile.exists() && sdfile.isDirectory()) {
-					PloreData mPloreData = new PloreData(file,true);
+					PloreData mPloreData = new PloreData(sdfile,false);
 					files.addAll(mPloreData.getfiles());
 				}
-				for (int i = 0; i < files.size(); i++) {
-					if (files.get(i).getName().startsWith(".")) {
-						files.remove(i);
-						i--;
-					}
-				}
+
 				break;
 			default:
 				break;
@@ -237,6 +233,24 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 	public void update() {
 		files.remove(file);
 		qqAdapter.updateList(files);
+	}
+
+	@Override
+	public void onClick(View v, File file) {
+
+			PloreData mPloreData = new PloreData(file,false);
+			files.clear();
+			files.addAll(mPloreData.getfiles());
+			for (int i = 0; i < files.size(); i++) {
+				if (files.get(i).getName().startsWith(".")) {
+					files.remove(i);
+					i--;
+				}
+			}
+			qqAdapter.updateList(files);
+			father.add(file.getParentFile());
+
+
 	}
 
 	class RefreshDataAsynTask extends AsyncTask<Void, Void, Void> {

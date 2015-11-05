@@ -3,10 +3,12 @@ package com.changhong.ttfileplore.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.changhong.alljoyn.simpleclient.ClientBusHandler;
 import com.changhong.alljoyn.simpleclient.DeviceInfo;
 import com.changhong.ttfileplore.adapter.NetDevListAdapter;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
+import com.changhong.ttfileplore.fragment.PushDialogFragment;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.chobit.corestorage.CoreApp;
 import com.chobit.corestorage.CoreDeviceListener;
@@ -60,13 +62,17 @@ public class ShowNetDevActivity extends BaseActivity {
 		builder = new AlertDialog.Builder(this).setView(layout);
 		alertDialog = builder.create();
 		mProgressView = (CircleProgress) layout.findViewById(R.id.progress);
+
 		netList = (ListView) findViewById(R.id.lv_netactivity);
+		netListAdapter = new NetDevListAdapter(null, context);
+		netList.setAdapter(netListAdapter);
 
 		if (CoreApp.mBinder != null) {
 			CoreApp.mBinder.setDeviceListener(deviceListener);
 			deviceListener.startWaiting();
-			setUpdateList(CoreApp.mBinder.GetDeviceList());
-
+			ArrayList<DeviceInfo> list =new ArrayList<>();
+			list.addAll(ClientBusHandler.List_DeviceInfo);
+			setUpdateList(list);
 		}
 
 		netList.setOnItemClickListener(new OnItemClickListener() {
@@ -75,29 +81,25 @@ public class ShowNetDevActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (pushList != null) {
 					final DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
-					LayoutInflater inflater = getLayoutInflater();
-					final View layout = inflater.inflate(R.layout.fragment_pushdialog, netList);
-					new AlertDialog.Builder(ShowNetDevActivity.this).setTitle("推送到此设备").setView(layout)
-							.setNegativeButton("确定", new DialogInterface.OnClickListener() {
 
+					PushDialogFragment pushDialogFragment = new PushDialogFragment() {
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							EditText message = (EditText) layout.findViewById(R.id.ev_message);
+						public void onPushFragmentEnter(String message) {
 
 							if (pushList != null && pushList.size() != 0) {
 								if (pushList.get(0).startsWith("message:")) {
 									pushList.remove(0);
 								}
-								pushList.add(0, "message:" + message.getText().toString());
+								pushList.add(0, "message:" + message);
 								CoreApp.mBinder.PushResourceToDevice(info, pushList);
-
+								dismiss();
 							} else {
+								dismiss();
 								Toast.makeText(ShowNetDevActivity.this, "未选择推送文件", Toast.LENGTH_SHORT).show();
 							}
-
 						}
-
-					}).setPositiveButton("取消", null).show();
+					};
+					pushDialogFragment.show(getFragmentManager(),"pushDialogFragment");
 
 				} else {
 					DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
@@ -116,8 +118,9 @@ public class ShowNetDevActivity extends BaseActivity {
 		if (list.size() > 0) {
 			deviceListener.stopWaiting();
 		}
-		netListAdapter = new NetDevListAdapter(list, context);
-		netList.setAdapter(netListAdapter);
+		netListAdapter.updatelistview(list);
+//		netListAdapter = new NetDevListAdapter(list, context);
+//		netList.setAdapter(netListAdapter);
 	}
 
 	private CoreDeviceListener deviceListener = new CoreDeviceListener() {
@@ -140,7 +143,6 @@ public class ShowNetDevActivity extends BaseActivity {
 
 		@Override
 		public void startWaiting() {
-			// dialog.show();
 			if (getTopActivity(ShowNetDevActivity.this).equals(".activities.ShowNetDevActivity")) {
 
 				mProgressView.startAnim();

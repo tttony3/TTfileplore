@@ -29,6 +29,7 @@ import com.changhong.ttfileplore.R;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -219,8 +220,9 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         switch (v.getId()) {
 
             case R.id.plore_btn_newfile:
+
                 NewfileDialogFragment newFileDialogFragment = new NewfileDialogFragment();
-                newFileDialogFragment.show(getFragmentManager(), "newfiledialog");
+                newFileDialogFragment.show(((MainActivity)MyApp.context).getFragmentManager(), "newfiledialog");
 
                 break;
 
@@ -327,7 +329,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
             case R.id.plore_btn_seach:
                 SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
-                searchDialogFragment.show(getFragmentManager(), "searchdialog");
+                searchDialogFragment.show(((MainActivity)MyApp.context).getFragmentManager(), "searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
@@ -552,18 +554,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                             ssid = wificonf.SSID;
                             Thread.sleep(500);
                             final MyApp app = (MyApp) PloreActivity.this.getApplicationContext();
-                            app.unbindService(new ServiceConnection() {
-
-                                @Override
-                                public void onServiceDisconnected(ComponentName name) {
-
-                                }
-
-                                @Override
-                                public void onServiceConnected(ComponentName name, IBinder service) {
-
-                                }
-                            });
                             app.setConnectedService(new ConnectedService() {
 
                                 @Override
@@ -578,7 +568,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e("eee11", e.getMessage());
-                            Toast.makeText(PloreActivity.this, "开启wifi热点失败", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PloreActivity.this, "开启wifi热点失败", Toast.LENGTH_SHORT).show();
+                            break;
                         }
                     }
                 } else {
@@ -589,13 +580,26 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                         ssid = wificonf.SSID;
                         Thread.sleep(500);
-                        CoreApp.mBinder.deinit();
-                        CoreApp.mBinder.init();
+                        final MyApp app = (MyApp) PloreActivity.this.getApplicationContext();
+
+                        app.setConnectedService(new ConnectedService() {
+
+                            @Override
+                            public void onConnected(Binder b) {
+                                CoreServiceBinder binder = (CoreServiceBinder) b;
+                                binder.init();
+                                binder.setCoreHttpServerCBFunction(app.httpServerCB);
+                                binder.StartHttpServer("/", MyApp.context);
+                            }
+                        });
+//                        CoreApp.mBinder.deinit();
+//                        CoreApp.mBinder.init();
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("eee22", e.getMessage());
-                        Toast.makeText(PloreActivity.this, "开启wifi热点失败", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PloreActivity.this, "开启wifi热点失败", Toast.LENGTH_SHORT).show();
+                        break;
                     }
                 }
                 StringBuilder sb = new StringBuilder();

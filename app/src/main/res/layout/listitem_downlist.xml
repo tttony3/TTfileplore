@@ -5,7 +5,7 @@
     android:layout_marginBottom="2dp"
     android:layout_marginTop="2dp"
     android:background="?shape_select"
- 
+ android:paddingBottom="2dp"
     android:descendantFocusability="blocksDescendants"
         >
 
@@ -21,6 +21,7 @@
     <TextView
         android:paddingTop="3dp"
         android:id="@+id/tv_name"
+        android:textColor="?main_textcolor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/iv_download"
@@ -46,6 +47,7 @@
    
 
     <TextView
+        android:textColor="?main_textcolor"
         android:paddingTop="3dp"
         android:id="@+id/tv_process"
         android:layout_width="wrap_content"
@@ -62,6 +64,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="7dp"
+
         android:text="@string/cancel"
         android:textSize="13sp" />
 

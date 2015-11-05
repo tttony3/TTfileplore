@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -47,10 +48,14 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     RelativeLayout rl_detail;
     RelativeLayout rl_share;
     RelativeLayout rl_push;
+    RelativeLayout rl_shareto;
     Context baseContext;
     private AlertDialog alertDialog_qr;
     private ImageView iv_qr;
 
+    /**
+     *  刷新界面，由activity实现
+     */
     public interface UpDate{
         void update();
     }
@@ -75,6 +80,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         rl_detail.setOnClickListener(this);
         rl_share.setOnClickListener(this);
         rl_push.setOnClickListener(this);
+        rl_shareto.setOnClickListener(this);
 
     }
 
@@ -84,6 +90,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         rl_detail = (RelativeLayout) view.findViewById(R.id.rl_moreoption_detail);
         rl_share = (RelativeLayout) view.findViewById(R.id.rl_moreoption_share);
         rl_push = (RelativeLayout) view.findViewById(R.id.rl_moreoption_push);
+        rl_shareto = (RelativeLayout) view.findViewById(R.id.rl_moreoption_shareto);
 
         View layout_qr = getActivity().getLayoutInflater().inflate(R.layout.dialog_qr, container);
         AlertDialog.Builder builder_qr = new AlertDialog.Builder(baseContext).setView(layout_qr);
@@ -106,6 +113,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 } else {
                     Toast.makeText(baseContext, "文件不存在", Toast.LENGTH_SHORT).show();
                 }
+                this.dismiss();
                 break;
             case R.id.rl_moreoption_qr:
                 String ssid = "~";
@@ -122,18 +130,6 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                             ssid = wificonf.SSID;
                             Thread.sleep(500);
                             final MyApp app = (MyApp) getActivity().getApplicationContext();
-                            app.unbindService(new ServiceConnection() {
-
-                                @Override
-                                public void onServiceDisconnected(ComponentName name) {
-
-                                }
-
-                                @Override
-                                public void onServiceConnected(ComponentName name, IBinder service) {
-
-                                }
-                            });
                             app.setConnectedService(new ConnectedService() {
 
                                 @Override
@@ -141,13 +137,15 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                                     CoreService.CoreServiceBinder binder = (CoreService.CoreServiceBinder) b;
                                     binder.init();
                                     binder.setCoreHttpServerCBFunction(app.httpServerCB);
-                                    binder.StartHttpServer("/", MyApp.context);
+                                    binder.StartHttpServer("/", MyApp.mainContext);
                                 }
                             });
                             // hpc.me();
                         } catch (Exception e) {
+                            Log.e("eee22", e.getMessage());
                             e.printStackTrace();
-                            Toast.makeText(baseContext, "开启wifi热点失败", Toast.LENGTH_LONG).show();
+                            Toast.makeText(baseContext, "开启wifi热点失败", Toast.LENGTH_SHORT).show();
+                            break;
                         }
                     }
                 } else {
@@ -158,13 +156,25 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                         WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                         ssid = wificonf.SSID;
                         Thread.sleep(500);
-                        CoreApp.mBinder.deinit();
-                        CoreApp.mBinder.init();
+//                        CoreApp.mBinder.deinit();
+//                        CoreApp.mBinder.init();
+                        final MyApp app = (MyApp) getActivity().getApplicationContext();
+
+                        app.setConnectedService(new ConnectedService() {
+
+                            @Override
+                            public void onConnected(Binder b) {
+                                CoreService.CoreServiceBinder binder = (CoreService.CoreServiceBinder) b;
+                                binder.init();
+                                binder.setCoreHttpServerCBFunction(app.httpServerCB);
+                                binder.StartHttpServer("/", MyApp.mainContext);
+                            }
+                        });
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.e("eee22", e.getMessage());
-                        Toast.makeText(baseContext, "开启wifi热点失败", Toast.LENGTH_LONG).show();
+                        Toast.makeText(baseContext, "开启wifi热点失败", Toast.LENGTH_SHORT).show();
+                        break;
                     }
                 }
                 StringBuilder sb = new StringBuilder();
@@ -237,7 +247,13 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 intent.setClass(baseContext, ShowNetDevActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.rl_moreoption_shareto:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                shareIntent.setType(Utils.getMIMEType(file));
+                startActivity(shareIntent);
+                break;
         }
     }
 }

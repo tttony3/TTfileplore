@@ -21,7 +21,7 @@ public class NetPushFileListAdapter extends BaseAdapter {
 private ImageLoader imageLoader = ImageLoader.getInstance();
 	public NetPushFileListAdapter(List<String> pushList, Context context) {
 		if (null == pushList) {
-			this.pushList = new ArrayList<String>();
+			this.pushList = new ArrayList<>();
 		} else {
 			this.pushList = pushList;
 		}
@@ -62,12 +62,10 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 		String type = Utils.getMIMEType(loc);
 		if (type == "video") {
 			imageLoader.displayImage(loc, viewHolder.img);
-		//	viewHolder.img.setBackgroundResource(R.drawable.file_icon_movie);
 		} else if (type == "audio") {
 			viewHolder.img.setImageResource(R.drawable.file_icon_music);
 		} else if (type == "image") {
 			imageLoader.displayImage(loc, viewHolder.img);
-		//	viewHolder.img.setBackgroundResource(R.drawable.file_icon_photo);
 		} 
 		else if (type == "zip") {
 			viewHolder.img.setImageResource(R.drawable.file_icon_zip);

@@ -5,12 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import com.changhong.ttfileplore.R;
+import com.changhong.ttfileplore.activities.PloreActivity;
+import com.changhong.ttfileplore.application.MyApp;
+import com.changhong.ttfileplore.fragment.FilePreViewFragment;
+import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,103 +156,18 @@ public class PloreListAdapter extends BaseAdapter {
 				public boolean onLongClick(View v) {
 					if(!file.exists()||!file.canRead())
 						return false;
-					File[] files = file.listFiles();
-					if(files.length ==0)
-						return false;
-					final File[] resultfiles = getMaxSort(files);
-
-					LayoutInflater inflater = LayoutInflater.from(context);
-					View layout = inflater.inflate(R.layout.dialog_filepreview, null);
-					TableRow tr_1 = (TableRow) layout.findViewById(R.id.tr_filepreview_1);
-					TableRow tr_2 = (TableRow) layout.findViewById(R.id.tr_filepreview_2);
-					TableRow tr_3 = (TableRow) layout.findViewById(R.id.tr_filepreview_3);
-					TableRow tr_4 = (TableRow) layout.findViewById(R.id.tr_filepreview_4);
-					TextView tv_1 = (TextView) layout.findViewById(R.id.tv_filepreview_1);
-					TextView tv_2 = (TextView) layout.findViewById(R.id.tv_filepreview_2);
-					TextView tv_3 = (TextView) layout.findViewById(R.id.tv_filepreview_3);
-					TextView tv_4 = (TextView) layout.findViewById(R.id.tv_filepreview_4);
-					ImageView iv_1 = (ImageView) layout.findViewById(R.id.iv_filepreview_1);
-					ImageView iv_2 = (ImageView) layout.findViewById(R.id.iv_filepreview_2);
-					ImageView iv_3 = (ImageView) layout.findViewById(R.id.iv_filepreview_3);
-					ImageView iv_4 = (ImageView) layout.findViewById(R.id.iv_filepreview_4);
-					
-					AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(layout);
-					switch(resultfiles.length){
-					case 0:
-						return false;
-					case 1:
-						tr_2.setVisibility(View.GONE);
-						tr_3.setVisibility(View.GONE);
-						tr_4.setVisibility(View.GONE);
-						break;
-					case 2:
-						tr_3.setVisibility(View.GONE);
-						tr_4.setVisibility(View.GONE);
-						break;
-					case 3:
-						tr_4.setVisibility(View.GONE);
-						break;
-						}
-						
-						
-					if (resultfiles.length >= 1 && resultfiles[0] != null) {
-						tv_1.setText(resultfiles[0].getName());
-						setImage(iv_1, resultfiles[0]);
-						tr_1.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								context.startActivity(Utils.openFile(resultfiles[0]));
-
-							}
-						});
-						
-					}
-					if (resultfiles.length >= 2 && resultfiles[1] != null) {
-						tv_2.setText(resultfiles[1].getName());
-						setImage(iv_2, resultfiles[1]);
-					
-						tr_2.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								context.startActivity(Utils.openFile(resultfiles[1]));
-
-							}
-						});
-					}
-					if (resultfiles.length >= 3 && resultfiles[2] != null) {
-						tv_3.setText(resultfiles[2].getName());
-						setImage(iv_3, resultfiles[2]);
-						
-						tr_3.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								context.startActivity(Utils.openFile(resultfiles[2]));
-
-							}
-						});
-					}
-					if (resultfiles.length >= 4 && resultfiles[3] != null) {
-						tv_4.setText(resultfiles[3].getName());
-						setImage(iv_4, resultfiles[3]);
-						
-						tr_4.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								context.startActivity(Utils.openFile(resultfiles[3]));
-
-							}
-						});
-					}
-
-					AlertDialog dia = builder.create();
-					dia.show();
-					float scale = context.getResources().getDisplayMetrics().density; 
-					dia.getWindow().setLayout((int)(250 * scale + 0.5f), -2);
-
+//					File[] files = file.listFiles();
+//					if(files.length ==0)
+//						return false;
+					FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("filePath", file.getPath());
+					bundle.putInt("type",FilePreViewFragment.OTHER);
+					filePreViewFragment.setArguments(bundle);
+					if(context instanceof PloreActivity)
+						filePreViewFragment.show(((Activity) MyApp.mainContext).getFragmentManager(), "filePreViewFragment");
+					else
+						filePreViewFragment.show(((Activity)context).getFragmentManager(), "filePreViewFragment");
 					return true;
 				}
 

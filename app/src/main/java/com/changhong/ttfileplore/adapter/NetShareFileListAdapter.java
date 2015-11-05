@@ -8,6 +8,7 @@ import com.changhong.ttfileplore.R;
 import com.changhong.synergystorage.javadata.JavaFile;
 import com.changhong.synergystorage.javadata.JavaFile.FileType;
 import com.changhong.synergystorage.javadata.JavaFolder;
+import com.changhong.ttfileplore.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -73,7 +74,8 @@ public class NetShareFileListAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		if (position >= folderList.size()) {
-			FileType flietype =fileList.get(position - folderList.size()).getFileType();
+			JavaFile tmp =fileList.get(position - folderList.size());
+			FileType flietype =tmp.getFileType();
 			if (JavaFile.FileType.AUDIO == flietype)
 				viewHolder.img.setImageResource(R.drawable.file_icon_music);
 			else if (JavaFile.FileType.IMAGE == flietype) {
@@ -81,11 +83,20 @@ public class NetShareFileListAdapter extends BaseAdapter {
 			} 
 			else if (JavaFile.FileType.VIDEO == flietype)
 				viewHolder.img.setImageResource(R.drawable.file_icon_movie);
-			else if (JavaFile.FileType.OTHER == flietype)
-				viewHolder.img.setImageResource(R.drawable.file_icon_unknown);
+			else if (JavaFile.FileType.OTHER == flietype){
+				String type = Utils.getMIMEType(tmp.getFullName());
+				if(type.equals("zip"))
+					viewHolder.img.setImageResource(R.drawable.file_icon_zip);
+				else if(type.equals("doc"))
+					viewHolder.img.setImageResource(R.drawable.file_icon_txt);
+				else if(type.equals("apk"))
+					viewHolder.img.setImageResource(R.drawable.file_icon_apk);
+				else if(type.equals("*"))
+					viewHolder.img.setImageResource(R.drawable.file_icon_unknown);
+			}
 
-			viewHolder.name.setText(fileList.get(position - folderList.size()).getFullName());
-			viewHolder.url.setText(fileList.get(position - folderList.size()).getLocation());
+			viewHolder.name.setText(tmp.getFullName());
+			viewHolder.url.setText(tmp.getLocation());
 		} else if (position < folderList.size()) {
 			viewHolder.img.setImageResource(R.drawable.file_icon_folder);
 			viewHolder.name.setText(folderList.get(position).getName());

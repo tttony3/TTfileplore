@@ -15,16 +15,16 @@ public class PloreData {
 	List<File> nfolders ;
 	List<File> nfiles ;
 
-	public PloreData(File folder, boolean hide) {
-		this(folder,hide,NAME);
+	public PloreData(File folder, boolean showhide) {
+		this(folder,showhide,NAME);
 	}
 	
 
-	public PloreData(File folder, boolean hide,int type) {
+	public PloreData(File folder, boolean showhide,int type) {
 		files = new ArrayList<File>();
 		nfolders = new ArrayList<File>();
 		nfiles = new ArrayList<File>();
-		lodaData(folder, hide,type);
+		lodaData(folder, showhide,type);
 	}
 
 	/**
@@ -55,15 +55,15 @@ public class PloreData {
 	 * 
 	 * @param folder
 	 *            父文件夹
-	 * @param hide
+	 * @param showhide
 	 *            是否显示隐藏文件
 	 * @return 文件夹内的子文件夹和文件，按字母排序
 	 */
-	private void lodaData(File folder, boolean hide,int type) {
+	private void lodaData(File folder, boolean showhide,int type) {
 		File[] names = folder.listFiles();
 
 		for (int i = 0; i < names.length; i++) {
-			if (!hide) {
+			if (!showhide) {
 				if (names[i].getName().startsWith("."))
 					continue;
 			}
@@ -95,8 +95,14 @@ public class PloreData {
 		public int compare(File file1, File file2) {
 			if (file1.getName().charAt(0) > file2.getName().charAt(0)) {
 				return 1;
-			}		
-			else return -1;
+			}
+			 if (file1.getName().charAt(0) == file2.getName().charAt(0)) {
+				return 0;
+			}
+			if (file1.getName().charAt(0) < file2.getName().charAt(0)) {
+				return -1;
+			}
+			 return -1;
 		}		
 	}
 	

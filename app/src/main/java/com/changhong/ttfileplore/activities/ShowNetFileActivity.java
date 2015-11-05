@@ -300,16 +300,6 @@ public class ShowNetFileActivity extends BaseActivity {
 
 						} else if (file.getFileType() == JavaFile.FileType.VIDEO) {
 
-							// Uri uri = Uri.parse(
-							// devInfo.getM_httpserverurl() +
-							// file.getLocation() );
-							// Intent intent = new
-							// Intent(Intent.ACTION_VIEW,uri);
-							// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							// intent.setType("video/*");
-							// intent.setDataAndType(uri , "video/*");
-							// startActivity(intent);
-
 							Intent intent = new Intent();
 							intent.putExtra("uri", devInfo.getM_httpserverurl() + file.getLocation());
 							intent.setClass(ShowNetFileActivity.this, VideoActivity.class);
@@ -335,8 +325,7 @@ public class ShowNetFileActivity extends BaseActivity {
 		}
 	}
 
-	DownLoadService downLoadService;
-	DownLoadBinder binder;
+
 
 
 	private void showPreviewDialog(String path) {

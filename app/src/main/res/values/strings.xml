@@ -78,4 +78,10 @@
   <string name="sort_name">按名称排序</string>
     <string name="filename">文件名：</string>
     <string name="searchfile">搜索文件</string>
+    <string name="recivefile">收到文件</string>
+    <string name="recive">接收</string>
+    <string name="look">查看</string>
+    <string name="message">消息：</string>
+    <string name="push_to_this_device">推送文件</string>
+
 </resources>

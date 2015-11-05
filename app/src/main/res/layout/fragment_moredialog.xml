@@ -157,6 +157,36 @@
                 android:layout_marginStart="7dp"
                 android:background="?attr/main_bg" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_margin="1dp"
+            android:id="@+id/rl_moreoption_shareto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?shape_select"
+            android:clickable="true"
+            android:focusable="true" >
+
+            <TextView
+                android:id="@+id/tv_moreoption_shareto"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/shareto"
+                android:textColor="?main_textcolor"
+                android:textSize="@dimen/textsize_option" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tv_moreoption_shareto"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:background="?attr/main_bg" />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

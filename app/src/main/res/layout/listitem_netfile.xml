@@ -4,10 +4,11 @@
     android:layout_height="wrap_content"
     android:background="?shape_select"
     android:orientation="horizontal"
-    android:paddingBottom="0dp"
-    android:paddingTop="0dp" >
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp" >
 
     <ImageView
+        android:background="?item_shape"
         android:id="@+id/im_file"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -17,6 +18,7 @@
        />
 
     <TextView
+        android:textColor="?main_textcolor"
         android:id="@+id/tv_net_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,11 +30,13 @@
         android:textSize="16sp" />
 
     <TextView
+        android:textColor="?main_textcolor"
         android:id="@+id/tv_net_fileurl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_net_filename"
         android:layout_marginEnd="2dp"
+        android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/im_file"
         android:ellipsize="end"
         android:ems="18"

@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.changhong.ttfileplore.fragment.FilePreViewFragment;
+import com.changhong.ttfileplore.fragment.NewfileDialogFragment;
+import com.changhong.ttfileplore.fragment.SearchDialogFragment;
 import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreHttpServerCB;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
@@ -20,9 +23,11 @@ import com.changhong.ttfileplore.utils.BaseUiListener;
 import com.changhong.ttfileplore.utils.Utils;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 
@@ -63,7 +68,7 @@ import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends SlidingFragmentActivity
-        implements android.view.View.OnClickListener, OnLongClickListener {
+        implements android.view.View.OnClickListener, OnLongClickListener,SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog  {
 
     Tencent mTencent;
     SharedPreferences sharedPreferences;
@@ -129,14 +134,14 @@ public class MainActivity extends SlidingFragmentActivity
 
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
-        MyApp app = (MyApp) this.getApplicationContext();
-        app.setConnectedService(new ConnectedService() {
+
+        myapp.setConnectedService(new ConnectedService() {
 
             @Override
             public void onConnected(Binder b) {
                 CoreServiceBinder binder = (CoreServiceBinder) b;
                 binder.init();
-                binder.setCoreHttpServerCBFunction(httpServerCB);
+                binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
                 binder.StartHttpServer("/", context);
             }
         });
@@ -320,12 +325,8 @@ public class MainActivity extends SlidingFragmentActivity
         } else if (id == R.id.action_share) {
             ArrayList<File> detailList = new ArrayList<>();
             pager.setCurrentItem(1);
-            if (!((PloreActivity) view1.getContext()).mFileAdpter.isShow_cb()) {
-                ((PloreActivity) view1.getContext()).mFileAdpter.setShow_cb(true);
-                ((PloreActivity) view1.getContext()).mFileAdpter.notifyDataSetChanged();
-            } else {
-                Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
-                for (int i = 0; i < mlist.length; i++) {
+            Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
+            for (int i = 0; i < mlist.length; i++) {
                     if (mlist[i]) {
                         File file = (File) ((PloreActivity) view1.getContext()).mFileAdpter.getItem(i);
                         if (!file.isDirectory()) {
@@ -339,9 +340,11 @@ public class MainActivity extends SlidingFragmentActivity
                     File detailfile = detailList.get(0);
                     onClickShare(detailfile);
 
+                }else if (detailList.size() > 1){
+                    Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
                 }
 
-            }
+
         }
         return super.onOptionsItemSelected(item);
 
@@ -352,6 +355,17 @@ public class MainActivity extends SlidingFragmentActivity
      */
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
+    }
+
+    @Override
+    public boolean onNewfile(String filename) {
+        return ((PloreActivity) view1.getContext()).onNewfile(filename);
+    }
+
+    @Override
+    public boolean onSearch(String filename) {
+        return ((PloreActivity) view1.getContext()).onSearch(filename);
+
     }
 
     /**
@@ -375,14 +389,14 @@ public class MainActivity extends SlidingFragmentActivity
             array.recycle();
             switch (arg0) {
                 case 0:
-                    getSlidingMenu().removeIgnoredView(pager);
+                    getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
                     t1.setTextColor(getResources().getColor(R.color.green));
                     t2.setTextColor(textColor);
                     animation1 = new TranslateAnimation(one, 0, 0, 0);
 
                     break;
                 case 1:
-                    getSlidingMenu().addIgnoredView(pager);
+                    getSlidingMenu().addIgnoredView(getWindow().getDecorView());
                     t2.setTextColor(getResources().getColor(R.color.green));
                     t1.setTextColor(textColor);
                     animation1 = new TranslateAnimation(offset, one, 0, 0);
@@ -538,53 +552,18 @@ public class MainActivity extends SlidingFragmentActivity
         ((BrowseActivity) list.get(0).getContext()).callupdate();
         int tmptheme =sharedPreferences.getInt("Theme",theme);
         if(theme !=  tmptheme){
-            final View rootView = getWindow().getDecorView();
-            rootView.setDrawingCacheEnabled(true);
-            rootView.buildDrawingCache(true);
-            final Bitmap localBitmap = Bitmap.createBitmap(rootView.getDrawingCache());
-            rootView.setDrawingCacheEnabled(false);
             setTheme(tmptheme);
             theme = tmptheme;
-            if (null != localBitmap && rootView instanceof ViewGroup) {
-                final View localView2 = new View(getApplicationContext());
-                //   localView2.setBackgroundColor(getResources().getColor(R.color.dark_model));
-                localView2.setBackground(new BitmapDrawable(getResources(), localBitmap));
-                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                ((ViewGroup) rootView).addView(localView2, params);
-                localView2.animate().alpha(0).setDuration(500).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        setContentView(R.layout.activity_main);
-                 //       setSlidingMenu();
-                        InitImageView();
-                        initTextView();
+            setContentView(R.layout.activity_main);
+            InitImageView();
+            initTextView();
+            ((BrowseActivity)view0.getContext()).onRestart();
+            ((PloreActivity)view1.getContext()).onRestart();
+            initPagerViewer();
+            SlidingMenu s =getSlidingMenu();
+            if( s!=null)
+                 s.removeIgnoredView(getWindow().getDecorView());
 
-                        ((BrowseActivity)view0.getContext()).onRestart();
-                        ((PloreActivity)view1.getContext()).onRestart();
-                        initPagerViewer();
-
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-
-                        ((ViewGroup) rootView).removeView(localView2);
-
-                        localBitmap.recycle();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                }).start();
-            }
         }
         super.onStart();
     }
@@ -746,6 +725,7 @@ public class MainActivity extends SlidingFragmentActivity
         }
 
         final File[] files1 = filelist.toArray(new File[filelist.size()]);
+
         for (int i = 0; i < 4 && i < files1.length - 1; ++i) {
             for (int j = i + 1; j < files1.length; ++j) {
                 if (files1[i].lastModified() < files1[j].lastModified()) {
@@ -755,79 +735,12 @@ public class MainActivity extends SlidingFragmentActivity
                 }
             }
         }
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View layout = inflater.inflate(R.layout.dialog_filepreview, null);
-        TableRow tr_1 = (TableRow) layout.findViewById(R.id.tr_filepreview_1);
-        TableRow tr_2 = (TableRow) layout.findViewById(R.id.tr_filepreview_2);
-        TableRow tr_3 = (TableRow) layout.findViewById(R.id.tr_filepreview_3);
-        TableRow tr_4 = (TableRow) layout.findViewById(R.id.tr_filepreview_4);
-        TextView tv_1 = (TextView) layout.findViewById(R.id.tv_filepreview_1);
-        TextView tv_2 = (TextView) layout.findViewById(R.id.tv_filepreview_2);
-        TextView tv_3 = (TextView) layout.findViewById(R.id.tv_filepreview_3);
-        TextView tv_4 = (TextView) layout.findViewById(R.id.tv_filepreview_4);
-        ImageView iv_1 = (ImageView) layout.findViewById(R.id.iv_filepreview_1);
-        ImageView iv_2 = (ImageView) layout.findViewById(R.id.iv_filepreview_2);
-        ImageView iv_3 = (ImageView) layout.findViewById(R.id.iv_filepreview_3);
-        ImageView iv_4 = (ImageView) layout.findViewById(R.id.iv_filepreview_4);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(layout);
-        if (files1.length > 1 && files1[0] != null) {
-            tv_1.setText(files1[0].getName());
-            setImage(iv_1, files1[0]);
-            tr_1.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(Utils.openFile(files1[0]));
-
-                }
-            });
-
-        }
-        if (files1.length > 2 && files1[1] != null) {
-            tv_2.setText(files1[1].getName());
-            setImage(iv_2, files1[1]);
-
-            tr_2.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(Utils.openFile(files1[1]));
-
-                }
-            });
-        }
-        if (files1.length > 3 && files1[2] != null) {
-            tv_3.setText(files1[2].getName());
-            setImage(iv_3, files1[2]);
-
-            tr_3.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(Utils.openFile(files1[2]));
-
-                }
-            });
-        }
-        if (files1.length > 4 && files1[3] != null) {
-            tv_4.setText(files1[3].getName());
-            setImage(iv_4, files1[3]);
-
-            tr_4.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(Utils.openFile(files1[3]));
-
-                }
-            });
-        }
-
-        AlertDialog dia = builder.create();
-        dia.show();
-        float scale = context.getResources().getDisplayMetrics().density;
-        dia.getWindow().setLayout((int) (250 * scale + 0.5f), -2);
+        FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("filelist", files1);
+        bundle.putInt("type",FilePreViewFragment.MAIN);
+        filePreViewFragment.setArguments(bundle);
+        filePreViewFragment.show(((Activity)context).getFragmentManager(), "filePreViewFragment");
 
     }
 
@@ -880,18 +793,24 @@ public class MainActivity extends SlidingFragmentActivity
     }
 
     private void onClickShare(File file) {
-        Bundle params = new Bundle();
-        params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, file.getPath());
-        switch (getMIMEType(file.getName())) {
-            case PHOTO:
-                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
-                break;
-            default:
-                Toast.makeText(this, "只支持图片分享", Toast.LENGTH_SHORT).show();
-                return;
-        }
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        shareIntent.setType(Utils.getMIMEType(file));
+        startActivity(shareIntent);
 
-        params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
-        mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
+//        Bundle params = new Bundle();
+//        params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, file.getPath());
+//        switch (getMIMEType(file.getName())) {
+//            case PHOTO:
+//                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
+//                break;
+//            default:
+//                Toast.makeText(this, "只支持图片分享", Toast.LENGTH_SHORT).show();
+//                return;
+//        }
+//
+//        params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
+//        mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
     }
 }

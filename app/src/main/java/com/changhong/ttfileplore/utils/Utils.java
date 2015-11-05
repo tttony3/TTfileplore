@@ -503,6 +503,7 @@ public class Utils {
 	static ArrayList<Content> getObject(String name) throws Exception {
 		ArrayList<Content> savedArrayList = null;
 		File file = new File(getPath(MyApp.context, name));
+		if(file.exists()){
 		FileInputStream fileInputStream = null;
 		ObjectInputStream objectInputStream = null;
 
@@ -512,6 +513,10 @@ public class Utils {
 		objectInputStream.close();
 		fileInputStream.close();
 		return savedArrayList;
+		}else{
+			savedArrayList = new ArrayList<>();
+			return savedArrayList;
+		}
 
 	}
 
@@ -593,11 +598,11 @@ public class Utils {
 	 * @return counts of type
 	 */
 	public static int getCount(String type, Context context) {
-		ArrayList<Content> results = null;
+		ArrayList<Content> results ;
 		ArrayList<File> files = new ArrayList<File>();
 		int count;
 		if (type.equals("result_movie")) {
-			results = new ArrayList<Content>();
+
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);
@@ -605,7 +610,7 @@ public class Utils {
 			count = cursor.getCount();
 			cursor.close();
 		} else if (type.equals("result_music")) {
-			results = new ArrayList<Content>();
+
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);
@@ -613,7 +618,7 @@ public class Utils {
 			count = cursor.getCount();
 			cursor.close();
 		} else if (type.equals("result_photo")) {
-			results = new ArrayList<Content>();
+
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);

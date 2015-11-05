@@ -32,8 +32,6 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int selfWidth = resolveSize(0, widthMeasureSpec);
-        Log.e("selfwidth", selfWidth + "");
-
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();
@@ -75,7 +73,6 @@ public class FlowLayout extends ViewGroup {
         }
 
         int wantedHeight = childTop + lineHeight + paddingBottom;
-        Log.e("wantedHeight", " wantedHeight: " + wantedHeight + "    count:" + getChildCount() + "  childTop:" + childTop + "  lineHeight:" + lineHeight + "  paddingBottom:"+paddingBottom);
         setMeasuredDimension(resolveSize(selfWidth,widthMeasureSpec), resolveSize(wantedHeight, heightMeasureSpec));
       //  setMeasuredDimension(selfWidth, wantedHeight);
 
@@ -84,7 +81,6 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int myWidth = r - l;
-        Log.e("myWidth", myWidth + "");
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();

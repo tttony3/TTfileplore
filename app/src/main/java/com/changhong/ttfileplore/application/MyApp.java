@@ -7,6 +7,8 @@ import java.util.List;
 import com.changhong.alljoyn.simpleclient.DeviceInfo;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.activities.ShowPushFileActivity;
+import com.changhong.ttfileplore.fragment.ReciveDialogFragment;
+import com.changhong.ttfileplore.utils.CrashHandler;
 import com.changhong.ttfileplore.utils.Utils;
 import com.chobit.corestorage.CoreApp;
 import com.chobit.corestorage.CoreHttpServerCB;
@@ -20,16 +22,19 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MyApp extends CoreApp {	
 	static public Context context;
-	Context mainContext;
+	static public  Context mainContext;
 	String ip;
 	int port;
 	public DeviceInfo devinfo;
@@ -59,10 +64,10 @@ public class MyApp extends CoreApp {
 	}
 
 	public void setMainContext(Context mainContext) {
-		this.mainContext = mainContext;
+		MyApp.mainContext = mainContext;
 	}
 
-	ArrayList<File> fileList = new ArrayList<File>();
+	ArrayList<File> fileList = new ArrayList<>();
 
 	/**
 	 * 获取复制剪贴的文件列表
@@ -77,9 +82,9 @@ public class MyApp extends CoreApp {
 		return context;
 	}
 
-	@SuppressWarnings("static-access")
+
 	public void setContext(Context context) {
-		this.context = context;
+		MyApp.context = context;
 	}
 
 	public void setFileList(ArrayList<File> fileList) {
@@ -108,6 +113,8 @@ public class MyApp extends CoreApp {
 
 	public void onCreate() {
 		super.onCreate();
+		CrashHandler crashHandler = CrashHandler.getInstance();
+		crashHandler.init(this);
 		File folder = new File(Utils.getPath(this, "cache"));
 		if (!folder.exists())
 			folder.mkdir();
@@ -135,6 +142,7 @@ public void unbindService(){
 	onTerminate();
 }
 
+
 	public CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
 
 		@Override
@@ -161,23 +169,45 @@ public void unbindService(){
 		}
 
 		@Override
-		public void recivePushResources(List<String> pushlist) {
-			final List<String> list = pushlist;
-			AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+		public void recivePushResources(List<String> pushList) {
 
-			AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
-					.setNegativeButton("查看", new DialogInterface.OnClickListener() {
+			final List<String> list = pushList;
+			ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
+				@Override
+				public void onReciveFragmentEnter() {
+					Intent intent = new Intent();
+					intent.setClass(getContext(), ShowPushFileActivity.class);
+					intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+					startActivity(intent);
+					dismiss();
+				}
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent = new Intent();
+				@Override
+				public void setReciveFragmentMessage(TextView tv_message) {
+					String message = list.remove(0);
+					if(message.startsWith("message:"))
+						tv_message.setText(message.substring(8));
+				}
 
-							intent.setClass(getContext(), ShowPushFileActivity.class);
-							intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-							startActivity(intent);
-						}
-					}).setPositiveButton("取消", null).create();
-			alert.show();
+
+			};
+			reciveDialogFragment.show(((Activity)context).getFragmentManager(),"reciveDialogFragment");
+
+//			AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//
+//			AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
+//					.setNegativeButton("查看", new DialogInterface.OnClickListener() {
+//
+//						@Override
+//						public void onClick(DialogInterface dialog, int which) {
+//							Intent intent = new Intent();
+//
+//							intent.setClass(getContext(), ShowPushFileActivity.class);
+//							intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+//							startActivity(intent);
+//						}
+//					}).setPositiveButton("取消", null).create();
+//			alert.show();
 
 		}
 	};
