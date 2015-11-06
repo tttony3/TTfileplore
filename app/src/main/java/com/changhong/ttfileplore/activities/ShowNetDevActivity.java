@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,6 +35,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ShowNetDevActivity extends BaseActivity {
 	Context context = ShowNetDevActivity.this;
 	ProgressDialog dialog;
@@ -44,7 +48,7 @@ public class ShowNetDevActivity extends BaseActivity {
 	CircleProgress mProgressView;
 	View layout;
 	ArrayList<String> pushList;
-
+	MyApp myapp;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +59,7 @@ public class ShowNetDevActivity extends BaseActivity {
 		}
 
 		setContentView(R.layout.activity_net_dev);
-		MyApp myapp = (MyApp) getApplication();
+		 myapp = (MyApp) getApplication();
 		myapp.setContext(this);
 		LayoutInflater inflater = getLayoutInflater();
 		layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
@@ -85,13 +89,23 @@ public class ShowNetDevActivity extends BaseActivity {
 					PushDialogFragment pushDialogFragment = new PushDialogFragment() {
 						@Override
 						public void onPushFragmentEnter(String message) {
-
+							JSONObject pushJson = new JSONObject();
+							try {
+								TelephonyManager tm = (TelephonyManager) ShowNetDevActivity.this
+										.getSystemService(Context.TELEPHONY_SERVICE);
+								String DEVICE_ID = tm.getDeviceId();
+								pushJson.put("device_id",DEVICE_ID);
+								pushJson.put("message",message);
+								pushJson.put("filenum",pushList.size());
+								pushJson.put("http","http://"+myapp.getIp()+":"+myapp.getPort());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							if (pushList != null && pushList.size() != 0) {
-								if (pushList.get(0).startsWith("message:")) {
-									pushList.remove(0);
-								}
-								pushList.add(0, "message:" + message);
-								CoreApp.mBinder.PushResourceToDevice(info, pushList);
+								ArrayList<String> tmp = new ArrayList<String>();
+								tmp.addAll(pushList);
+								tmp.add(0, pushJson.toString());
+								CoreApp.mBinder.PushResourceToDevice(info, tmp);
 								dismiss();
 							} else {
 								dismiss();

@@ -6,7 +6,8 @@
         android:title="@string/delete"/>
     <item
         android:id="@+id/it_meun_share"
-        android:title="@string/share"/>
+        android:title="@string/share"
+        />
     <item
         android:id="@+id/it_meun_push"
         android:title="@string/push"/>

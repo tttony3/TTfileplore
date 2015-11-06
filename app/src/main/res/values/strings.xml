@@ -82,6 +82,7 @@
     <string name="recive">接收</string>
     <string name="look">查看</string>
     <string name="message">消息：</string>
+    <string name="reply">回复</string>
     <string name="push_to_this_device">推送文件</string>
 
 </resources>

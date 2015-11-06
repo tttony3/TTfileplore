@@ -139,7 +139,8 @@ public class ShowSharefileActivity extends BaseActivity {
 				} else {
 					String type = Utils.getMIMEType(loc);
 					if (type == "video") {
-						viewHolder.iv.setImageResource(R.drawable.file_icon_movie);
+						imageLoader.displayImage("File://" + loc, viewHolder.iv);
+					//	viewHolder.iv.setImageResource(R.drawable.file_icon_movie);
 					} else if (type == "audio") {
 						viewHolder.iv.setImageResource(R.drawable.file_icon_music);
 					} else if (type == "image") {

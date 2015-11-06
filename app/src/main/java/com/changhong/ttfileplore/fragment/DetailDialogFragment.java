@@ -22,12 +22,7 @@ public class DetailDialogFragment extends DialogFragment {
 	public DetailDialogFragment(){
 		super();
 	}
-//	public DetailDialogFragment(String name, String url, String time, String space) {
-//		this.name=name;
-//		this.url=url;
-//		this.time=time;
-//		this.space=space;
-//	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

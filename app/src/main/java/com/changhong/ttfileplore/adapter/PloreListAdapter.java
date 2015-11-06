@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,7 @@ public class PloreListAdapter extends BaseAdapter {
 		}
 		
 		final File file = (File) getItem(position);
-		String fileName = ((File) file).getName();
+		String fileName = file.getName();
 		if (fileName.toLowerCase().equals("sdcard0"))
 			viewHolder.name.setText("手机空间");
 		else if (fileName.toLowerCase().equals("sdcard1"))
@@ -154,11 +155,8 @@ public class PloreListAdapter extends BaseAdapter {
 
 				@Override
 				public boolean onLongClick(View v) {
-					if(!file.exists()||!file.canRead())
+					if(!file.exists()||!file.canRead()||!file.isDirectory())
 						return false;
-//					File[] files = file.listFiles();
-//					if(files.length ==0)
-//						return false;
 					FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("filePath", file.getPath());
@@ -178,16 +176,22 @@ public class PloreListAdapter extends BaseAdapter {
 				
 				@Override
 				public void onClick(View v) {
-					viewHolder.name.callOnClick();
+					((ImgOnClick)context).onClick(v, file);;
 					
 				}
 			});
+			viewHolder.img.setOnLongClickListener(new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					return false;
+				}
+			});
+
 			viewHolder.time.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(((File) file).lastModified()));
 
 			switch (getMIMEType(fileName)) {
 			case MOVIE:
 				final String path1 = file.getPath();
-		//		final String name1 = file.getName();
 				imageLoader.displayImage("file://" + path1, viewHolder.img);
 				// viewHolder.img.setImageResource(R.drawable.file_icon_movie);
 				break;

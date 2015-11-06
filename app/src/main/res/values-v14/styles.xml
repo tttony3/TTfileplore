@@ -21,6 +21,9 @@
         <item name="corners_lefttop">@drawable/corners_lefttop_day</item>
         <item name="corners_rightbot">@drawable/corners_rightbot_day</item>
         <item name="corners_righttop">@drawable/corners_righttop_day</item>
+        <item name="android:popupMenuStyle">@style/Theme.PopupMenu</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupMenu.TextAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenu.TextAppearanceSmall</item>
     </style>
     <style name="NightTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="border_onchose">@color/border_onchose_night</item>
@@ -38,5 +41,21 @@
         <item name="corners_lefttop">@drawable/corners_lefttop_night</item>
         <item name="corners_rightbot">@drawable/corners_rightbot_night</item>
         <item name="corners_righttop">@drawable/corners_righttop_night</item>
+        <item name="android:popupMenuStyle">@style/Theme.PopupMenu</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/PopupMenu.TextAppearanceLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenu.TextAppearanceSmall</item>
+    </style>
+
+    <style name="Theme.PopupMenu"
+        parent="@android:style/Widget.ListPopupWindow">
+        <item name="android:popupBackground">@color/btnblack</item>
+    </style>
+
+    <style name="PopupMenu.TextAppearanceLarge" parent="TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PopupMenu.TextAppearanceSmall" parent="TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

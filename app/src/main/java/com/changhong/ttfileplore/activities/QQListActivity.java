@@ -237,8 +237,8 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 
 	@Override
 	public void onClick(View v, File file) {
-
-			PloreData mPloreData = new PloreData(file,false);
+		if(file.isDirectory()) {
+			PloreData mPloreData = new PloreData(file, false);
 			files.clear();
 			files.addAll(mPloreData.getfiles());
 			for (int i = 0; i < files.size(); i++) {
@@ -249,8 +249,9 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 			}
 			qqAdapter.updateList(files);
 			father.add(file.getParentFile());
-
-
+		}else{
+			startActivity(Utils.openFile(file));
+		}
 	}
 
 	class RefreshDataAsynTask extends AsyncTask<Void, Void, Void> {

@@ -1,53 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-    <TableRow android:background="@color/btnblack">
+    android:background="@color/btnblack">
+    <TextView
+        android:id="@+id/tv_title_recivedialog"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:text="@string/recivefile"
+        android:textColor="@color/bright_foreground_disabled_material_dark"
+        android:lines="1"
+        android:textSize="15sp"/>
+
+
+    <LinearLayout
+        android:layout_below="@+id/tv_title_recivedialog"
+        android:id="@+id/ll_content_recivedialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?item_bg_deep"
+        android:paddingBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:paddingTop="3dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="@string/recivefile"
-            android:textColor="@color/bright_foreground_disabled_material_dark"
-            android:textSize="15sp"/>
-    </TableRow>
-
-    <TableRow
-        android:background="?item_bg"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
-
-        <TextView
+            android:paddingStart="5dp"
+            android:paddingEnd="2dp"
+            android:layout_marginStart="2dp"
             android:gravity="center"
             android:textColor="?main_textcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+
             android:textSize="@dimen/textsize_message"
             android:text="@string/message"/>
 
         <TextView
+            android:padding="5dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+
+            android:background="?item_shape"
             android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:layout_marginStart="3dp"
-            android:ems="10"
             android:textSize="@dimen/textsize_message"
-            android:labelFor="@+id/ev_message"
-            android:lines="1"
             android:maxLines="3"
             android:textColor="?main_textcolor" />
-    </TableRow>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_content2_recivedialog"
+        android:layout_below="@+id/ll_content_recivedialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?item_bg_deep"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp">
+
+
+        <EditText
+            android:background="?item_shape"
+            android:layout_toStartOf="@+id/iv_recivedialog_reply"
+            android:inputType="text|textMultiLine"
+            android:hint=""
+            android:gravity="top"
+            android:padding="5dp"
+            android:id="@+id/et_replymessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:textSize="@dimen/textsize_message"
+            android:labelFor="@+id/et_message"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:textColor="?main_textcolor" />
+        <ImageView
+
+            android:textSize="@dimen/textsize_message"
+            android:id="@+id/iv_recivedialog_reply"
+            android:src="@drawable/send_message_selector"
+            android:layout_alignBottom="@+id/et_replymessage"
+            android:layout_alignParentEnd="true"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <LinearLayout
 
         android:id="@+id/ll_btn_default"
+        android:layout_below="@+id/rl_content2_recivedialog"
         style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/btnblack"
         android:orientation="horizontal"
@@ -75,4 +123,4 @@
 
 
     </LinearLayout>
-</TableLayout>
+</RelativeLayout>

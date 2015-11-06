@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.changhong.alljoyn.simpleclient.ClientBusHandler;
 import com.changhong.alljoyn.simpleclient.DeviceInfo;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.activities.ShowPushFileActivity;
@@ -28,9 +29,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 public class MyApp extends CoreApp {	
 	static public Context context;
@@ -172,42 +178,73 @@ public void unbindService(){
 		public void recivePushResources(List<String> pushList) {
 
 			final List<String> list = pushList;
-			ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
-				@Override
-				public void onReciveFragmentEnter() {
-					Intent intent = new Intent();
-					intent.setClass(getContext(), ShowPushFileActivity.class);
-					intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-					startActivity(intent);
-					dismiss();
-				}
+			String jsonString = list.remove(0);
+			String message =null;
+			int filenum =0;
+			String http1 ="";
+			String device_id1="";
+			try {
+				JSONObject jsonObj = new JSONObject(jsonString);
+				message = jsonObj.getString("message");
+				filenum = jsonObj.getInt("filenum");
+				http1= jsonObj.getString("http");
+				device_id1 = jsonObj.getString("device_id");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			final String device_id=device_id1;
+			final String http=http1;
+			final String msg=message;
+				ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
+					@Override
+					public void onReciveFragmentEnter() {
+						if(list.size()>0){
+						Intent intent = new Intent();
+						intent.setClass(getContext(), ShowPushFileActivity.class);
+						intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+						startActivity(intent);
+						dismiss();
+						}
+					}
 
-				@Override
-				public void setReciveFragmentMessage(TextView tv_message) {
-					String message = list.remove(0);
-					if(message.startsWith("message:"))
-						tv_message.setText(message.substring(8));
-				}
+					@Override
+					public void setReciveFragmentMessage(TextView tv_message) {
+						tv_message.setText(msg==null?"":msg);
+					}
+
+					@Override
+					public void onReciveFragmentReply(String message) {
+						DeviceInfo info = null;
+						for(DeviceInfo tmp : ClientBusHandler.List_DeviceInfo){
+							if(tmp.getM_deviceid().equals(device_id)){
+								info=tmp;
+								break;
+							}
+						}if(info !=null) {
+							JSONObject pushJson = new JSONObject();
+							try {
+								TelephonyManager tm = (TelephonyManager) MyApp.this
+										.getSystemService(Context.TELEPHONY_SERVICE);
+								String DEVICE_ID = tm.getDeviceId();
+								pushJson.put("device_id", DEVICE_ID);
+								pushJson.put("message", message);
+								pushJson.put("filenum", 0);
+								pushJson.put("http", "http://" + ip + ":" + port);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							ArrayList<String> tmp = new ArrayList<>();
+							tmp.add(0, pushJson.toString());
+							CoreApp.mBinder.PushResourceToDevice(info, tmp);
+
+						}
+						}
 
 
-			};
-			reciveDialogFragment.show(((Activity)context).getFragmentManager(),"reciveDialogFragment");
+				};
+				reciveDialogFragment.show(((Activity) context).getFragmentManager(), "reciveDialogFragment");
 
-//			AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-//
-//			AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
-//					.setNegativeButton("查看", new DialogInterface.OnClickListener() {
-//
-//						@Override
-//						public void onClick(DialogInterface dialog, int which) {
-//							Intent intent = new Intent();
-//
-//							intent.setClass(getContext(), ShowPushFileActivity.class);
-//							intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-//							startActivity(intent);
-//						}
-//					}).setPositiveButton("取消", null).create();
-//			alert.show();
+
 
 		}
 	};

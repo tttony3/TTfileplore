@@ -50,6 +50,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -97,6 +101,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private SharedPreferences sharedPreferences;
     public boolean showhidefile;
     private int sorttype = PloreData.NAME;
+    private boolean isdefault_btn=true;
     int theme;
     MyApp myapp;
 
@@ -158,7 +163,55 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
     private void initView() {
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
+            Animation animation ;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState){
+                    case SCROLL_STATE_IDLE:
+                        animation = new  TranslateAnimation(0, 0, 100, 0);
+                        animation.setFillAfter(true);// True:图片停在动画结束位置
+                        animation.setDuration(500);
+                        if(isdefault_btn){
+                            ll_btn_default.setVisibility(View.VISIBLE);
+                            ll_btn.setVisibility(View.GONE);
+                            ll_btn_default.startAnimation(animation);
+                        }else{
+                            ll_btn_default.setVisibility(View.GONE);
+                            ll_btn.setVisibility(View.VISIBLE);
+                            ll_btn.startAnimation(animation);
+                        }
+                        break;
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                    case SCROLL_STATE_FLING:
+                        animation = new  TranslateAnimation(0, 0, 0, 100);
+                        animation.setFillAfter(true);// True:图片停在动画结束位置
+                        animation.setDuration(500);
+                        if(isdefault_btn){
+
+                            ll_btn_default.setVisibility(View.VISIBLE);
+                            ll_btn.setVisibility(View.GONE);
+                            ll_btn_default.startAnimation(animation);
+                        }else{
+
+                            ll_btn_default.setVisibility(View.GONE);
+                            ll_btn.setVisibility(View.VISIBLE);
+                            ll_btn.startAnimation(animation);
+                        }
+                        break;
+
+
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mListView.onScroll(view,firstVisibleItem,visibleItemCount,totalItemCount);
+            }
+        });
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mListView.setOnRefreshListener(this);
@@ -196,8 +249,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     @Override
     public void loadData(File folder, int sorttype) {
-        ll_btn.setVisibility(View.GONE);
-        ll_btn_default.setVisibility(View.VISIBLE);
+        setDefaultBtn();
+
         boolean isRoot = (folder.getParent() == null);
         if (folder.canRead()) {
             String path = folder.getPath();
@@ -210,6 +263,20 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         }
 
     }
+
+    private void setDefaultBtn() {
+        ll_btn.clearAnimation();
+        ll_btn.setVisibility(View.GONE);
+        ll_btn_default.setVisibility(View.VISIBLE);
+        isdefault_btn = true;
+    }
+    private void setSecondBtn() {
+        ll_btn_default.clearAnimation();
+        ll_btn_default.setVisibility(View.GONE);
+        ll_btn.setVisibility(View.VISIBLE);
+        isdefault_btn = false;
+    }
+
 
     /**
      * 底部button监听
@@ -244,8 +311,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                     mFileAdpter.setShow_cb(false);
                     mFileAdpter.notifyDataSetChanged();
                     isCopy = false;
-                    ll_btn.setVisibility(View.GONE);
-                    ll_btn_default.setVisibility(View.VISIBLE);
+                    setDefaultBtn();
+
                     Toast.makeText(PloreActivity.this, "剪切成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -315,8 +382,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                     mFileAdpter.setShow_cb(false);
                     mFileAdpter.notifyDataSetChanged();
                     isCopy = true;
-                    ll_btn.setVisibility(View.GONE);
-                    ll_btn_default.setVisibility(View.VISIBLE);
+                  setDefaultBtn();
                     Toast.makeText(PloreActivity.this, "复制成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -334,8 +400,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                    ll_btn.setVisibility(View.GONE);
-                    ll_btn_default.setVisibility(View.VISIBLE);
+                  setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else {
                     String str = (String) mPathView.getText();
@@ -351,8 +416,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.path:
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                    ll_btn.setVisibility(View.GONE);
-                    ll_btn_default.setVisibility(View.VISIBLE);
+                 setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else {
                     String str = (String) mPathView.getText();
@@ -378,8 +442,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 if (!(view instanceof ImageView))
                     if (!mFileAdpter.isShow_cb()) {
                         mFileAdpter.setShow_cb(true);
-                        ll_btn_default.setVisibility(View.GONE);
-                        ll_btn.setVisibility(View.VISIBLE);
+                     setSecondBtn();
                         mFileAdpter.notifyDataSetChanged();
                     }
                 return true;
@@ -426,8 +489,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             if (mPathView.getText().toString().lastIndexOf("/") == 0) {
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                    ll_btn.setVisibility(View.GONE);
-                    ll_btn_default.setVisibility(View.VISIBLE);
+                  setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else if (java.lang.System.currentTimeMillis() - curtime > 1000) {
                     Toast.makeText(PloreActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
@@ -750,56 +812,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     }
 
-//    private CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
-//
-//        @Override
-//        public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
-//            Log.e("onTransportUpdata",
-//                    "agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
-//
-//        }
-//
-//        @Override
-//        public void onHttpServerStop() {
-//
-//        }
-//
-//        @Override
-//        public void onHttpServerStart(String ip, int port) {
-//            MyApp myapp = (MyApp) getApplication();
-//            myapp.setIp(ip);
-//            myapp.setPort(port);
-//            // Log.i("tl", ip + "port" + port);
-//
-//        }
-//
-//        @Override
-//        public String onGetRealFullPath(String arg0) {
-//            return null;
-//        }
-//
-//        @Override
-//        public void recivePushResources(List<String> pushlist) {
-//            final MyApp myapp = (MyApp) getApplication();
-//            final List<String> list = pushlist;
-//            AlertDialog.Builder dialog = new AlertDialog.Builder(myapp.getContext());
-//
-//            AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0))
-//                    .setNegativeButton("查看", new OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            Intent intent = new Intent();
-//
-//                            intent.setClass(myapp.getContext(), ShowPushFileActivity.class);
-//                            intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-//                            startActivity(intent);
-//                        }
-//                    }).setPositiveButton("取消", null).create();
-//            alert.show();
-//
-//        }
-//    };
+
 
     @Override
     public void onClick(View v, File file) {

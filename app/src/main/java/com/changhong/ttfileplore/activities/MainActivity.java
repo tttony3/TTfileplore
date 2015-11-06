@@ -439,12 +439,12 @@ public class MainActivity extends SlidingFragmentActivity
         public void onClick(View v) {
             if (index == 0) {
                 pager.setCurrentItem(index);
-                getSlidingMenu().removeIgnoredView(pager);
+                getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
             }
             if (index == 1) {
                 pager.setCurrentItem(index);
 
-                getSlidingMenu().addIgnoredView(pager);
+                getSlidingMenu().addIgnoredView(getWindow().getDecorView());
             }
         }
     }

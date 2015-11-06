@@ -38,6 +38,7 @@ import android.os.StatFs;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.text.format.Formatter;
+import android.util.Log;
 
 public class Utils {
 	static ArrayList<Content> results = new ArrayList<Content>();
@@ -201,6 +202,8 @@ public class Utils {
 		if (!reseach) {
 			try {
 				results = getObject("result_doc");
+				if(results.size()==0)
+					reSeach("doc");
 			} catch (Exception e2) {
 				reSeach("doc");
 			}
@@ -214,7 +217,7 @@ public class Utils {
 
 	private static void reSeach(String type) {
 
-		pool = Executors.newFixedThreadPool(200);
+		pool = Executors.newFixedThreadPool(20);
 		results.clear();
 		File root = new File("/storage");
 		File file = root;
@@ -258,6 +261,8 @@ public class Utils {
 		if (!reseach) {
 			try {
 				results = getObject("result_apk");
+				if(results.size()==0)
+					reSeach("apk");
 			} catch (Exception e2) {
 				reSeach("apk");
 
@@ -272,6 +277,9 @@ public class Utils {
 		if (!reseach) {
 			try {
 				results = getObject("result_zip");
+				if(results.size()==0)
+					reSeach("zip");
+
 			} catch (Exception e2) {
 				reSeach("zip");
 
