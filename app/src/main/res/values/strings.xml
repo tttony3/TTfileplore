@@ -12,6 +12,7 @@
     <string name="txt">文档</string>
     <string name="zip">压缩包</string>
     <string name="photo">照片</string>
+    <string name="recivedfile">收到的文件</string>
     <string name="unknown">未知文件</string>
     <string name="apk">安装包</string>
     <string name="SdCapacity">SD卡容量 : </string>
@@ -72,10 +73,10 @@
     <string name="more">更多</string>
     <string name="sort">排序</string>
     <string name="seach">搜索</string>
-     <string name="selectall">全选</string>
+    <string name="selectall">全选</string>
     <string name="percent">0%</string>
- <string name="sort_time">按时间排序</string>
-  <string name="sort_name">按名称排序</string>
+    <string name="sort_time">按时间排序</string>
+    <string name="sort_name">按名称排序</string>
     <string name="filename">文件名：</string>
     <string name="searchfile">搜索文件</string>
     <string name="recivefile">收到文件</string>

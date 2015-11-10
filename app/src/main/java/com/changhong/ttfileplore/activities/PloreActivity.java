@@ -101,7 +101,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private SharedPreferences sharedPreferences;
     public boolean showhidefile;
     private int sorttype = PloreData.NAME;
-    private boolean isdefault_btn=true;
+    private boolean isdefault_btn = true;
     int theme;
     MyApp myapp;
 
@@ -164,42 +164,56 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     private void initView() {
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            Animation animation ;
+            boolean flingAni = true;
+            boolean touchAni = true;
+            Animation animation;
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState){
+                switch (scrollState) {
                     case SCROLL_STATE_IDLE:
-                        animation = new  TranslateAnimation(0, 0, 100, 0);
+                        flingAni = true;
+                        touchAni = true;
+                        animation = new TranslateAnimation(0, 0, 100, 0);
                         animation.setFillAfter(true);// True:图片停在动画结束位置
                         animation.setDuration(500);
-                        if(isdefault_btn){
-                            ll_btn_default.setVisibility(View.VISIBLE);
-                            ll_btn.setVisibility(View.GONE);
+                        if (isdefault_btn) {
                             ll_btn_default.startAnimation(animation);
-                        }else{
-                            ll_btn_default.setVisibility(View.GONE);
-                            ll_btn.setVisibility(View.VISIBLE);
+                        } else {
                             ll_btn.startAnimation(animation);
                         }
+
+                        break;
+                    case SCROLL_STATE_FLING:
+                        touchAni = false;
+                        if (!flingAni) {
+                            break;
+                        }
+                        animation = new TranslateAnimation(0, 0, 0, 100);
+                        animation.setFillAfter(true);// True:图片停在动画结束位置
+                        animation.setDuration(500);
+                        if (isdefault_btn) {
+                            ll_btn_default.startAnimation(animation);
+                        } else {
+                            ll_btn.startAnimation(animation);
+                        }
+
+
                         break;
                     case SCROLL_STATE_TOUCH_SCROLL:
-                    case SCROLL_STATE_FLING:
-                        animation = new  TranslateAnimation(0, 0, 0, 100);
+                        flingAni = false;
+                        if (!touchAni) {
+                            break;
+                        }
+                        animation = new TranslateAnimation(0, 0, 0, 100);
                         animation.setFillAfter(true);// True:图片停在动画结束位置
                         animation.setDuration(500);
-                        if(isdefault_btn){
-
-                            ll_btn_default.setVisibility(View.VISIBLE);
-                            ll_btn.setVisibility(View.GONE);
+                        if (isdefault_btn) {
                             ll_btn_default.startAnimation(animation);
-                        }else{
-
-                            ll_btn_default.setVisibility(View.GONE);
-                            ll_btn.setVisibility(View.VISIBLE);
+                        } else {
                             ll_btn.startAnimation(animation);
                         }
+
                         break;
 
 
@@ -209,7 +223,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                mListView.onScroll(view,firstVisibleItem,visibleItemCount,totalItemCount);
+                mListView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
             }
         });
         mListView.setOnItemClickListener(this);
@@ -228,7 +242,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
         ImageView img = new ImageView(this);
         img.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dpTopx(40, this)));
-        mListView.addFooterView(img);
+        mListView.addFooterView(img, null, false);
         File folder = new File("/storage");
         loadData(folder, sorttype);
     }
@@ -270,6 +284,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         ll_btn_default.setVisibility(View.VISIBLE);
         isdefault_btn = true;
     }
+
     private void setSecondBtn() {
         ll_btn_default.clearAnimation();
         ll_btn_default.setVisibility(View.GONE);
@@ -289,7 +304,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.plore_btn_newfile:
 
                 NewfileDialogFragment newFileDialogFragment = new NewfileDialogFragment();
-                newFileDialogFragment.show(((MainActivity)MyApp.context).getFragmentManager(), "newfiledialog");
+                newFileDialogFragment.show(((MainActivity) MyApp.context).getFragmentManager(), "newfiledialog");
 
                 break;
 
@@ -382,7 +397,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                     mFileAdpter.setShow_cb(false);
                     mFileAdpter.notifyDataSetChanged();
                     isCopy = true;
-                  setDefaultBtn();
+                    setDefaultBtn();
                     Toast.makeText(PloreActivity.this, "复制成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -395,12 +410,12 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
             case R.id.plore_btn_seach:
                 SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
-                searchDialogFragment.show(((MainActivity)MyApp.context).getFragmentManager(), "searchdialog");
+                searchDialogFragment.show(((MainActivity) MyApp.context).getFragmentManager(), "searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                  setDefaultBtn();
+                    setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else {
                     String str = (String) mPathView.getText();
@@ -416,7 +431,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.path:
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                 setDefaultBtn();
+                    setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else {
                     String str = (String) mPathView.getText();
@@ -442,7 +457,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 if (!(view instanceof ImageView))
                     if (!mFileAdpter.isShow_cb()) {
                         mFileAdpter.setShow_cb(true);
-                     setSecondBtn();
+                        setSecondBtn();
                         mFileAdpter.notifyDataSetChanged();
                     }
                 return true;
@@ -489,7 +504,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             if (mPathView.getText().toString().lastIndexOf("/") == 0) {
                 if (mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(false);
-                  setDefaultBtn();
+                    setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
                 } else if (java.lang.System.currentTimeMillis() - curtime > 1000) {
                     Toast.makeText(PloreActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
@@ -767,14 +782,14 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             mFileAdpter.updateList(matchfiles);
             return true;
         } else {
-            Toast.makeText(this,"未找到文件",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "未找到文件", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     @Override
     public boolean onNewfile(String filename) {
-        if(filename.isEmpty())
+        if (filename.isEmpty())
             return false;
         File file = new File(mPathView.getText().toString() + "/" + filename);
         if (file.exists())
@@ -811,7 +826,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         }
 
     }
-
 
 
     @Override

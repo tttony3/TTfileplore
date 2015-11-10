@@ -180,6 +180,42 @@
                 android:layout_marginStart="7dp"
                 android:background="?attr/main_bg" />
         </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_menu_recive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true" >
+
+            <ImageView
+                android:id="@+id/img_recive"
+                android:layout_width="@dimen/menu_img_size"
+                android:layout_height="@dimen/menu_img_size"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/menu_img_size_marginstart"
+                android:layout_marginTop="@dimen/menu_img_size_margintop"
+                android:background="@drawable/file_icon_folder" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/img_recive"
+                android:text="@string/recivedfile"
+                android:textColor="#f0f0f0"
+                android:textSize="@dimen/menu_text_size" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/img_recive"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:background="?attr/main_bg" />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -12,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NetPushFileListAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<String> pushList;
-private ImageLoader imageLoader = ImageLoader.getInstance();
+	private ImageLoader imageLoader = ImageLoader.getInstance();
+	private Boolean []checkbox_list;
+	private boolean isshowcb = false;
 	public NetPushFileListAdapter(List<String> pushList, Context context) {
 		if (null == pushList) {
 			this.pushList = new ArrayList<>();
@@ -27,7 +30,10 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 		}
 
 		inflater = LayoutInflater.from(context);
-
+		checkbox_list = new Boolean[this.pushList.size()];
+		for (int i = 0; i < checkbox_list.length; i++) {
+			checkbox_list[i] = false;
+		}
 	}
 
 	@Override
@@ -46,7 +52,7 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.listitem_pushfile, null);
@@ -54,6 +60,7 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 			viewHolder.name = (TextView) convertView.findViewById(R.id.tv_push_filename);
 			viewHolder.url = (TextView) convertView.findViewById(R.id.tv_push_fileurl);
 			viewHolder.img = (ImageView) convertView.findViewById(R.id.im_pushfile);
+			viewHolder.cb = (CheckBox) convertView.findViewById(R.id.cb_pushfile);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -82,7 +89,22 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 
 		viewHolder.name.setText(loc.subSequence(loc.lastIndexOf("/") + 1, loc.length()));
 		viewHolder.url.setText(loc);
+		if(isshowcb){
+			viewHolder.cb.setVisibility(View.VISIBLE);
+		}
+		else{
+			viewHolder.cb.setVisibility(View.GONE);
+		}
+		viewHolder.cb.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				if (((CheckBox) v).isChecked()) {
+					checkbox_list[position] = true;
+				} else
+					checkbox_list[position] = false;
+			}
+		});
 		return convertView;
 	}
 
@@ -90,16 +112,28 @@ private ImageLoader imageLoader = ImageLoader.getInstance();
 		public ImageView img;
 		public TextView name;
 		public TextView url;
+		public CheckBox cb;
 
 	}
 
 	public void updatelistview(List<String> list) {
-		// Log.e("notify", list1.size()+"");
 		pushList.clear();
 		if (list != null)
 			pushList.addAll(list);
 		notifyDataSetChanged();
 
+	}
+
+	public void setIsshowcb(boolean isshow){
+		isshowcb = isshow;
+		notifyDataSetChanged();
+	}
+
+	public Boolean[] getCheckbox_list() {
+		return checkbox_list;
+	}
+	public boolean isshowcb(){
+		return isshowcb;
 	}
 
 }

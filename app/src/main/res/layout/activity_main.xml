@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -15,48 +16,52 @@
             android:paddingTop="5dp"
              android:paddingBottom="3dp" >
 
-            <TextView
+            <com.changhong.ttfileplore.view.ColorTrackView
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/titlename_1"
-                android:textColor="?main_textcolor"
-                android:textSize="@dimen/title_textsize" />
+                tl:progress="1"
+                tl:text="@string/titlename_1"
+                tl:text_change_color="@color/green"
+                tl:text_origin_color="?main_textcolor"
+                tl:text_size="@dimen/title_textsize" />
 
-            <TextView
+            <com.changhong.ttfileplore.view.ColorTrackView
                 android:id="@+id/text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/titlename_2"
-                android:textColor="?main_textcolor"
-                android:textSize="@dimen/title_textsize" />
+                tl:text="@string/titlename_2"
+                tl:text_change_color="@color/green"
+                tl:text_origin_color="?main_textcolor"
+                tl:text_size="@dimen/title_textsize" />
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:layout_height="1dp"
+            android:layout_width="match_parent">
 
-            <ImageView
+            <com.changhong.ttfileplore.view.ColorCursorView
                 android:id="@+id/cursor_1"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/img_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/roller_1"
-                android:visibility="visible" />
+                tl:change_color="@color/green"
+                tl:progress="1"
+                android:visibility="visible"/>
 
-            <ImageView
+            <com.changhong.ttfileplore.view.ColorCursorView
                 android:id="@+id/cursor_2"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/img_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/roller_2"
-                android:visibility="invisible" />
+                tl:change_color="@color/green"
+                android:visibility="visible"/>
         </TableRow>
     </TableLayout>
 

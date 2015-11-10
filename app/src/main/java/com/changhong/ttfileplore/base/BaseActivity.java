@@ -5,9 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.changhong.ttfileplore.R;
+import com.changhong.ttfileplore.application.MyApp;
 
 public abstract class BaseActivity   extends Activity {
 	SharedPreferences sharedPreferences;
@@ -40,5 +44,20 @@ public abstract class BaseActivity   extends Activity {
 			actionBar.setDisplayShowHomeEnabled(false);
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+	}
+	@Override
+	protected void onStart() {
+		MyApp.context = this;
+		super.onStart();
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			MyApp myapp = (MyApp) getApplication();
+			myapp.setContext(null);
+
+		}
+		return super.onKeyDown(keyCode, event);
+
 	}
 }

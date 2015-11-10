@@ -1,0 +1,10 @@
+<resources>
+    <attr name="origin_color" format="color|reference" />
+    <attr name="change_color" format="color|reference" />
+    <declare-styleable name="ColorCursorView">
+        <attr name="origin_color" />
+        <attr name="change_color" />
+        <attr name="progress" />
+        <attr name="direction" />
+    </declare-styleable>
+</resources>

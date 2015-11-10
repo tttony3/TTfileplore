@@ -5,20 +5,28 @@
     android:background="?shape_select"
     android:orientation="horizontal"
     android:paddingBottom="2dp"
-    android:paddingTop="2dp" >
+    android:paddingTop="2dp">
+
+    <CheckBox
+        android:id="@+id/cb_netfile"
+        android:layout_marginStart="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:checked="false"
+         />
 
     <ImageView
-        android:background="?item_shape"
+        android:layout_toEndOf="@+id/cb_netfile"
         android:id="@+id/im_file"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="5dp"
-         android:scaleType="centerInside"
+        android:background="?item_shape"
         android:contentDescription="@string/img_description"
-       />
+        android:scaleType="centerInside" />
 
     <TextView
-        android:textColor="?main_textcolor"
         android:id="@+id/tv_net_filename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,10 +35,10 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingTop="3dp"
+        android:textColor="?main_textcolor"
         android:textSize="16sp" />
 
     <TextView
-        android:textColor="?main_textcolor"
         android:id="@+id/tv_net_fileurl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +50,7 @@
         android:ems="18"
         android:maxLines="1"
         android:paddingTop="3dp"
+        android:textColor="?main_textcolor"
         android:textSize="12sp" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.changhong.ttfileplore.application;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.changhong.alljoyn.simpleclient.ClientBusHandler;
@@ -24,6 +25,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,6 +51,7 @@ public class MyApp extends CoreApp {
 			.cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565)
 			.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
 			.build();
+	static public ArrayList<List<String>> recivePushList = new ArrayList<>();
 	public String getIp() {
 		return ip;
 	}
@@ -119,8 +122,8 @@ public class MyApp extends CoreApp {
 
 	public void onCreate() {
 		super.onCreate();
-		CrashHandler crashHandler = CrashHandler.getInstance();
-		crashHandler.init(this);
+//		CrashHandler crashHandler = CrashHandler.getInstance();
+//		crashHandler.init(this);
 		File folder = new File(Utils.getPath(this, "cache"));
 		if (!folder.exists())
 			folder.mkdir();
@@ -176,10 +179,14 @@ public void unbindService(){
 
 		@Override
 		public void recivePushResources(List<String> pushList) {
-
-			final List<String> list = pushList;
+			recivePushList .add(pushList);
+			final List<String> list = new ArrayList<>();
+			list.addAll(pushList);
 			String jsonString = list.remove(0);
-			String message =null;
+			Log.e("pushList",pushList.size()+"");
+			Log.e("list", list.size()+"");
+			Log.e("recivePushList", recivePushList.size()+"");
+			String message = null;
 			int filenum =0;
 			String http1 ="";
 			String device_id1="";
@@ -220,7 +227,8 @@ public void unbindService(){
 								info=tmp;
 								break;
 							}
-						}if(info !=null) {
+						}
+						if(info !=null) {
 							JSONObject pushJson = new JSONObject();
 							try {
 								TelephonyManager tm = (TelephonyManager) MyApp.this
@@ -242,8 +250,18 @@ public void unbindService(){
 
 
 				};
-				reciveDialogFragment.show(((Activity) context).getFragmentManager(), "reciveDialogFragment");
+			if(context != null) {
+				ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+				@SuppressWarnings("deprecation")
+				List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
+				if (runningTaskInfos != null){
+					 if((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore"))
+					reciveDialogFragment.show(((Activity) context).getFragmentManager(), "reciveDialogFragment");
+				}
+
+
+			}
 
 
 		}

@@ -18,13 +18,14 @@
     <TextView
 
         android:id="@+id/griditem_text"
-        android:layout_width="@dimen/photo_griditem"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/corners_text"
         android:ellipsize="end"
         android:maxEms="10"
         android:maxLines="1"
+        android:layout_marginBottom="2dp"
         android:paddingBottom="1dp"
         android:paddingStart="3dp"
         android:paddingTop="0dp"

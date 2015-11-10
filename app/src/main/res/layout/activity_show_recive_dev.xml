@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?main_bg">
+
+    <RelativeLayout
+        android:id="@+id/rl_recivefileactivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp"
+        android:background="?attr/main_bg" >
+
+        <TextView
+            android:id="@+id/tv_recivefilepath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="2dp"
+            android:textColor="?main_textcolor"
+            android:maxEms="19"
+            android:maxLines="1"
+            android:paddingEnd="2dp"
+            android:paddingStart="2dp"
+            android:textSize="12sp" />
+
+        <TextView
+            android:textColor="?main_textcolor"
+            android:id="@+id/tv_recivefilenum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_recivefilepath"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="2dp"
+            android:paddingStart="2dp"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pushfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_recivefileactivity"
+        android:layout_marginTop="5dp"
+        android:background="?attr/main_bg"
+        android:orientation="vertical"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp" >
+
+        <ListView
+            android:id="@+id/lv_recivefile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="?attr/main_bg"
+            android:dividerHeight="4dp"
+            android:fadingEdge="none" />
+    </LinearLayout>
+
+</RelativeLayout>

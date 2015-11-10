@@ -24,6 +24,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ShowPushFileActivity extends BaseActivity implements OnItemClickListener {
+public class ShowPushFileActivity extends BaseActivity implements OnItemClickListener,AdapterView.OnItemLongClickListener {
 	static private final int SHOW_PREVIEW_DIALOG = 0;
 	static private final int RESET_BAR = 6;
 	static private final int SET_TOTALTIME = 8;
@@ -70,7 +71,7 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 	private ProgressBar pb_media;
 	private TextView tv_curtime;
 	private TextView tv_totaltime;
-
+private boolean hasJson;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,10 +82,15 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 		findView();
 		Intent intent = getIntent();
 		pushList = intent.getStringArrayListExtra("pushList");
+		hasJson = intent . getBooleanExtra("hasJson",false);
+		if(hasJson){
+			pushList.remove(0);
+		}
 		tv_pushfilenum.setText(pushList.size() + "项");
 		netPushFileListAdapter = new NetPushFileListAdapter(pushList, this);
 		lv_pushfile.setAdapter(netPushFileListAdapter);
 		lv_pushfile.setOnItemClickListener(this);
+		lv_pushfile.setOnItemLongClickListener(this);
 		CoreApp.mBinder.setDownloadCBInterface(new MyCoreDownloadProgressCB(handler, this));
 
 	}
@@ -136,19 +142,8 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 					Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
 					intent.putStringArrayListExtra("downloadlist", downlist);
 					 startService(intent);
-				//	bindService(intent, conn, BIND_AUTO_CREATE);
 					Toast.makeText(ShowPushFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();
-					
-					
-//					btn_stop.setOnClickListener(new OnClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							CoreApp.mBinder.cancelDownload(fileLocation);
-//
-//						}
-//					});
-//					CoreApp.mBinder.DownloadHttpFile("client", fileLocation, null);
+
 					break;
 				default:
 					break;
@@ -167,7 +162,20 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 		handler.sendMessage(msg);
 
 	}
-	
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if(netPushFileListAdapter.isshowcb()){
+				netPushFileListAdapter.setIsshowcb(false);
+				return true;
+			}else{
+				finish();
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -177,7 +185,13 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		((NetPushFileListAdapter)parent.getAdapter()).setIsshowcb(true);
+		return true;
+	}
+
 	class MyPushHandler extends Handler {
 		private WeakReference<ShowPushFileActivity> mActivity;
 

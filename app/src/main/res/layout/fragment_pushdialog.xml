@@ -1,55 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?main_bg">
+    android:background="@color/btnblack">
 
-    <TableRow
-        android:background="@color/btnblack">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="6dp"
+            android:id="@+id/tv_title_pushdialog"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/push_to_this_device"
             android:textColor="@color/bright_foreground_disabled_material_dark"
             android:textSize="15sp"/>
-    </TableRow>
-    <TableRow
-        android:background="?item_bg"
+
+    <RelativeLayout
+        android:id="@+id/rl_pushdialog"
+        android:layout_below="@+id/tv_title_pushdialog"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="?item_bg_deep"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
         android:paddingBottom="5dp">
 
         <TextView
+            android:id="@+id/tv_message_"
             android:textColor="?main_textcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
-            android:layout_marginStart="5dp"
+            android:layout_margin="5dp"
             android:text="留言：" >
         </TextView>
 
         <EditText
-
+            android:padding="5dp"
+            android:layout_toEndOf="@+id/tv_message_"
+            android:background="?item_shape"
             android:textColor="?main_textcolor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:gravity="top"
             android:hint=""
-            android:inputType="text"
+            android:inputType="text|textMultiLine"
             android:labelFor="@+id/ev_message"
              android:id="@+id/ev_message"
-            android:lines="1"
-             android:ems="10"
-            android:maxLines="3" />
-    </TableRow>
+            android:singleLine="false"
+            android:scrollHorizontally="false" />
+    </RelativeLayout>
     <LinearLayout
-
+android:layout_below="@+id/rl_pushdialog"
         android:id="@+id/ll_btn_default"
         style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/btnblack"
         android:orientation="horizontal"
@@ -62,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/push"
-            android:textColor="?attr/main_textcolor"
+            android:textColor="@color/main_textcolor_night"
             android:textSize="15sp" />
 
         <Button
@@ -72,9 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?attr/main_textcolor"
+            android:textColor="@color/main_textcolor_night"
             android:textSize="15sp" />
 
 
     </LinearLayout>
-</TableLayout>
+</RelativeLayout>

@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/look"
-            android:textColor="?attr/main_bg"
+            android:textColor="@color/main_textcolor_night"
             android:textSize="15sp" />
 
         <Button
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?attr/main_bg"
+            android:textColor="@color/main_textcolor_night"
             android:textSize="15sp" />
 
 

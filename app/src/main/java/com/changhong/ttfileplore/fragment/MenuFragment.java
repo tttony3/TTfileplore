@@ -5,6 +5,7 @@ import com.changhong.ttfileplore.activities.ClassifyGridActivity;
 import com.changhong.ttfileplore.activities.ClassifyListActivity;
 import com.changhong.ttfileplore.activities.SambaActivity;
 import com.changhong.ttfileplore.activities.ShowNetDevActivity;
+import com.changhong.ttfileplore.activities.ShowReciveDevActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ public class MenuFragment extends Fragment {
 	RelativeLayout rl_menu_music;
 	RelativeLayout rl_menu_movie;
 	RelativeLayout rl_menu_photo;
+	RelativeLayout rl_menu_recive;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,12 +48,14 @@ public class MenuFragment extends Fragment {
 		rl_menu_music = (RelativeLayout) view.findViewById(R.id.rl_menu_music);
 		rl_menu_movie = (RelativeLayout) view.findViewById(R.id.rl_menu_movie);
 		rl_menu_photo = (RelativeLayout) view.findViewById(R.id.rl_menu_photo);
+		rl_menu_recive = (RelativeLayout) view.findViewById(R.id.rl_menu_recive);
 		//rl_menu_localfile.setOnClickListener(menuClick);
 		rl_menu_netfile.setOnClickListener(menuClick);
 		rl_menu_sambafile.setOnClickListener(menuClick);
 		rl_menu_music.setOnClickListener(menuClick);
 		rl_menu_movie.setOnClickListener(menuClick);
 		rl_menu_photo.setOnClickListener(menuClick);
+		rl_menu_recive.setOnClickListener(menuClick);
 
 	}
 
@@ -112,6 +116,11 @@ public class MenuFragment extends Fragment {
 			case R.id.rl_menu_photo:
 				intent.setClass(getActivity(), ClassifyGridActivity.class);
 				intent.putExtra("key",R.id.img_photo);
+				startActivity(intent);
+				break;
+
+			case R.id.rl_menu_recive:
+				intent.setClass(getActivity(), ShowReciveDevActivity.class);
 				startActivity(intent);
 				break;
 			default:

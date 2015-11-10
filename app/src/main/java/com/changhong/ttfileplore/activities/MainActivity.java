@@ -7,6 +7,8 @@ import java.util.List;
 import com.changhong.ttfileplore.fragment.FilePreViewFragment;
 import com.changhong.ttfileplore.fragment.NewfileDialogFragment;
 import com.changhong.ttfileplore.fragment.SearchDialogFragment;
+import com.changhong.ttfileplore.view.ColorCursorView;
+import com.changhong.ttfileplore.view.ColorTrackView;
 import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreHttpServerCB;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
@@ -95,7 +97,7 @@ public class MainActivity extends SlidingFragmentActivity
     Context context = null;
     LocalActivityManager manager = null;
     ViewPager pager = null;
-    TextView t1, t2;
+//    TextView t1, t2;
     TableLayout tl_brwloc;
     RelativeLayout rl_brwnet;
     RelativeLayout rl_showdown;
@@ -103,8 +105,14 @@ public class MainActivity extends SlidingFragmentActivity
     private int offset = 0;// 动画图片偏移量
     private int currIndex = 0;// 当前页卡编号
     private int bmpW;// 动画图片宽度
-    private ImageView cursor1;// 动画图片
+  //  private ImageView cursor1;// 动画图片
     private long curtime = 0;
+    private ColorTrackView mTab0 ;
+    private ColorTrackView mTab1 ;
+    private List<ColorTrackView> mTabs = new ArrayList<>();
+    private ColorCursorView mCursor1;
+    private ColorCursorView mCursor2;
+    private List<ColorCursorView> mCursors = new ArrayList<>();
     int theme ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -197,12 +205,14 @@ public class MainActivity extends SlidingFragmentActivity
      * 初始化标题
      */
     private void initTextView() {
-        t1 = (TextView) findViewById(R.id.text1);
-        t2 = (TextView) findViewById(R.id.text2);
 
-        t1.setOnClickListener(new MyOnClickListener(0));
-        t2.setOnClickListener(new MyOnClickListener(1));
-
+        mTabs.clear();
+        mTab0 = (ColorTrackView)findViewById(R.id.text1);
+        mTab1 = (ColorTrackView)findViewById(R.id.text2);
+        mTab0.setOnClickListener(new MyOnClickListener(0));
+        mTab1.setOnClickListener(new MyOnClickListener(1));
+        mTabs.add(mTab0);
+        mTabs.add(mTab1);
     }
 
     /**
@@ -259,15 +269,11 @@ public class MainActivity extends SlidingFragmentActivity
      * 初始化动画
      */
     private void InitImageView() {
-        cursor1 = (ImageView) findViewById(R.id.cursor_1);
-        bmpW = BitmapFactory.decodeResource(getResources(), R.drawable.roller_1).getWidth();// 获取图片宽度
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenW = dm.widthPixels;// 获取分辨率宽度
-        offset = (screenW / 2 - bmpW) / 2;// 计算偏移量
-        Matrix matrix = new Matrix();
-        matrix.postTranslate(offset, 0);
-        cursor1.setImageMatrix(matrix);// 设置动画初始位置
+        mCursors.clear();
+        mCursor1 = (ColorCursorView)findViewById(R.id.cursor_1);
+        mCursor2 = (ColorCursorView)findViewById(R.id.cursor_2);
+        mCursors .add(mCursor1);
+        mCursors .add(mCursor2);
     }
 
     @Override
@@ -377,41 +383,20 @@ public class MainActivity extends SlidingFragmentActivity
      */
     public class MyOnPageChangeListener implements OnPageChangeListener {
 
-        int one = offset * 2 + bmpW;// 页卡1 -> 页卡2 偏移量
-
         @Override
         public void onPageSelected(int arg0) {
-            Animation animation1 ;
-            TypedArray array = getTheme().obtainStyledAttributes(new int[]{
-                    R.attr.main_textcolor
-            });
-            int textColor = array.getColor(0, getResources().getColor(R.color.main_textcolor_day));
-            array.recycle();
+
             switch (arg0) {
                 case 0:
                     getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
-                    t1.setTextColor(getResources().getColor(R.color.green));
-                    t2.setTextColor(textColor);
-                    animation1 = new TranslateAnimation(one, 0, 0, 0);
-
                     break;
                 case 1:
                     getSlidingMenu().addIgnoredView(getWindow().getDecorView());
-                    t2.setTextColor(getResources().getColor(R.color.green));
-                    t1.setTextColor(textColor);
-                    animation1 = new TranslateAnimation(offset, one, 0, 0);
-
                     break;
                 default:
-                    animation1 = new TranslateAnimation(offset, one, 0, 0);
-
                     break;
             }
             currIndex = arg0;
-            animation1.setFillAfter(true);// True:图片停在动画结束位置
-            animation1.setDuration(300);
-            cursor1.startAnimation(animation1);
-
         }
 
         @Override
@@ -420,8 +405,25 @@ public class MainActivity extends SlidingFragmentActivity
         }
 
         @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        public void onPageScrolled(int position, float positionOffset,
+                                   int positionOffsetPixels) {
+            if (positionOffset > 0)
+            {
 
+                ColorTrackView leftTrack = mTabs.get(position);
+                ColorTrackView rightTrack = mTabs.get(position + 1);
+                leftTrack.setDirection(1);
+                rightTrack.setDirection(0);
+                leftTrack.setProgress( 1-positionOffset);
+                rightTrack.setProgress(positionOffset);
+
+                ColorCursorView leftCursor = mCursors.get(position);
+                ColorCursorView rightCursor = mCursors.get(position + 1);
+                leftCursor.setDirection(1);
+                rightCursor.setDirection(0);
+                leftCursor.setProgress(1 - positionOffset);
+                rightCursor.setProgress(positionOffset);
+            }
         }
     }
 
@@ -476,6 +478,12 @@ public class MainActivity extends SlidingFragmentActivity
                 }
 
             }
+        }
+        else if (keyCode == KeyEvent.KEYCODE_HOME) {
+            Log.e("home","home");
+            MyApp myapp = (MyApp) getApplication();
+            myapp.setContext(null);
+
         }
         return super.onKeyDown(keyCode, event);
 
@@ -799,18 +807,5 @@ public class MainActivity extends SlidingFragmentActivity
         shareIntent.setType(Utils.getMIMEType(file));
         startActivity(shareIntent);
 
-//        Bundle params = new Bundle();
-//        params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, file.getPath());
-//        switch (getMIMEType(file.getName())) {
-//            case PHOTO:
-//                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE);
-//                break;
-//            default:
-//                Toast.makeText(this, "只支持图片分享", Toast.LENGTH_SHORT).show();
-//                return;
-//        }
-//
-//        params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
-//        mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
     }
 }
