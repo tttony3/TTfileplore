@@ -219,6 +219,8 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final Content content = (Content) parent.getItemAtPosition(position);
+                if(content.getDir()==null)
+                    return true;
                 MoreDialogFragment moreDialog = new MoreDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("filePath", content.getDir());

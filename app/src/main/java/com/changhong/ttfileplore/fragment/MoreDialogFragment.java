@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -52,7 +53,8 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     Context baseContext;
     private AlertDialog alertDialog_qr;
     private ImageView iv_qr;
-
+    SharedPreferences sharedPreferences;
+    boolean isshare = true;
     /**
      *  刷新界面，由activity实现
      */
@@ -65,10 +67,11 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         baseContext = getActivity();
         View view = inflater.inflate(R.layout.fragment_moredialog, container);
         findView(view,container);
-
+        sharedPreferences = getActivity().getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
         Bundle bundle = getArguments();
         filePath = bundle.getString("filePath");
         file = new File(filePath);
+        isshare = sharedPreferences.getBoolean("showhidefile", true);
         initView();
 
         return view;
@@ -116,6 +119,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 this.dismiss();
                 break;
             case R.id.rl_moreoption_qr:
+               if(!isshare){
+                   Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
+                   break;
+               }
                 String ssid = "~";
                 WifiManager wifiManager = (WifiManager) baseContext.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {
@@ -124,7 +131,6 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                         ssid = info.getSSID();
                     } else {
                         HPaConnector hpc = HPaConnector.getInstance(baseContext);
-
                         try {
                             WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                             ssid = wificonf.SSID;
@@ -140,7 +146,6 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                                     binder.StartHttpServer("/", MyApp.mainContext);
                                 }
                             });
-                            // hpc.me();
                         } catch (Exception e) {
                             Log.e("eee22", e.getMessage());
                             e.printStackTrace();
@@ -152,14 +157,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                     HPaConnector hpc = HPaConnector.getInstance(baseContext);
 
                     try {
-
                         WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                         ssid = wificonf.SSID;
                         Thread.sleep(500);
-//                        CoreApp.mBinder.deinit();
-//                        CoreApp.mBinder.init();
                         final MyApp app = (MyApp) getActivity().getApplicationContext();
-
                         app.setConnectedService(new ConnectedService() {
 
                             @Override
@@ -222,6 +223,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
 
                 break;
             case R.id.rl_moreoption_share:
+                if(!isshare){
+                    Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 if (CoreApp.mBinder.isBinderAlive()) {
                     String s = CoreApp.mBinder.AddShareFile(file.getPath());
                     Toast.makeText(baseContext, "AddShareFile  " + s, Toast.LENGTH_SHORT).show();
@@ -230,6 +235,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 }
                 break;
             case R.id.rl_moreoption_push:
+                if(!isshare){
+                    Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 ArrayList<String> pushList = new ArrayList<>();
                 if (!file.isDirectory()) {
                     MyApp myapp = (MyApp) getActivity().getApplication();

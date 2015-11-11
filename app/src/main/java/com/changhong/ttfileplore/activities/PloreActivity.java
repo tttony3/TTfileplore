@@ -104,7 +104,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private boolean isdefault_btn = true;
     int theme;
     MyApp myapp;
-
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         pauseOnScroll = savedInstanceState.getBoolean(STATE_PAUSE_ON_SCROLL, false);
@@ -561,7 +560,10 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
 
             case R.id.it_meun_share:
-
+                if(!sharedPreferences.getBoolean("share",true)){
+                    Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 if (!mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(true);
                     mFileAdpter.notifyDataSetChanged();
@@ -582,6 +584,10 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
                 break;
             case R.id.it_meun_push:
+                if(!sharedPreferences.getBoolean("share",true)){
+                    Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 ArrayList<String> pushList = new ArrayList<>();
                 if (!mFileAdpter.isShow_cb()) {
                     mFileAdpter.setShow_cb(true);
@@ -615,6 +621,10 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
 
             case R.id.it_meun_qr:
+                if(!sharedPreferences.getBoolean("share",true)){
+                    Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 String ssid = "~";
                 WifiManager wifiManager = (WifiManager) PloreActivity.this.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {

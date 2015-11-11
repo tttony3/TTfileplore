@@ -131,6 +131,18 @@ public class DownFileListAdapter extends BaseAdapter {
 				}
 			});
 		} else {
+			if(Utils.getMIMEType(tmpdata.getName()).equals("image")||Utils.getMIMEType(tmpdata.getName()).equals("video"))
+				imageLoader.displayImage(tmpdata.getUri(), viewHolder.iv, options);
+			else if(Utils.getMIMEType(tmpdata.getName()).equals("audio"))
+				viewHolder.iv.setImageResource(R.drawable.file_icon_music);
+			else if(Utils.getMIMEType(tmpdata.getName()).equals("apk"))
+				viewHolder.iv.setImageResource(R.drawable.file_icon_apk);
+			else if(Utils.getMIMEType(tmpdata.getName()).equals("zip"))
+				viewHolder.iv.setImageResource(R.drawable.file_icon_zip);
+			else if(Utils.getMIMEType(tmpdata.getName()).equals("doc"))
+				viewHolder.iv.setImageResource(R.drawable.file_icon_txt);
+			else if(Utils.getMIMEType(tmpdata.getName()).equals("*"))
+				viewHolder.iv.setImageResource(R.drawable.file_icon_unknown);
 			if (!tmpdata.isCancel()) {
 				viewHolder.btn.setText("取消");
 				viewHolder.btn.setOnClickListener(new OnClickListener() {

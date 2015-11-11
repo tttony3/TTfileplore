@@ -3,6 +3,7 @@ package com.changhong.ttfileplore.activities;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
+import com.changhong.ttfileplore.view.ToggleButton;
 
 import android.animation.Animator;
 import android.content.Context;
@@ -10,16 +11,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ToggleButton;
 
-public class SetActivity extends BaseActivity implements OnCheckedChangeListener {
+public class SetActivity extends BaseActivity implements ToggleButton.OnToggleChanged {
 	ToggleButton tb_setnight;
 	ToggleButton tb_setshare;
 	ToggleButton tb_sethide;
@@ -42,15 +39,24 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 		boolean hide=sharedPreferences.getBoolean("showhidefile",false);
 		boolean share=sharedPreferences.getBoolean("share",true);
 		if(mode == R.style.DayTheme)
-			tb_setnight.setChecked(false);
+			tb_setnight.setToggleOff();
 		else if(mode == R.style.NightTheme)
-			tb_setnight.setChecked(true);
-		tb_sethide.setChecked(hide);
-		tb_setshare.setChecked(share);
+			tb_setnight.setToggleOn();
+		if(hide){
+			tb_sethide.setToggleOn();
+		}else{
+			tb_sethide.setToggleOff();
+		}
+		if(share){
+			tb_setshare.setToggleOn();
+		}else{
+			tb_setshare.setToggleOff();
+		}
+
 		
-		tb_setnight.setOnCheckedChangeListener(this);
-		tb_sethide.setOnCheckedChangeListener(this);
-		tb_setshare.setOnCheckedChangeListener(this);
+		tb_setnight.setOnToggleChanged(this);
+		tb_sethide.setOnToggleChanged(this);
+		tb_setshare.setOnToggleChanged(this);
 	}
 
 	@Override
@@ -61,24 +67,36 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 		tb_setshare = findView(R.id.tb_setshare);
 	}
 
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			this.finish();
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+
+	@Override
+	public void onToggle(ToggleButton v, boolean on) {
 		Editor editor = sharedPreferences.edit();//获取编辑器
-		switch (buttonView.getId()) {		
-		case R.id.tb_setnight:
-			if(!isChecked)
-				editor.putInt("Theme", R.style.DayTheme);
-			else
-				editor.putInt("Theme", R.style.NightTheme);
-			editor.commit();
-			final View rootView = getWindow().getDecorView();
+		switch (v.getId()) {
+			case R.id.tb_setnight:
+				if(!on)
+					editor.putInt("Theme", R.style.DayTheme);
+				else
+					editor.putInt("Theme", R.style.NightTheme);
+				editor.commit();
+				final View rootView = getWindow().getDecorView();
 				rootView.setDrawingCacheEnabled(true);
 				rootView.buildDrawingCache(true);
 				final Bitmap localBitmap = Bitmap.createBitmap(rootView.getDrawingCache());
 				rootView.setDrawingCacheEnabled(false);
 
-				if(!isChecked) {
+				if(!on) {
 					setTheme(R.style.DayTheme);
 				} else {
 					setTheme(R.style.NightTheme);
@@ -119,29 +137,23 @@ public class SetActivity extends BaseActivity implements OnCheckedChangeListener
 					}).start();
 				}
 
-			break;
-		case R.id.tb_showhide:
-			editor.putBoolean("showhidefile",isChecked);
-			editor.commit();//提交修改
-			break;
-		case R.id.tb_setshare:
-			editor.putBoolean("share",isChecked);
-			editor.commit();//提交修改
-			break;
+				break;
+			case R.id.tb_showhide:
+				editor.putBoolean("showhidefile",on);
+				editor.commit();//提交修改
+				break;
+			case R.id.tb_setshare:
+				editor.putBoolean("share",on);
+				editor.commit();//提交修改
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
-		buttonView.setChecked(isChecked);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		if(on)
+			v.setToggleOn();
+		else
+			v.setToggleOff();
+
 	}
 }

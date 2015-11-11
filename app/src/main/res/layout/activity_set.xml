@@ -21,14 +21,15 @@
             android:text="@string/night"
             android:textSize="17sp" />
 
-        <ToggleButton
+        <com.changhong.ttfileplore.view.ToggleButton
             android:id="@+id/tb_setnight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="5dp"
-            android:textOff="已关闭"
-            android:textOn="已开启" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+         />
     </RelativeLayout>
 
     <RelativeLayout
@@ -49,14 +50,14 @@
             android:text="@string/sethide"
             android:textSize="17sp" />
 
-        <ToggleButton
+        <com.changhong.ttfileplore.view.ToggleButton
             android:id="@+id/tb_showhide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:textOff="已关闭"
-            android:textOn="已开启" />
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -77,14 +78,15 @@
             android:text="@string/setshare"
             android:textSize="17sp" />
 
-        <ToggleButton
+        <com.changhong.ttfileplore.view.ToggleButton
             android:id="@+id/tb_setshare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="5dp"
-            android:textOff="已关闭"
-            android:textOn="已开启" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+          />
     </RelativeLayout>
 
 </RelativeLayout>

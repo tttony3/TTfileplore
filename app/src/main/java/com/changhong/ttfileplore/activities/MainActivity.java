@@ -10,25 +10,16 @@ import com.changhong.ttfileplore.fragment.SearchDialogFragment;
 import com.changhong.ttfileplore.view.ColorCursorView;
 import com.changhong.ttfileplore.view.ColorTrackView;
 import com.chobit.corestorage.ConnectedService;
-import com.chobit.corestorage.CoreHttpServerCB;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tencent.connect.share.QQShare;
-import com.tencent.tauth.Tencent;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.adapter.MainViewPagerAdapter;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.fragment.MenuFragment;
-import com.changhong.ttfileplore.utils.BaseUiListener;
 import com.changhong.ttfileplore.utils.Utils;
 
-import android.animation.Animator;
 import android.app.Activity;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
@@ -39,15 +30,11 @@ import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -56,27 +43,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends SlidingFragmentActivity
-        implements android.view.View.OnClickListener, OnLongClickListener,SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog  {
+        implements android.view.View.OnClickListener, OnLongClickListener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
 
-    Tencent mTencent;
+
     SharedPreferences sharedPreferences;
     View view0;
     View view1;
-    ImageLoader imageLoader = ImageLoader.getInstance();
     ImageView iv_apk;
     ImageView iv_movie;
     ImageView iv_music;
@@ -87,38 +69,32 @@ public class MainActivity extends SlidingFragmentActivity
     ImageView iv_wechat;
     ImageView iv_app;
     MyApp myapp;
-    public static final int DOC = 1;
-    public static final int MUSIC = 2;
-    public static final int PHOTO = 3;
-    public static final int ZIP = 4;
-    public static final int MOVIE = 5;
-    public static final int UNKNOW = 6;
+
     final ArrayList<View> list = new ArrayList<>();
     Context context = null;
     LocalActivityManager manager = null;
     ViewPager pager = null;
-//    TextView t1, t2;
     TableLayout tl_brwloc;
     RelativeLayout rl_brwnet;
     RelativeLayout rl_showdown;
     MainViewPagerAdapter myPagerAdapter;
-    private int offset = 0;// 动画图片偏移量
+
     private int currIndex = 0;// 当前页卡编号
-    private int bmpW;// 动画图片宽度
-  //  private ImageView cursor1;// 动画图片
     private long curtime = 0;
-    private ColorTrackView mTab0 ;
-    private ColorTrackView mTab1 ;
+    private ColorTrackView mTab0;
+    private ColorTrackView mTab1;
     private List<ColorTrackView> mTabs = new ArrayList<>();
     private ColorCursorView mCursor1;
     private ColorCursorView mCursor2;
     private List<ColorCursorView> mCursors = new ArrayList<>();
-    int theme ;
+    int theme;
+    boolean isshare = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-        switch(sharedPreferences.getInt("Theme",R.style.DayTheme)){
+        switch (sharedPreferences.getInt("Theme", R.style.DayTheme)) {
             case R.style.DayTheme:
                 setTheme(R.style.DayTheme);
                 theme = R.style.DayTheme;
@@ -131,8 +107,6 @@ public class MainActivity extends SlidingFragmentActivity
         ActionBar actionBar = getActionBar();
         if (actionBar != null)
             actionBar.setDisplayShowHomeEnabled(false);
-
-        mTencent = Tencent.createInstance("1104922716", this.getApplicationContext());
         setContentView(R.layout.activity_main);
         myapp = (MyApp) getApplication();
         myapp.setContext(this);
@@ -143,16 +117,6 @@ public class MainActivity extends SlidingFragmentActivity
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
 
-        myapp.setConnectedService(new ConnectedService() {
-
-            @Override
-            public void onConnected(Binder b) {
-                CoreServiceBinder binder = (CoreServiceBinder) b;
-                binder.init();
-                binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
-                binder.StartHttpServer("/", context);
-            }
-        });
         setSlidingMenu();
         InitImageView();
         initTextView();
@@ -166,7 +130,6 @@ public class MainActivity extends SlidingFragmentActivity
             getSlidingMenu().setSlidingEnabled(true);
             getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         } else {
-            // add a dummy view
             View v = new View(this);
             setBehindContentView(v);
             getSlidingMenu().setSlidingEnabled(false);
@@ -207,8 +170,8 @@ public class MainActivity extends SlidingFragmentActivity
     private void initTextView() {
 
         mTabs.clear();
-        mTab0 = (ColorTrackView)findViewById(R.id.text1);
-        mTab1 = (ColorTrackView)findViewById(R.id.text2);
+        mTab0 = (ColorTrackView) findViewById(R.id.text1);
+        mTab1 = (ColorTrackView) findViewById(R.id.text2);
         mTab0.setOnClickListener(new MyOnClickListener(0));
         mTab1.setOnClickListener(new MyOnClickListener(1));
         mTabs.add(mTab0);
@@ -270,10 +233,10 @@ public class MainActivity extends SlidingFragmentActivity
      */
     private void InitImageView() {
         mCursors.clear();
-        mCursor1 = (ColorCursorView)findViewById(R.id.cursor_1);
-        mCursor2 = (ColorCursorView)findViewById(R.id.cursor_2);
-        mCursors .add(mCursor1);
-        mCursors .add(mCursor2);
+        mCursor1 = (ColorCursorView) findViewById(R.id.cursor_1);
+        mCursor2 = (ColorCursorView) findViewById(R.id.cursor_2);
+        mCursors.add(mCursor1);
+        mCursors.add(mCursor2);
     }
 
     @Override
@@ -321,6 +284,10 @@ public class MainActivity extends SlidingFragmentActivity
             intent.setClass(MainActivity.this, ShowNetDevActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_scanner) {
+            if(!sharedPreferences.getBoolean("share",true)){
+                Toast.makeText(this, "未开启共享", Toast.LENGTH_SHORT).show();
+                return true;
+            }
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, CaptureActivity.class);
             startActivity(intent);
@@ -333,22 +300,22 @@ public class MainActivity extends SlidingFragmentActivity
             pager.setCurrentItem(1);
             Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
             for (int i = 0; i < mlist.length; i++) {
-                    if (mlist[i]) {
-                        File file = (File) ((PloreActivity) view1.getContext()).mFileAdpter.getItem(i);
-                        if (!file.isDirectory()) {
-                            detailList.add(file);
-                        } else {
-                            Toast.makeText(MainActivity.this, "文件夹不支持分享", Toast.LENGTH_SHORT).show();
-                        }
+                if (mlist[i]) {
+                    File file = (File) ((PloreActivity) view1.getContext()).mFileAdpter.getItem(i);
+                    if (!file.isDirectory()) {
+                        detailList.add(file);
+                    } else {
+                        Toast.makeText(MainActivity.this, "文件夹不支持分享", Toast.LENGTH_SHORT).show();
                     }
                 }
-                if (detailList.size() == 1) {
-                    File detailfile = detailList.get(0);
-                    onClickShare(detailfile);
+            }
+            if (detailList.size() == 1) {
+                File detailfile = detailList.get(0);
+                onClickShare(detailfile);
 
-                }else if (detailList.size() > 1){
-                    Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
-                }
+            } else if (detailList.size() > 1) {
+                Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
+            }
 
 
         }
@@ -407,14 +374,13 @@ public class MainActivity extends SlidingFragmentActivity
         @Override
         public void onPageScrolled(int position, float positionOffset,
                                    int positionOffsetPixels) {
-            if (positionOffset > 0)
-            {
+            if (positionOffset > 0) {
 
                 ColorTrackView leftTrack = mTabs.get(position);
                 ColorTrackView rightTrack = mTabs.get(position + 1);
                 leftTrack.setDirection(1);
                 rightTrack.setDirection(0);
-                leftTrack.setProgress( 1-positionOffset);
+                leftTrack.setProgress(1 - positionOffset);
                 rightTrack.setProgress(positionOffset);
 
                 ColorCursorView leftCursor = mCursors.get(position);
@@ -451,9 +417,6 @@ public class MainActivity extends SlidingFragmentActivity
         }
     }
 
-    ;
-
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -478,9 +441,8 @@ public class MainActivity extends SlidingFragmentActivity
                 }
 
             }
-        }
-        else if (keyCode == KeyEvent.KEYCODE_HOME) {
-            Log.e("home","home");
+        } else if (keyCode == KeyEvent.KEYCODE_HOME) {
+            Log.e("home", "home");
             MyApp myapp = (MyApp) getApplication();
             myapp.setContext(null);
 
@@ -489,57 +451,6 @@ public class MainActivity extends SlidingFragmentActivity
 
     }
 
-    private CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
-
-        @Override
-        public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
-            Log.e("onTransportUpdata",
-                    "agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
-
-        }
-
-        @Override
-        public void onHttpServerStop() {
-
-        }
-
-        @Override
-        public void onHttpServerStart(String ip, int port) {
-            MyApp myapp = (MyApp) getApplication();
-            myapp.setIp(ip);
-            myapp.setPort(port);
-            // Log.i("tl", ip + "port" + port);
-
-        }
-
-        @Override
-        public String onGetRealFullPath(String arg0) {
-            Log.e("onGetRealFullPath", arg0);
-            return null;
-        }
-
-        @Override
-        public void recivePushResources(List<String> pushlist) {
-            final MyApp myapp = (MyApp) getApplication();
-            final List<String> list = pushlist;
-            AlertDialog.Builder dialog = new AlertDialog.Builder(myapp.getContext());
-
-            AlertDialog alert = dialog.setTitle("有推送文件").setMessage(pushlist.remove(0).substring(8))
-                    .setNegativeButton("查看", new OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent();
-
-                            intent.setClass(myapp.getContext(), ShowPushFileActivity.class);
-                            intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-                            startActivity(intent);
-                        }
-                    }).setPositiveButton("取消", null).create();
-            alert.show();
-
-        }
-    };
 
     @Override
     protected void onResume() {
@@ -558,19 +469,32 @@ public class MainActivity extends SlidingFragmentActivity
         myapp = (MyApp) getApplication();
         myapp.setContext(this);
         ((BrowseActivity) list.get(0).getContext()).callupdate();
-        int tmptheme =sharedPreferences.getInt("Theme",theme);
-        if(theme !=  tmptheme){
+        isshare = sharedPreferences.getBoolean("share", true);
+        if (isshare) {
+            myapp.setConnectedService(new ConnectedService() {
+
+                @Override
+                public void onConnected(Binder b) {
+                    CoreServiceBinder binder = (CoreServiceBinder) b;
+                    binder.init();
+                    binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
+                    binder.StartHttpServer("/", context);
+                }
+            });
+        }
+        int tmptheme = sharedPreferences.getInt("Theme", theme);
+        if (theme != tmptheme) {
             setTheme(tmptheme);
             theme = tmptheme;
             setContentView(R.layout.activity_main);
             InitImageView();
             initTextView();
-            ((BrowseActivity)view0.getContext()).onRestart();
-            ((PloreActivity)view1.getContext()).onRestart();
+            ((BrowseActivity) view0.getContext()).onRestart();
+            ((PloreActivity) view1.getContext()).onRestart();
             initPagerViewer();
-            SlidingMenu s =getSlidingMenu();
-            if( s!=null)
-                 s.removeIgnoredView(getWindow().getDecorView());
+            SlidingMenu s = getSlidingMenu();
+            if (s != null)
+                s.removeIgnoredView(getWindow().getDecorView());
 
         }
         super.onStart();
@@ -627,8 +551,12 @@ public class MainActivity extends SlidingFragmentActivity
                 startActivity(intent);
                 break;
             case R.id.browse_rl_net:
-                intent.setClass(MainActivity.this, ShowNetDevActivity.class);
-                startActivity(intent);
+                if (isshare) {
+                    intent.setClass(MainActivity.this, ShowNetDevActivity.class);
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(MainActivity.this,"没开启共享",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.browse_rl_downlist:
                 intent.setClass(MainActivity.this, ShowDownFileActivity.class);
@@ -702,14 +630,14 @@ public class MainActivity extends SlidingFragmentActivity
             File file2 = new File("/storage/sdcard0" + foldername1);
             if (file1.exists() && file1.canRead() && file1.isDirectory()) {
                 File[] files = file1.listFiles();
-                for (File file:files) {
+                for (File file : files) {
                     if (Utils.getMIMEType(file).equals(type))
                         filelist.add(file);
                 }
             }
             if (file2.exists() && file2.canRead() && file2.isDirectory()) {
                 File[] files = file2.listFiles();
-                for (File file:files)
+                for (File file : files)
                     if (Utils.getMIMEType(file).equals(type))
                         filelist.add(file);
             }
@@ -720,13 +648,13 @@ public class MainActivity extends SlidingFragmentActivity
             File file4 = new File("/storage/sdcard0" + foldername2);
             if (file3.exists() && file3.canRead() && file3.isDirectory()) {
                 File[] files = file3.listFiles();
-                for (File file:files)
+                for (File file : files)
                     if (Utils.getMIMEType(file).equals(type))
                         filelist.add(file);
             }
             if (file4.exists() && file4.canRead() && file4.isDirectory()) {
                 File[] files = file4.listFiles();
-                for (File file:files)
+                for (File file : files)
                     if (Utils.getMIMEType(file).equals(type))
                         filelist.add(file);
             }
@@ -746,59 +674,12 @@ public class MainActivity extends SlidingFragmentActivity
         FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("filelist", files1);
-        bundle.putInt("type",FilePreViewFragment.MAIN);
+        bundle.putInt("type", FilePreViewFragment.MAIN);
         filePreViewFragment.setArguments(bundle);
-        filePreViewFragment.show(((Activity)context).getFragmentManager(), "filePreViewFragment");
+        filePreViewFragment.show(((Activity) context).getFragmentManager(), "filePreViewFragment");
 
     }
 
-    private void setImage(ImageView iv_1, File file) {
-        switch (getMIMEType(file.getName())) {
-            case MOVIE:
-                final String path1 = file.getPath();
-                imageLoader.displayImage("file://" + path1, iv_1);
-                break;
-            case MUSIC:
-                iv_1.setImageResource(R.drawable.file_icon_music);
-                break;
-            case PHOTO:
-                final String path = file.getPath();
-                imageLoader.displayImage("file://" + path, iv_1);
-                break;
-            case DOC:
-                iv_1.setImageResource(R.drawable.file_icon_txt);
-                break;
-            case UNKNOW:
-                iv_1.setImageResource(R.drawable.file_icon_unknown);
-                break;
-            case ZIP:
-                iv_1.setImageResource(R.drawable.file_icon_zip);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private int getMIMEType(String name) {
-
-        String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
-
-        if (end.equals("m4a") || end.equals("mp3") || end.equals("wav")) {
-            return MUSIC;
-        } else if (end.equals("mp4") || end.equals("3gp")|| end.equals("avi")|| end.equals("rmvb")) {
-            return MOVIE;
-        } else if (end.equals("jpg") || end.equals("png") || end.equals("jpeg") || end.equals("bmp")
-                || end.equals("gif")) {
-            return PHOTO;
-        } else if (end.equals("zip") || end.equals("rar")) {
-            return ZIP;
-        } else if (end.equals("doc") || end.equals("docx") || end.equals("txt")) {
-            return DOC;
-        }
-        return UNKNOW;
-
-    }
 
     private void onClickShare(File file) {
         Intent shareIntent = new Intent();

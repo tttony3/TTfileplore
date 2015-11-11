@@ -10,7 +10,7 @@ public interface DownStatusInterface {
 	 * 
 	 * @return 下载列表 HashMap<String,DownData>
 	 */
-	public HashMap<String, DownData> getAllDownStatus();
+	 HashMap<String, DownData> getAllDownStatus();
 
 	/**
 	 * 据对应的uri返回DownData,或者返回null
@@ -19,7 +19,7 @@ public interface DownStatusInterface {
 	 *            查询的uri
 	 * @return DownData
 	 */
-	public DownData getDownStatus(String uri);
+	 DownData getDownStatus(String uri);
 
 	/**
 	 * 停止下载
@@ -27,7 +27,7 @@ public interface DownStatusInterface {
 	 * @param uri
 	 *            下载任务uri
 	 */
-	public void stopDownload(String uri);
+	 void stopDownload(String uri);
 
 	/**
 	 * 停止所有下载任务
