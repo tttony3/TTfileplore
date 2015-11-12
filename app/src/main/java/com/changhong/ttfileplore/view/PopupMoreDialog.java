@@ -1,35 +1,32 @@
-package com.changhong.ttfileplore.fragment;
+package com.changhong.ttfileplore.view;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.ttfileplore.R;
-import com.changhong.ttfileplore.activities.MainActivity;
-import com.changhong.ttfileplore.activities.PhotoActivity;
 import com.changhong.ttfileplore.activities.ShowNetDevActivity;
 import com.changhong.ttfileplore.application.MyApp;
+import com.changhong.ttfileplore.fragment.DetailDialogFragment;
+import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.utils.HPaConnector;
 import com.changhong.ttfileplore.utils.Utils;
 import com.chobit.corestorage.ConnectedService;
@@ -41,7 +38,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MoreDialogFragment extends DialogFragment implements View.OnClickListener {
+/**
+ * Created by tangli on 2015/11/12。
+ */
+public class PopupMoreDialog  extends PopupWindow implements View.OnClickListener {
     String filePath;
     File file;
     RelativeLayout rl_delete;
@@ -55,28 +55,35 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     private ImageView iv_qr;
     SharedPreferences sharedPreferences;
     boolean isshare = true;
-    /**
-     *  刷新界面，由activity实现
-     */
-    public interface UpDate{
-        void update();
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        baseContext = getActivity();
-        View view = inflater.inflate(R.layout.fragment_moredialog, container);
-        findView(view,container);
-        sharedPreferences = getActivity().getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-        Bundle bundle = getArguments();
-        filePath = bundle.getString("filePath");
-        file = new File(filePath);
+
+    public PopupMoreDialog(Context context, int width, int height, boolean focusable,String path){
+        super(LayoutInflater.from(context).inflate(R.layout.fragment_moredialog, null), width, height, focusable);
+        super.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        super.setTouchable(true);
+        baseContext  =context;
+        sharedPreferences = context.getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
         isshare = sharedPreferences.getBoolean("share", true);
+        filePath = path;
+        file  = new File(filePath);
+        setAnimationStyle(R.style.PopupAnimation);
+        findView();
         initView();
-
-        return view;
     }
 
+
+    private void findView() {
+        rl_delete = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_delete);
+        rl_qr = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_qr);
+        rl_detail = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_detail);
+        rl_share = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_share);
+        rl_push = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_push);
+        rl_shareto = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_shareto);
+
+        View layout_qr =LayoutInflater.from(baseContext).inflate(R.layout.dialog_qr, null);
+        AlertDialog.Builder builder_qr = new AlertDialog.Builder(baseContext).setView(layout_qr);
+        alertDialog_qr = builder_qr.create();
+        iv_qr = (ImageView) layout_qr.findViewById(R.id.iv_qr);
+    }
     private void initView() {
         rl_delete.setOnClickListener(this);
         rl_qr.setOnClickListener(this);
@@ -87,28 +94,13 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
 
     }
 
-    private void findView(View view,ViewGroup container) {
-        rl_delete = (RelativeLayout) view.findViewById(R.id.rl_moreoption_delete);
-        rl_qr = (RelativeLayout) view.findViewById(R.id.rl_moreoption_qr);
-        rl_detail = (RelativeLayout) view.findViewById(R.id.rl_moreoption_detail);
-        rl_share = (RelativeLayout) view.findViewById(R.id.rl_moreoption_share);
-        rl_push = (RelativeLayout) view.findViewById(R.id.rl_moreoption_push);
-        rl_shareto = (RelativeLayout) view.findViewById(R.id.rl_moreoption_shareto);
-
-        View layout_qr = getActivity().getLayoutInflater().inflate(R.layout.dialog_qr, container);
-        AlertDialog.Builder builder_qr = new AlertDialog.Builder(baseContext).setView(layout_qr);
-        alertDialog_qr = builder_qr.create();
-        iv_qr = (ImageView) layout_qr.findViewById(R.id.iv_qr);
-
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_moreoption_delete:
                 if (file.exists()) {
                     if (file.delete()) {
-                        ((UpDate) baseContext).update();
+                        ((MoreDialogFragment.UpDate) baseContext).update();
                         Toast.makeText(baseContext, "删除成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(baseContext, "删除失败", Toast.LENGTH_SHORT).show();
@@ -119,10 +111,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 this.dismiss();
                 break;
             case R.id.rl_moreoption_qr:
-               if(!isshare){
-                   Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
-                   break;
-               }
+                if(!isshare){
+                    Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 String ssid = "~";
                 WifiManager wifiManager = (WifiManager) baseContext.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {
@@ -135,7 +127,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                             WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                             ssid = wificonf.SSID;
                             Thread.sleep(500);
-                            final MyApp app = (MyApp) getActivity().getApplicationContext();
+                            final MyApp app = (MyApp)((Activity)baseContext).getApplicationContext();
                             app.setConnectedService(new ConnectedService() {
 
                                 @Override
@@ -160,7 +152,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                         WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                         ssid = wificonf.SSID;
                         Thread.sleep(500);
-                        final MyApp app = (MyApp) getActivity().getApplicationContext();
+                        final MyApp app = (MyApp) ((Activity)baseContext).getApplicationContext();
                         app.setConnectedService(new ConnectedService() {
 
                             @Override
@@ -183,7 +175,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                         .append(ssid)
                         .append("|");
                 if (!file.isDirectory()) {
-                    MyApp myapp = (MyApp) getActivity().getApplication();
+                    MyApp myapp = (MyApp) ((Activity)baseContext).getApplication();
                     String ip = myapp.getIp();
                     int port = myapp.getPort();
                     sb.append("http://")
@@ -219,7 +211,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 bundle.putString("time", time);
                 bundle.putString("space", space);
                 detailDialog.setArguments(bundle);
-                detailDialog.show(getActivity().getFragmentManager(), "detailDialog");
+                detailDialog.show(((Activity)baseContext).getFragmentManager(), "detailDialog");
 
                 break;
             case R.id.rl_moreoption_share:
@@ -241,7 +233,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 }
                 ArrayList<String> pushList = new ArrayList<>();
                 if (!file.isDirectory()) {
-                    MyApp myapp = (MyApp) getActivity().getApplication();
+                    MyApp myapp = (MyApp) ((Activity)baseContext).getApplication();
                     String ip = myapp.getIp();
                     int port = myapp.getPort();
                     pushList.add("http://" + ip + ":" + port + file.getPath());
@@ -254,14 +246,14 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 b.putStringArrayList("pushList", pushList);
                 intent.putExtra("pushList", b);
                 intent.setClass(baseContext, ShowNetDevActivity.class);
-                startActivity(intent);
+                baseContext.startActivity(intent);
                 break;
             case R.id.rl_moreoption_shareto:
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                 shareIntent.setType(Utils.getMIMEType(file));
-                startActivity(shareIntent);
+                baseContext.startActivity(shareIntent);
                 break;
         }
     }

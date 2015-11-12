@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 public class DownLoadService extends Service implements DownStatusInterface {
 
-	static final public int MAX_THREAD = 2;
+	static final public int MAX_THREAD = 3;
 	private ExecutorService pool;
 	private IBinder mBinder;
 	HashMap<String, DownData> downMap;
@@ -49,7 +49,6 @@ public class DownLoadService extends Service implements DownStatusInterface {
 		mBinder = new DownLoadBinder();
 		downMap = new HashMap<String, DownData>();
 		pool = Executors.newFixedThreadPool(MAX_THREAD);
-		Log.e("ononCreate", "ononCreate");
 		if (setDownCB) {
 			setDownCB = false;
 			CoreApp.mBinder.setDownloadCBInterface(new ServiceDownloadProgressCB());

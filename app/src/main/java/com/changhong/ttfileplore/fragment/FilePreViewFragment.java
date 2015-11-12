@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.activities.PloreActivity;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.utils.Utils;
+import com.changhong.ttfileplore.view.PopupMoreDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -236,10 +239,12 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 	public boolean onLongClick(View v) {
 		MoreDialogFragment moreDialog = new MoreDialogFragment();
 		Bundle bundle = new Bundle();
+
 		switch (v.getId()){
 			case R.id.iv_filepreview_1:
 			case R.id.tv_filepreview_1:
 			case R.id.tr_filepreview_1:
+
 				bundle.putString("filePath", resultfiles[0].getPath());
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
@@ -247,6 +252,7 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 			case R.id.iv_filepreview_2:
 			case R.id.tv_filepreview_2:
 			case R.id.tr_filepreview_2:
+
 				bundle.putString("filePath", resultfiles[1].getPath());
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
@@ -254,6 +260,8 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 			case R.id.iv_filepreview_3:
 			case R.id.tv_filepreview_3:
 			case R.id.tr_filepreview_3:
+
+
 				bundle.putString("filePath", resultfiles[2].getPath());
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
@@ -261,6 +269,8 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 			case R.id.iv_filepreview_4:
 			case R.id.tv_filepreview_4:
 			case R.id.tr_filepreview_4:
+
+
 				bundle.putString("filePath", resultfiles[3].getPath());
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");

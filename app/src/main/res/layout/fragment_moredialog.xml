@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="?main_bg" >
 
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:background="?main_bg"
+    android:padding="1dp">
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:orientation="vertical" >
 
 
@@ -16,10 +20,11 @@
             android:id="@+id/rl_moreoption_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-              android:background="?shape_select"
+            android:background="?shape_select"
             android:clickable="true" >
 
             <TextView
+
                 android:textColor="?main_textcolor"
                 android:id="@+id/tv_moreoption_delete"
                 android:layout_width="fill_parent"
@@ -188,5 +193,5 @@
                 android:background="?attr/main_bg" />
         </RelativeLayout>
     </LinearLayout>
-
+</ScrollView>
 </RelativeLayout>

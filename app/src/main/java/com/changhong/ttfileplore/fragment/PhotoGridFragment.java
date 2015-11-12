@@ -7,14 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.PopupWindow;
 
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.activities.PhotoActivity;
 import com.changhong.ttfileplore.adapter.PhotoGirdAdapter2;
 import com.changhong.ttfileplore.utils.Content;
 import com.changhong.ttfileplore.utils.Utils;
+import com.changhong.ttfileplore.view.PopupMoreDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,11 +65,25 @@ public class PhotoGridFragment extends Fragment implements AdapterView.OnItemLon
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            MoreDialogFragment moreDialog = new MoreDialogFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("filePath", file.getPath());
-            moreDialog.setArguments(bundle);
-            moreDialog.show(getActivity().getFragmentManager(), "moreDialog");
+        WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
+        lp.alpha=0.5f;
+        getActivity().getWindow().setAttributes(lp);
+        PopupMoreDialog p = new PopupMoreDialog(getActivity(),300, ViewGroup.LayoutParams.WRAP_CONTENT, true,file.getPath());
+        p.showAsDropDown(view);
+        p.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
+                lp.alpha=1f;
+                getActivity().getWindow().setAttributes(lp);
+            }
+        });
+
+//            MoreDialogFragment moreDialog = new MoreDialogFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("filePath", file.getPath());
+//            moreDialog.setArguments(bundle);
+//            moreDialog.show(getActivity().getFragmentManager(), "moreDialog");
             return true;
 
 

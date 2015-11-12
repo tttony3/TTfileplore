@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:background="?main_bg"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:background="?item_select"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:background="?shape_select"
+        app:riv_corner_radius="10dip"
+        app:riv_border_width="1dp"
+        app:riv_border_color="?main_textcolor"
         android:padding="2dp"
         android:id="@+id/griditem_img"
         android:layout_width="@dimen/griditem_img"
@@ -16,16 +20,18 @@
 
     <TextView
         android:id="@+id/griditem_text"
-        android:layout_width="@dimen/griditem_img"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:background="#70e3e3e3"
         android:ellipsize="end"
         android:maxEms="10"
         android:maxLines="1"
-
+        android:background="@drawable/corners_text"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
         android:paddingBottom="2dp"
-        android:paddingStart="3dp"
+        android:paddingStart="2dp"
         android:paddingTop="1dp"
         android:text=""
         android:textColor="@color/black"

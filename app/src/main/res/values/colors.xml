@@ -20,6 +20,10 @@
     <color name="black">#000000</color>
     <color name="btnblack">#AA111111</color>
     <color name="gold">#b89766</color>
+    <color name ="blue">#3b5998</color>
+    <color name ="light_blue">#5474b8</color>
+    <color name ="toolight_blue">#3484ee</color>
+    <color name="light_green">#7ab800</color>
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>
     <color name="possible_result_points">#c0ffbd21</color>

@@ -32,7 +32,7 @@
             android:gravity="end" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
@@ -49,6 +49,6 @@
             android:divider="?attr/main_bg"
             android:dividerHeight="4dp"
             android:fadingEdge="none" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

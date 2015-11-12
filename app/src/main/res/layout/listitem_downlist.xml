@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="2dp"
@@ -9,13 +10,14 @@
     android:descendantFocusability="blocksDescendants"
         >
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        app:riv_corner_radius="5dip"
         android:contentDescription="@string/img_description"
          android:scaleType="centerInside"
         android:id="@+id/iv_download"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="2dp" />
 
     <TextView
@@ -56,16 +58,23 @@
         android:layout_alignEnd="@+id/download_bar"
         android:text="@string/percent"
         android:textSize="13sp" />
-     <Button
-        android:focusable="false"
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        app:fb_borderColor="#FFFFFF"
+        app:fb_borderWidth="1dp"
+        app:fb_defaultColor="@color/blue"
+        app:fb_focusColor="@color/light_blue"
+        app:fb_radius="5dp"
+        app:fb_text="@string/cancel"
+        app:fb_textColor="@color/white"
+        app:fb_textSize="13sp"
         android:id="@+id/btn_download"
         android:layout_width="50dp"
         android:layout_height="35dp"    
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="7dp"
-
-        android:text="@string/cancel"
-        android:textSize="13sp" />
+        android:layout_marginBottom="5dp"
+        />
 
 </RelativeLayout>

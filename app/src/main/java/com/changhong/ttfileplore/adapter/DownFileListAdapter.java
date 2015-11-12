@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class DownFileListAdapter extends BaseAdapter {
 	String download_Path;
 	String appname;
@@ -35,17 +37,13 @@ public class DownFileListAdapter extends BaseAdapter {
 	Context context;
 	DownLoadService downLoadService;
 	ImageLoader imageLoader = ImageLoader.getInstance();
-	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.file_icon_photo)
-			.showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
-			.cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565)
-			.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
-			.build();
+
 
 	public DownFileListAdapter(ArrayList<DownData> downList, ArrayList<DownData> alreadydownList, Context context, DownLoadService downLoadService) {
-		allList = new ArrayList<DownData>();
+		allList = new ArrayList<>();
 		inflater = LayoutInflater.from(context);
 		if (downList == null) {
-			downList = new ArrayList<DownData>();
+			downList = new ArrayList<>();
 		} else
 			this.downList = downList;
 		this.alreadydownList = alreadydownList;
@@ -83,9 +81,9 @@ public class DownFileListAdapter extends BaseAdapter {
 			viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
 			viewHolder.tv_process = (TextView) convertView.findViewById(R.id.tv_process);
 			viewHolder.pb = (ProgressBar) convertView.findViewById(R.id.download_bar);
-			viewHolder.btn = (Button) convertView.findViewById(R.id.btn_download);
+			viewHolder.btn = (FancyButton) convertView.findViewById(R.id.btn_download);
 			viewHolder.iv = (ImageView) convertView.findViewById(R.id.iv_download);
-			viewHolder.btn.setFocusable(false);
+		//	viewHolder.btn.setFocusable(false);
 			convertView.setTag(viewHolder);
 			
 		} else {
@@ -107,7 +105,7 @@ public class DownFileListAdapter extends BaseAdapter {
 		viewHolder.tv_process.setText(p + "%");
 		if (tmpdata.isDone()) {
 			if(Utils.getMIMEType(tmpdata.getName()).equals("image")||Utils.getMIMEType(tmpdata.getName()).equals("video"))
-				imageLoader.displayImage("File://"+download_Path + "/" + appname + "/download/" + tmpdata.getName(), viewHolder.iv, options);
+				imageLoader.displayImage("File://"+download_Path + "/" + appname + "/download/" + tmpdata.getName(), viewHolder.iv);
 			else if(Utils.getMIMEType(tmpdata.getName()).equals("audio"))
 				viewHolder.iv.setImageResource(R.drawable.file_icon_music);
 			else if(Utils.getMIMEType(tmpdata.getName()).equals("apk"))
@@ -132,7 +130,7 @@ public class DownFileListAdapter extends BaseAdapter {
 			});
 		} else {
 			if(Utils.getMIMEType(tmpdata.getName()).equals("image")||Utils.getMIMEType(tmpdata.getName()).equals("video"))
-				imageLoader.displayImage(tmpdata.getUri(), viewHolder.iv, options);
+				imageLoader.displayImage(tmpdata.getUri(), viewHolder.iv);
 			else if(Utils.getMIMEType(tmpdata.getName()).equals("audio"))
 				viewHolder.iv.setImageResource(R.drawable.file_icon_music);
 			else if(Utils.getMIMEType(tmpdata.getName()).equals("apk"))
@@ -173,7 +171,7 @@ public class DownFileListAdapter extends BaseAdapter {
 		public TextView tv_process;
 		public TextView tv_name;
 		public ProgressBar pb;
-		public Button btn;
+		public FancyButton btn;
 		public ImageView iv;
 	}
 

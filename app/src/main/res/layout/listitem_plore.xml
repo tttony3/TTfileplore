@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?shape_select"
@@ -17,7 +18,8 @@
         android:visibility="gone" >
     </CheckBox>
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        app:riv_corner_radius="5dip"
         android:layout_toEndOf="@+id/cb"
         android:id="@+id/fileimg"
         android:layout_width="45dp"

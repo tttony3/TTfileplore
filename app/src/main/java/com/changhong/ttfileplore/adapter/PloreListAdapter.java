@@ -26,6 +26,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -155,6 +156,7 @@ public class PloreListAdapter extends BaseAdapter {
 
 				@Override
 				public boolean onLongClick(View v) {
+
 					if(!file.exists()||!file.canRead()||!file.isDirectory())
 						return false;
 					FilePreViewFragment filePreViewFragment = new FilePreViewFragment();

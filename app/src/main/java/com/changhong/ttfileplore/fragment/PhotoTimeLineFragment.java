@@ -7,15 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.activities.PhotoActivity;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.FlowLayout;
+import com.changhong.ttfileplore.view.PopupMoreDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
@@ -103,7 +107,6 @@ public class PhotoTimeLineFragment extends Fragment {
             PhotoItem photoItem=new PhotoItem();
             photoItem.setTime(tmp.get(0).lastModified());
             photoItem.setFiles(tmp);
-            Log.e("time",photoItem.getTime()+"");
             fileitems.add(photoItem);
         }
     }
@@ -147,8 +150,6 @@ public class PhotoTimeLineFragment extends Fragment {
         private ArrayList<PhotoItem> fileitems= new ArrayList<>();
         private ImageLoader imageLoader = ImageLoader.getInstance();
 
-
-
         PhotoListAdapter(ArrayList<PhotoItem> fileitems){
             this.fileitems =fileitems;
 
@@ -186,7 +187,6 @@ public class PhotoTimeLineFragment extends Fragment {
             viewHolder.flowLayoutView.removeAllViews();
             PhotoItem tmp =fileitems.get(position);
             int size =tmp.getFiles().size();
-            Log.e(size + "项", tmp.getFiles().toString());
             viewHolder.tv_left.setText(DateFormat.getDateInstance(DateFormat.SHORT).format((new Date(tmp.getTime()))));
 
             viewHolder.tv_right.setText(DateFormat.getDateInstance().format((new Date(tmp.getFiles().get(size - 1).lastModified()))));
@@ -207,11 +207,24 @@ public class PhotoTimeLineFragment extends Fragment {
                 (tmpView.findViewById(R.id.griditem_img)).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        MoreDialogFragment moreDialog = new MoreDialogFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("filePath", file.getPath());
-                        moreDialog.setArguments(bundle);
-                        moreDialog.show(getActivity().getFragmentManager(), "detailDialog");
+                        WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
+                        lp.alpha=0.5f;
+                        getActivity().getWindow().setAttributes(lp);
+                        PopupMoreDialog p = new PopupMoreDialog(getActivity(),300, ViewGroup.LayoutParams.WRAP_CONTENT, true,file.getPath());
+                        p.showAsDropDown(v);
+                        p.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
+                                lp.alpha=1f;
+                                getActivity().getWindow().setAttributes(lp);
+                            }
+                        });
+//                        MoreDialogFragment moreDialog = new MoreDialogFragment();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("filePath", file.getPath());
+//                        moreDialog.setArguments(bundle);
+//                        moreDialog.show(getActivity().getFragmentManager(), "detailDialog");
                         return true;
                     }
                 });

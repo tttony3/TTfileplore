@@ -8,6 +8,7 @@ import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.fragment.MoreDialogFragment;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
+import com.changhong.ttfileplore.view.PopupMoreDialog;
 import com.chobit.corestorage.CoreApp;
 import com.changhong.ttfileplore.adapter.*;
 import com.changhong.ttfileplore.application.MyApp;
@@ -27,10 +28,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,11 +102,27 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         final Content content = (Content) parent.getItemAtPosition(position);
-                        MoreDialogFragment moreDialog = new MoreDialogFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("filePath", content.getDir());
-                        moreDialog.setArguments(bundle);
-                        moreDialog.show(getFragmentManager(), "moreDialog");
+//                        MoreDialogFragment moreDialog = new MoreDialogFragment();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("filePath", content.getDir());
+//                        moreDialog.setArguments(bundle);
+//                        moreDialog.show(getFragmentManager(), "moreDialog");
+
+                        WindowManager.LayoutParams lp=getWindow().getAttributes();
+                        lp.alpha=0.5f;
+                       getWindow().setAttributes(lp);
+                        PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this,300, ViewGroup.LayoutParams.WRAP_CONTENT,
+                                true,content.getDir());
+                        p.showAsDropDown(view);
+                        p.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                                lp.alpha = 1f;
+                              getWindow().setAttributes(lp);
+                            }
+                        });
+
                         return true;
                     }
                 });

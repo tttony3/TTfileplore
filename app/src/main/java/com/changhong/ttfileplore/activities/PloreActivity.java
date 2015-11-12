@@ -404,7 +404,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 PopupMenu popup = new PopupMenu(PloreActivity.this, v);
                 popup.getMenuInflater().inflate(R.menu.more_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(this);
-
                 popup.show();
                 break;
             case R.id.plore_btn_seach:

@@ -54,8 +54,6 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 	private Handler handler;
 	private View layout_download;
 	private AlertDialog.Builder builder_download;
-	
-	
 	private LayoutInflater inflater;
 	private View layout_progress;
 	private Builder builder_progress;
@@ -82,7 +80,7 @@ private boolean hasJson;
 		findView();
 		Intent intent = getIntent();
 		pushList = intent.getStringArrayListExtra("pushList");
-		hasJson = intent . getBooleanExtra("hasJson",false);
+		hasJson = intent.getBooleanExtra("hasJson",false); //pushList是否已经去掉头部json
 		if(hasJson){
 			pushList.remove(0);
 		}
@@ -137,7 +135,7 @@ private boolean hasJson;
 					}
 					break;
 				case 1:
-					ArrayList<String> downlist = new ArrayList<String>();
+					ArrayList<String> downlist = new ArrayList<>();
 					downlist.add(fileLocation);
 					Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
 					intent.putStringArrayListExtra("downloadlist", downlist);
@@ -196,7 +194,7 @@ private boolean hasJson;
 		private WeakReference<ShowPushFileActivity> mActivity;
 
 		public MyPushHandler(ShowPushFileActivity activity) {
-			mActivity = new WeakReference<ShowPushFileActivity>(activity);
+			mActivity = new WeakReference<>(activity);
 		}
 
 		@Override
@@ -235,7 +233,7 @@ private boolean hasJson;
 
 			}
 		}
-	};
+	}
 
 	
 
@@ -267,13 +265,7 @@ private boolean hasJson;
 					thread = new SetMediaProgressBarThread(handler, pb_media, time);
 					thread.start();
 
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
 					e.printStackTrace();
 				}
 				mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {

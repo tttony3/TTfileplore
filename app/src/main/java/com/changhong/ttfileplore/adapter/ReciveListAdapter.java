@@ -32,7 +32,6 @@ public class ReciveListAdapter extends BaseAdapter{
     }
     @Override
     public int getCount() {
-        Log.e("count",reciveList.size()+"");
         return reciveList.size();
     }
 
@@ -59,26 +58,24 @@ public class ReciveListAdapter extends BaseAdapter{
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        //noinspection unchecked
        List<String> tmpList =reciveList.get(position);
-        Log.e("reciveList", reciveList.size()+"");
-        Log.e("tmplist",tmpList.size()+"  position ：" +position);
         String jsonString  =tmpList.get(0);
-        Log.e("jsonString",jsonString);
         try {
             JSONObject jsonObj = new JSONObject(jsonString);
-
             viewHolder.tv_message.setText(jsonObj.getString("message"));
             String device_id = jsonObj.getString("device_id");
+            String device_name="该设备已离线";
             for(DeviceInfo tmp : ClientBusHandler.List_DeviceInfo){
                 if(tmp.getM_deviceid().equals(device_id)){
-                    viewHolder.tv_title.setText(tmp.getM_devicename());
+                    device_name = tmp.getM_devicename();
                     break;
                 }
             }
+            viewHolder.tv_title.setText(device_name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         viewHolder.img.setImageResource(R.drawable.file_icon_folder);
         return convertView;
     }

@@ -34,7 +34,7 @@ public class ToggleButton extends View{
 	/** 关闭颜色*/
 	private int offBorderColor = Color.parseColor("#dadbda");
 	/** 灰色带颜色*/
-	private int offColor = Color.parseColor("#ffffff");
+	private int offColor = Color.parseColor("#dadbda");
 	/** 手柄颜色*/
 	private int spotColor = Color.parseColor("#ffffff");
 	/** 边框颜色*/

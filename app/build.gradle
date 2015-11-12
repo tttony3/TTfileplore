@@ -18,8 +18,13 @@ android {
         }
     }
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
+    compile 'com.bigkoo:alertview:1.0.1'
+    compile 'com.github.medyo:fancybuttons:1.5@aar'
+    compile 'com.makeramen:roundedimageview:2.2.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/alljoyn.jar')
     compile files('libs/core-2.3.0.jar')

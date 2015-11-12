@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?shape_select"
     android:orientation="horizontal"
     android:paddingBottom="0dp"
-    android:paddingTop="0dp" >
+    android:paddingTop="0dp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        app:riv_corner_radius="5dip"
         android:padding="1dp"
         android:background="?item_shape"
         android:id="@+id/im_sharefile"
