@@ -27,6 +27,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -64,9 +65,12 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 		inflater = LayoutInflater.from(this);
 		findView();
 		initView();
-
+		initToolBar();
 	}
-
+	private void initToolBar() {
+		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
+	}
 	private void initView() {
 		flag = getIntent().getIntExtra("key", 0);
 		

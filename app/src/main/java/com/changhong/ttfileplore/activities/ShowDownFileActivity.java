@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -57,9 +58,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_downlist);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
         sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
         MyApp myapp = (MyApp) getApplication();
         myapp.setContext(this);
@@ -77,8 +76,12 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
 
         lv_downlist.setOnItemClickListener(this);
         lv_downlist.setOnItemLongClickListener(this);
+        initToolBar();
     }
-
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+    }
     @Override
     protected void onStart() {
 

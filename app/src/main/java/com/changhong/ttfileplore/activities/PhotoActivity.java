@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,9 +48,12 @@ public class PhotoActivity extends BaseActivity implements MoreDialogFragment.Up
         // setGridFragment();
         setDefaultFragment();
         showDialog();
-
+        initToolBar();
     }
-
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+    }
     public void showDialog() {
         mProgressView.startAnim();
         alertDialog.show();

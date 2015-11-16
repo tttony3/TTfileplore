@@ -2,9 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:background="?attr/main_bg">
-
+    <android.support.v7.widget.Toolbar
+        android:paddingTop="15dp"
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/mcolorPrimary"
+        android:fitsSystemWindows="false"
+        tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+    </android.support.v7.widget.Toolbar>
     <RelativeLayout
+        android:layout_below="@+id/id_toolbar"
         android:id="@+id/rl_netactivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

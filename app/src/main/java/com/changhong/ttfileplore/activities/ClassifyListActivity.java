@@ -24,6 +24,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -148,9 +151,6 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_classify_list);
         flg = getIntent().getIntExtra("key", 0);
         MyApp myapp = (MyApp) getApplication();
@@ -158,8 +158,12 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
         handler = new MyHandler(this);
         findView();
         initView(flg);
+        initToolBar();
     }
-
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+    }
     private void initView(final int flg) {
 
         switch (flg) {

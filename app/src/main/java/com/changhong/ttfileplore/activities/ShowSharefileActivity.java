@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ShowSharefileActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_share_file);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
 		findView();
 		shareList = FC_GetShareFile.GetShareList();
 		initView();

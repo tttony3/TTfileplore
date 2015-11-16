@@ -6,6 +6,7 @@
         res/values-v11/styles.xml on API 14+ devices.
     -->
     <style name="DayTheme" parent="@style/AppTheme">
+
         <item name="android:windowTranslucentStatus">true</item>
         <item name="main_bg">@color/main_background_day</item>
         <item name="border_onchose">@color/border_onchose_day</item>
@@ -28,8 +29,10 @@
         <item name="mToolBarTextColor">@color/toolbar_textcolor_day</item>
         <item name="android:textAppearanceLargePopupMenu">@style/PopupMenu.TextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenu.TextAppearanceSmall</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
     <style name="NightTheme" parent="@style/AppTheme">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="border_onchose">@color/border_onchose_night</item>
         <item name="main_bg">@color/main_background_night</item>
@@ -47,9 +50,9 @@
         <item name="corners_rightbot">@drawable/corners_rightbot_night</item>
         <item name="corners_righttop">@drawable/corners_righttop_night</item>
         <item name="android:popupMenuStyle">@style/Theme.PopupMenu</item>
-        <item name="mcolorPrimary">@color/primary_day</item>
-        <item name="mcolorPrimaryDark">@color/primary_dark_day</item>
-        <item name="mToolBarTextColor">@color/toolbar_textcolor_day</item>
+        <item name="mcolorPrimary">@color/primary_night</item>
+        <item name="mcolorPrimaryDark">@color/primary_dark_night</item>
+        <item name="mToolBarTextColor">@color/toolbar_textcolor_night</item>
 
         <item name="android:textAppearanceLargePopupMenu">@style/PopupMenu.TextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/PopupMenu.TextAppearanceSmall</item>

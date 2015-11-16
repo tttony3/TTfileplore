@@ -3,6 +3,7 @@ package com.changhong.ttfileplore.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ShowReciveDevActivity extends BaseActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_recive_dev);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
         findView();
         reciveListAdapter = new ReciveListAdapter(MyApp.recivePushList,ShowReciveDevActivity.this);
         lv_recivefile.setAdapter(reciveListAdapter);

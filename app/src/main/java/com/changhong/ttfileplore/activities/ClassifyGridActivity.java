@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,8 +65,12 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
         flg = getIntent().getIntExtra("key", 0);
         findView();
         initView(flg);
+        initToolBar();
     }
-
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+    }
     @Override
     public void findView() {
         inflater = getLayoutInflater();

@@ -44,7 +44,7 @@ public class ToggleButton extends View{
 	/** 开关状态*/
 	private boolean toggleOn = false;
 	/** 边框大小*/
-	private int borderWidth = 2;
+	private int tb_borderWidth = 2;
 	/** 垂直中心*/
 	private float centerY;
 	/** 按钮的开始和结束位置*/
@@ -108,7 +108,7 @@ public class ToggleButton extends View{
 		onColor = typedArray.getColor(R.styleable.ToggleButton_onColor, onColor);
 		spotColor = typedArray.getColor(R.styleable.ToggleButton_spotColor, spotColor);
 		offColor = typedArray.getColor(R.styleable.ToggleButton_offColor, offColor);
-		borderWidth = typedArray.getDimensionPixelSize(R.styleable.ToggleButton_borderWidth, borderWidth);
+		tb_borderWidth = typedArray.getDimensionPixelSize(R.styleable.ToggleButton_tb_borderWidth, tb_borderWidth);
 		defaultAnimate = typedArray.getBoolean(R.styleable.ToggleButton_animate, defaultAnimate);
 		typedArray.recycle();
 		
@@ -217,9 +217,9 @@ public class ToggleButton extends View{
 		centerY = radius;
 		startX = radius;
 		endX = width - radius;
-		spotMinX = startX + borderWidth;
-		spotMaxX = endX - borderWidth;
-		spotSize = height - 4 * borderWidth;
+		spotMinX = startX + tb_borderWidth;
+		spotMaxX = endX - tb_borderWidth;
+		spotSize = height - 4 * tb_borderWidth;
 		spotX = toggleOn ? spotMaxX : spotMinX;
 		offLineWidth = 0;
 	}

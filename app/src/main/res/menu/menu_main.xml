@@ -1,6 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/left_netfile" android:title="@string/netfile"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/net"/>
+    <item android:id="@+id/left_recivefile" android:title="@string/recivefile"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/file_icon_folder"/>
+    <item android:id="@+id/left_music" android:title="@string/music"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/file_icon_music"/>
+    <item android:id="@+id/left_movie" android:title="@string/movie"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/file_icon_movie"/>
+    <item  android:id="@+id/left_photo" android:title="@string/photo"
+    android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/file_icon_photo"/>
+    <item  android:id="@+id/left_set" android:title="@string/set"
+        android:orderInCategory="100" app:showAsAction="never"
+        android:icon="@drawable/net"/>
 </menu>

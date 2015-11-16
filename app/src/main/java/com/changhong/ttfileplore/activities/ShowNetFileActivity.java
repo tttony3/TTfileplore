@@ -41,6 +41,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.*;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toolbar;
 
 public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnItemLongClickListener {
 
@@ -105,8 +107,9 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_file);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+
         MyApp myapp = (MyApp) getApplication();
         myapp.setContext(this);
         findView();

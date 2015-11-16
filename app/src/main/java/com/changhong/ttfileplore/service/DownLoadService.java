@@ -47,7 +47,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
 	public void onCreate() {
 		super.onCreate();
 		mBinder = new DownLoadBinder();
-		downMap = new HashMap<String, DownData>();
+		downMap = new HashMap<>();
 		pool = Executors.newFixedThreadPool(MAX_THREAD);
 		if (setDownCB) {
 			setDownCB = false;

@@ -405,7 +405,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
             case R.id.plore_btn_seach:
                 SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
-                searchDialogFragment.show(((MainActivity) MyApp.context.get()).getFragmentManager(), "searchdialog");
+                searchDialogFragment.show(((MainActivity) myapp.getMainContext()).getFragmentManager(), "searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {

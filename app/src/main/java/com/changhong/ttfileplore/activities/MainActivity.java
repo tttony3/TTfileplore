@@ -11,8 +11,7 @@ import com.changhong.ttfileplore.view.ColorCursorView;
 import com.changhong.ttfileplore.view.ColorTrackView;
 import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.adapter.MainViewPagerAdapter;
 import com.changhong.ttfileplore.application.MyApp;
@@ -23,18 +22,18 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
-
-import android.app.ActionBar;
-
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,13 +46,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
-
-@SuppressWarnings("deprecation")
-public class MainActivity extends SlidingFragmentActivity
-        implements android.view.View.OnClickListener, OnLongClickListener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener, OnLongClickListener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog, MenuItem.OnMenuItemClickListener {
 
 
     SharedPreferences sharedPreferences;
@@ -89,6 +86,7 @@ public class MainActivity extends SlidingFragmentActivity
     private List<ColorCursorView> mCursors = new ArrayList<>();
     int theme;
     boolean isshare = true;
+    DrawerLayout mDrawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,65 +102,69 @@ public class MainActivity extends SlidingFragmentActivity
                 theme = R.style.NightTheme;
                 break;
         }
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null)
-            actionBar.setDisplayShowHomeEnabled(false);
+
         setContentView(R.layout.activity_main);
+
+
+
         myapp = (MyApp) getApplication();
-        myapp.setContext(this);
+        MyApp.setContext(this);
         myapp.setMainContext(this);
         context = MainActivity.this;
+        isshare = sharedPreferences.getBoolean("share", true);
+        if (isshare) {
+            myapp.setConnectedService(new ConnectedService() {
 
+                @Override
+                public void onConnected(Binder b) {
+                    CoreServiceBinder binder = (CoreServiceBinder) b;
+                    binder.init();
+                    binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
+                    binder.StartHttpServer("/", context);
+                }
+            });
+        }
 
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
 
-        setSlidingMenu();
         InitImageView();
         initTextView();
         initPagerViewer();
+        initToolBar();
 
     }
 
-    private void setSlidingMenu() {
-        if (findViewById(R.id.menu_frame) == null) {
-            setBehindContentView(R.layout.menu_frame);
-            getSlidingMenu().setSlidingEnabled(true);
-            getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        } else {
-            View v = new View(this);
-            setBehindContentView(v);
-            getSlidingMenu().setSlidingEnabled(false);
-            getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        }
-
-        MenuFragment menuFragment = new MenuFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menuFragment).commit();
-
-        SlidingMenu sm = getSlidingMenu();
-        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        sm.setFadeEnabled(false);
-        sm.setBehindScrollScale(0.2f);
-        sm.setFadeDegree(0.2f);
-
-        sm.setBackgroundResource(R.drawable.star_back);
-        sm.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.mDrawerLayout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                toolbar, R.string.cancel, R.string.capacity) {
             @Override
-            public void transformCanvas(Canvas canvas, float percentOpen) {
-                float scale = (float) (percentOpen * 0.25 + 0.75);
-                canvas.scale(scale, scale, -canvas.getWidth() / 2, canvas.getHeight() / 2);
-            }
-        });
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
 
-        sm.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {
+            }
+
             @Override
-            public void transformCanvas(Canvas canvas, float percentOpen) {
-                float scale = (float) (1 - percentOpen * 0.15);
-                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
-            }
-        });
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
 
+            }
+        };
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);//设置监听器
+        NavigationView navigationView = (NavigationView)mDrawerLayout.findViewById(R.id.id_nv_menu);
+        navigationView.getMenu().findItem(R.id.left_movie).setOnMenuItemClickListener(this);
+        navigationView.getMenu().findItem(R.id.left_set).setOnMenuItemClickListener(this);
+        navigationView.getMenu().findItem(R.id.left_music).setOnMenuItemClickListener(this);
+        navigationView.getMenu().findItem(R.id.left_recivefile).setOnMenuItemClickListener(this);
+        navigationView.getMenu().findItem(R.id.left_photo).setOnMenuItemClickListener(this);
+        navigationView.getMenu().findItem(R.id.left_netfile).setOnMenuItemClickListener(this);
     }
+
+
 
     /**
      * 初始化标题
@@ -248,11 +250,14 @@ public class MainActivity extends SlidingFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_set) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this, SetActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_samba) {
+        switch (id){
+            case R.id.action_set:
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, SetActivity.class);
+                startActivity(intent);
+                break;
+        }
+        if (id == R.id.action_samba) {
             LayoutInflater inflater = getLayoutInflater();
             final View layout = inflater.inflate(R.layout.samba_option, (ViewGroup) findViewById(R.id.samba_op));
             new AlertDialog.Builder(this).setTitle("samba设置").setView(layout)
@@ -341,6 +346,44 @@ public class MainActivity extends SlidingFragmentActivity
 
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Intent intent = new Intent();
+        switch (item.getItemId()){
+            case R.id.left_set:
+                intent.setClass(MainActivity.this, SetActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.left_movie:
+                intent.setClass(MainActivity.this, ClassifyGridActivity.class);
+                intent.putExtra("key", R.id.img_movie);
+                startActivity(intent);
+                break;
+            case R.id.left_music:
+                intent.setClass(MainActivity.this, ClassifyListActivity.class);
+                intent.putExtra("key", R.id.img_music);
+                startActivity(intent);
+            case R.id.left_recivefile:
+                intent.setClass(MainActivity.this, ShowReciveDevActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.left_netfile:
+                if (isshare) {
+                    intent.setClass(MainActivity.this, ShowNetDevActivity.class);
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(MainActivity.this,"没开启共享",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.left_photo:
+                intent.setClass(MainActivity.this, ClassifyGridActivity.class);
+                intent.putExtra("key", R.id.img_photo);
+                startActivity(intent);
+                break;
+        }
+        return false;
+    }
+
     /**
      * Pager适配器
      */
@@ -355,10 +398,10 @@ public class MainActivity extends SlidingFragmentActivity
 
             switch (arg0) {
                 case 0:
-                    getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
+             //       getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
                     break;
                 case 1:
-                    getSlidingMenu().addIgnoredView(getWindow().getDecorView());
+             //       getSlidingMenu().addIgnoredView(getWindow().getDecorView());
                     break;
                 default:
                     break;
@@ -407,12 +450,12 @@ public class MainActivity extends SlidingFragmentActivity
         public void onClick(View v) {
             if (index == 0) {
                 pager.setCurrentItem(index);
-                getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
+         //       getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
             }
             if (index == 1) {
                 pager.setCurrentItem(index);
 
-                getSlidingMenu().addIgnoredView(getWindow().getDecorView());
+          //      getSlidingMenu().addIgnoredView(getWindow().getDecorView());
             }
         }
     }
@@ -446,20 +489,16 @@ public class MainActivity extends SlidingFragmentActivity
 
     @Override
     protected void onResume() {
-        ((PloreActivity) list.get(1).getContext()).showhidefile = sharedPreferences.getBoolean("showhidefile", false);
-        myapp = (MyApp) getApplication();
-        myapp.setContext(this);
-        ((BrowseActivity) list.get(0).getContext()).callupdate();
         super.onResume();
     }
 
 
     @Override
-    protected void onStart() {
-
+    protected void onRestart() {
+        super.onRestart();
         ((PloreActivity) list.get(1).getContext()).showhidefile = sharedPreferences.getBoolean("showhidefile", false);
         myapp = (MyApp) getApplication();
-        myapp.setContext(this);
+        MyApp.setContext(this);
         ((BrowseActivity) list.get(0).getContext()).callupdate();
         isshare = sharedPreferences.getBoolean("share", true);
         if (isshare) {
@@ -479,17 +518,15 @@ public class MainActivity extends SlidingFragmentActivity
             setTheme(tmptheme);
             theme = tmptheme;
             setContentView(R.layout.activity_main);
+            initToolBar();
             InitImageView();
             initTextView();
             ((BrowseActivity) view0.getContext()).onRestart();
             ((PloreActivity) view1.getContext()).onRestart();
             initPagerViewer();
-            SlidingMenu s = getSlidingMenu();
-            if (s != null)
-                s.removeIgnoredView(getWindow().getDecorView());
 
         }
-        super.onStart();
+
     }
 
     @Override
@@ -513,7 +550,6 @@ public class MainActivity extends SlidingFragmentActivity
 
                 break;
             case R.id.img_movie:
-
                 intent.setClass(MainActivity.this, ClassifyGridActivity.class);
                 intent.putExtra("key", R.id.img_movie);
                 startActivity(intent);
@@ -525,7 +561,6 @@ public class MainActivity extends SlidingFragmentActivity
                 startActivity(intent);
                 break;
             case R.id.img_photo:
-
                 intent.setClass(MainActivity.this, ClassifyGridActivity.class);
                 intent.putExtra("key", R.id.img_photo);
                 startActivity(intent);
@@ -576,6 +611,13 @@ public class MainActivity extends SlidingFragmentActivity
                 startActivity(intent);
 
                 break;
+            case R.id.left_set:
+                intent.setClass(MainActivity.this, SetActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.left_recivefile:
+                intent.setClass(MainActivity.this, ShowReciveDevActivity.class);
+                startActivity(intent);
             default:
                 break;
         }

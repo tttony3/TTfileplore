@@ -4,30 +4,19 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
     </style>
-    <style name="DayTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="main_bg">@color/main_background_day</item>
-        <item name="main_bg_deep">@color/main_background_deep_day</item>
-        <item name="item_bg">@color/item_background_day</item>
-        <item name="item_bg_deep">@color/item_background_deep_day</item>
-        <item name="main_textcolor">@color/main_textcolor_day</item>
-    </style>
-    <style name="NightTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="main_bg">@color/main_background_night</item>
-        <item name="main_bg_deep">@color/main_background_deep_night</item>
-        <item name="item_bg">@color/item_background_night</item>
-        <item name="item_bg_deep">@color/item_background_deep_night</item>
-        <item name="main_textcolor">@color/main_textcolor_night</item>
-    </style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
     </style>
 <style name="tallerBarStyle" parent="@android:style/Widget.ProgressBar" >
     <item name="android:indeterminateOnly">false</item>
@@ -43,4 +32,5 @@
     <item name="android:minHeight">8dp</item>
     <item name="android:maxHeight">20dp</item>
 </style>
+
 </resources>

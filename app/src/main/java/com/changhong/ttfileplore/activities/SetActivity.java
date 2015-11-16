@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,12 @@ public class SetActivity extends BaseActivity implements ToggleButton.OnToggleCh
 		myapp.setContext(this);
 		findView();
 		initView();
-
+		initToolBar();
 	}
-
+	private void initToolBar() {
+		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
+	}
 	private void initView() {
 		sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
 		int mode=sharedPreferences.getInt("Theme",R.style.DayTheme);
@@ -113,7 +117,7 @@ public class SetActivity extends BaseActivity implements ToggleButton.OnToggleCh
 							setContentView(R.layout.activity_set);
 							findView();
 							initView();
-
+							initToolBar();
 
 						}
 

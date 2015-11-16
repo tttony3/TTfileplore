@@ -15,4 +15,8 @@
     <attr name="corners_lefttop" format="reference"/>
     <attr name="corners_rightbot" format="reference"/>
     <attr name="corners_righttop" format="reference"/>
+    <attr name="mcolorPrimary" format="reference|color"/>
+    <attr name="mcolorPrimaryDark" format="reference|color"/>
+    <attr name="mcolorAccent" format="reference|color"/>
+    <attr name="mToolBarTextColor" format="reference|color"/>
 </resources>

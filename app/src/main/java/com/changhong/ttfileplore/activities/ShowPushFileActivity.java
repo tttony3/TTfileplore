@@ -26,6 +26,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -80,6 +81,8 @@ private boolean hasJson;
 		myapp.setContext(this);
 	
 		setContentView(R.layout.activity_push_file);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
 		findView();
 		Intent intent = getIntent();
 		pushList = intent.getStringArrayListExtra("pushList");

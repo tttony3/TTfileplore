@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -54,6 +55,8 @@ public class ShowNetDevActivity extends BaseActivity {
 			pushList = b.getStringArrayList("pushList");
 		}
 		setContentView(R.layout.activity_net_dev);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+		setSupportActionBar(toolbar);
 		 myapp = (MyApp) getApplication();
 		LayoutInflater inflater = getLayoutInflater();
 		layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
