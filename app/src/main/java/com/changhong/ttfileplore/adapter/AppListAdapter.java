@@ -63,7 +63,6 @@ public class AppListAdapter extends BaseAdapter {
 	}
 	
 	class ViewHolder {
-		@SuppressWarnings("unused")
 		private CheckBox cb;
 		private ImageView img;
 		private TextView name;

@@ -17,9 +17,7 @@ import com.changhong.ttfileplore.R;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -30,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +37,6 @@ import org.json.JSONObject;
 
 public class ShowNetDevActivity extends BaseActivity {
 	Context context = ShowNetDevActivity.this;
-	ProgressDialog dialog;
 	ListView netList;
 	NetDevListAdapter netListAdapter;
 	AlertDialog alertDialog;
@@ -57,10 +53,8 @@ public class ShowNetDevActivity extends BaseActivity {
 		if (b != null) {
 			pushList = b.getStringArrayList("pushList");
 		}
-
 		setContentView(R.layout.activity_net_dev);
 		 myapp = (MyApp) getApplication();
-		myapp.setContext(this);
 		LayoutInflater inflater = getLayoutInflater();
 		layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
 		builder = new AlertDialog.Builder(this).setView(layout);
@@ -128,13 +122,10 @@ public class ShowNetDevActivity extends BaseActivity {
 	}
 
 	private void setUpdateList(List<DeviceInfo> list) {
-		Log.e("DeviceInfo", list.toString());
 		if (list.size() > 0) {
 			deviceListener.stopWaiting();
 		}
 		netListAdapter.updatelistview(list);
-//		netListAdapter = new NetDevListAdapter(list, context);
-//		netList.setAdapter(netListAdapter);
 	}
 
 	private CoreDeviceListener deviceListener = new CoreDeviceListener() {
@@ -147,7 +138,7 @@ public class ShowNetDevActivity extends BaseActivity {
 
 		@Override
 		public void stopWaiting() {
-			if (getTopActivity(ShowNetDevActivity.this).equals(".activities.ShowNetDevActivity")) {
+			if (getTopActivity((Activity)MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
 				if (alertDialog.isShowing()) {
 					mProgressView.stopAnim();
 					alertDialog.dismiss();
@@ -157,8 +148,7 @@ public class ShowNetDevActivity extends BaseActivity {
 
 		@Override
 		public void startWaiting() {
-			if (getTopActivity(ShowNetDevActivity.this).equals(".activities.ShowNetDevActivity")) {
-
+			if (getTopActivity((Activity)MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
 				mProgressView.startAnim();
 				alertDialog.show();
 			}
@@ -174,16 +164,10 @@ public class ShowNetDevActivity extends BaseActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			CoreApp.mBinder.setDeviceListener(null);
 			finish();
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-
-	@Override
-	protected void onResume() {
-		MyApp myapp = (MyApp) getApplication();
-		myapp.setContext(this);
-		super.onResume();
 	}
 
 	String getTopActivity(Activity context) {
@@ -194,7 +178,7 @@ public class ShowNetDevActivity extends BaseActivity {
 		if (runningTaskInfos != null)
 			return (runningTaskInfos.get(0).topActivity).getShortClassName();
 		else
-			return null;
+			return "";
 	}
 
 	@Override

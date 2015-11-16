@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.changhong.synergystorage.javadata.JavaFile;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.adapter.NetPushFileListAdapter;
 import com.changhong.ttfileplore.application.MyApp;
@@ -13,6 +14,7 @@ import com.changhong.ttfileplore.thread.SetMediaProgressBarThread;
 import com.changhong.ttfileplore.utils.DownloadImageTask;
 import com.changhong.ttfileplore.utils.MyCoreDownloadProgressCB;
 import com.changhong.ttfileplore.utils.Utils;
+import com.changhong.ttfileplore.view.AlertView;
 import com.chobit.corestorage.CoreApp;
 
 import android.app.AlertDialog;
@@ -70,6 +72,7 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
 	private TextView tv_curtime;
 	private TextView tv_totaltime;
 private boolean hasJson;
+	private AlertView alertView;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,47 +110,47 @@ private boolean hasJson;
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		final String fileLocation = (String) parent.getItemAtPosition(position);
-		AlertDialog.Builder dialog = new AlertDialog.Builder(ShowPushFileActivity.this);
-		dialog.setTitle("");
-		String[] dataArray = new String[] { "打开", "下载" };
-		dialog.setItems(dataArray, new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+		alertView =new AlertView("选择操作", null, "取消", null,
+				new String[]{"打开", "下载"},
+				ShowPushFileActivity.this, AlertView.Style.ActionSheet, new com.bigkoo.alertview.OnItemClickListener() {
+			public void onItemClick(Object o, int position) {
 
-				switch (which) {
-				case 0:
-					if (Utils.getMIMEType(fileLocation).equals("audio")) {
-						alertDialog_mediaplayer.show();
-						MediaButtonListener mediaButtonListener = new MediaButtonListener(fileLocation);
-						ib_stop.setOnClickListener(mediaButtonListener);
-						ib_start.setOnClickListener(mediaButtonListener);
-					} else if (Utils.getMIMEType(fileLocation).equals("video")) {
-						Intent intent = new Intent();
-						intent.putExtra("uri", fileLocation);
-						intent.setClass(ShowPushFileActivity.this, VideoActivity.class);
-						startActivity(intent);
+				switch(position){
+					case 0:
+						if (Utils.getMIMEType(fileLocation).equals("audio")) {
+							alertDialog_mediaplayer.show();
+							MediaButtonListener mediaButtonListener = new MediaButtonListener(fileLocation);
+							ib_stop.setOnClickListener(mediaButtonListener);
+							ib_start.setOnClickListener(mediaButtonListener);
+						} else if (Utils.getMIMEType(fileLocation).equals("video")) {
+							Intent intent = new Intent();
+							intent.putExtra("uri", fileLocation);
+							intent.setClass(ShowPushFileActivity.this, VideoActivity.class);
+							startActivity(intent);
 
-					} else if (Utils.getMIMEType(fileLocation).equals("image")) {
-						showPreviewDialog(fileLocation);
-					} else {
-						Toast.makeText(ShowPushFileActivity.this, "所选文件暂不支持在线打开", Toast.LENGTH_SHORT).show();
-					}
-					break;
-				case 1:
-					ArrayList<String> downlist = new ArrayList<>();
-					downlist.add(fileLocation);
-					Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
-					intent.putStringArrayListExtra("downloadlist", downlist);
-					 startService(intent);
-					Toast.makeText(ShowPushFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();
+						} else if (Utils.getMIMEType(fileLocation).equals("image")) {
+							showPreviewDialog(fileLocation);
+						} else {
+							Toast.makeText(ShowPushFileActivity.this, "所选文件暂不支持在线打开", Toast.LENGTH_SHORT).show();
+						}
+						break;
+					case 1:
+						ArrayList<String> downlist = new ArrayList<>();
+						downlist.add(fileLocation);
+						Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
+						intent.putStringArrayListExtra("downloadlist", downlist);
+						startService(intent);
+						Toast.makeText(ShowPushFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();
 
-					break;
-				default:
-					break;
+						break;
 				}
+
 			}
-		}).create().show();
+		});
+		alertView.setCancelable(true);
+		alertView.show();
+
 
 	}
 
@@ -164,6 +167,11 @@ private boolean hasJson;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if(alertView!=null){
+				if(alertView.isShowing()){
+					alertView.dismiss();
+					return true;}
+			}
 			if(netPushFileListAdapter.isshowcb()){
 				netPushFileListAdapter.setIsshowcb(false);
 				return true;

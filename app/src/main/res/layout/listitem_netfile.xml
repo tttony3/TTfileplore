@@ -11,20 +11,23 @@
     <CheckBox
         android:id="@+id/cb_netfile"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:checked="false"
-         />
+        style="@style/MyCheckBox"
+        />
 
     <com.makeramen.roundedimageview.RoundedImageView
         app:riv_corner_radius="10dip"
         android:layout_toEndOf="@+id/cb_netfile"
         android:id="@+id/im_file"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginStart="5dp"
-        android:background="?item_shape"
         android:contentDescription="@string/img_description"
         android:scaleType="centerInside" />
 

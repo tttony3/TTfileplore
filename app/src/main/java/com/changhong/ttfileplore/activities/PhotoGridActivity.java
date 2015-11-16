@@ -46,6 +46,14 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
     String[] content;
     ProgressDialog dialog;
     SharedPreferences sharedPreferences ;
+    MyApp myapp;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        myapp.setContext(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +73,7 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
-        MyApp myapp = (MyApp) getApplication();
-        myapp.setContext(this);
+        myapp = (MyApp) getApplication();
         setContentView(R.layout.activity_classify_grid);
         content = getIntent().getStringArrayExtra("content");
         handler = new PhotoHandler(this);

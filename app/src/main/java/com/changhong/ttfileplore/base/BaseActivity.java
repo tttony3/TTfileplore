@@ -47,8 +47,8 @@ public abstract class BaseActivity   extends Activity {
 	}
 	@Override
 	protected void onStart() {
-		MyApp.context = this;
 		super.onStart();
+		MyApp.setContext(this);
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

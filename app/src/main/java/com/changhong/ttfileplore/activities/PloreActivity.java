@@ -19,11 +19,9 @@ import com.changhong.ttfileplore.implement.PloreInterface;
 import com.changhong.ttfileplore.view.RefreshListView;
 import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreApp;
-import com.chobit.corestorage.CoreHttpServerCB;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
-import com.tencent.tauth.Tencent;
 import com.changhong.ttfileplore.R;
 
 import android.app.AlertDialog;
@@ -112,7 +110,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Tencent.createInstance("1104922716", this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plore);
         myapp = (MyApp) getApplication();
@@ -303,7 +300,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.plore_btn_newfile:
 
                 NewfileDialogFragment newFileDialogFragment = new NewfileDialogFragment();
-                newFileDialogFragment.show(((MainActivity) MyApp.context).getFragmentManager(), "newfiledialog");
+                newFileDialogFragment.show(((MainActivity) MyApp.context.get()).getFragmentManager(), "newfiledialog");
 
                 break;
 
@@ -408,7 +405,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                 break;
             case R.id.plore_btn_seach:
                 SearchDialogFragment searchDialogFragment = new SearchDialogFragment();
-                searchDialogFragment.show(((MainActivity) MyApp.context).getFragmentManager(), "searchdialog");
+                searchDialogFragment.show(((MainActivity) MyApp.context.get()).getFragmentManager(), "searchdialog");
                 break;
             case R.id.iv_back:
                 if (mFileAdpter.isShow_cb()) {
@@ -494,24 +491,24 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
     }
 
-    long curtime = 0;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+
             if (mPathView.getText().toString().lastIndexOf("/") == 0) {
+
                 if (mFileAdpter.isShow_cb()) {
+
                     mFileAdpter.setShow_cb(false);
                     setDefaultBtn();
                     mFileAdpter.notifyDataSetChanged();
-                } else if (java.lang.System.currentTimeMillis() - curtime > 1000) {
-                    Toast.makeText(PloreActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
-                    curtime = java.lang.System.currentTimeMillis();
                     return true;
                 } else {
-                    finish();
+
+                    return false;
                 }
-                return true;
             } else {
                 return iv_back.callOnClick();
             }
@@ -647,7 +644,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                                     CoreServiceBinder binder = (CoreServiceBinder) b;
                                     binder.init();
                                     binder.setCoreHttpServerCBFunction(app.httpServerCB);
-                                    binder.StartHttpServer("/", MyApp.context);
+                                    binder.StartHttpServer("/", MyApp.context.get());
                                 }
                             });
                             // hpc.me();
@@ -675,7 +672,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                                 CoreServiceBinder binder = (CoreServiceBinder) b;
                                 binder.init();
                                 binder.setCoreHttpServerCBFunction(app.httpServerCB);
-                                binder.StartHttpServer("/", MyApp.context);
+                                binder.StartHttpServer("/", MyApp.context.get());
                             }
                         });
 //                        CoreApp.mBinder.deinit();
@@ -821,7 +818,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         protected Void doInBackground(Void... arg0) {
 
             try {
-                Thread.sleep(700);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

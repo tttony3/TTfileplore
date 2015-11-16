@@ -429,17 +429,9 @@ public class MainActivity extends SlidingFragmentActivity
                 } else
                     finish();
             } else if (currIndex == 1) {
-
-                TextView tv = (TextView) myPagerAdapter.getView(1).findViewById(R.id.path);
-                String str = tv.getText().toString();
-                if (str.lastIndexOf("/") == 0) {
-                    tv.callOnClick();
-                    pager.setCurrentItem(0);
-                    return true;
-                } else {
-                    return tv.callOnClick();
-                }
-
+                if(!((PloreActivity)view1.getContext()).onKeyDown(keyCode,event))
+                   pager.setCurrentItem(0);
+                return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.e("home", "home");

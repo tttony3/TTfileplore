@@ -9,7 +9,8 @@
   >
 
     <CheckBox
-        android:layout_marginTop="5dp"
+        style="@style/MyCheckBox"
+        android:layout_marginTop="10dp"
         android:id="@+id/cb"
         android:layout_marginStart="5dp"
         android:layout_width="wrap_content"

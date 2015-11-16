@@ -1,22 +1,29 @@
 package com.changhong.ttfileplore.activities;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.changhong.alljoyn.simpleclient.DeviceInfo;
+import com.changhong.alljoyn.simpleservice.FC_GetShareFile;
 import com.changhong.ttfileplore.R;
 
 import com.changhong.ttfileplore.adapter.NetShareFileListAdapter;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
+import com.changhong.ttfileplore.data.DownData;
 import com.changhong.ttfileplore.service.DownLoadService;
 import com.changhong.ttfileplore.service.DownLoadService.DownLoadBinder;
 import com.changhong.ttfileplore.thread.SetMediaProgressBarThread;
 import com.changhong.ttfileplore.utils.DownloadImageTask;
 import com.changhong.ttfileplore.utils.MyCoreDownloadProgressCB;
+import com.changhong.ttfileplore.utils.Utils;
+import com.changhong.ttfileplore.view.AlertView;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.changhong.synergystorage.javadata.JavaFile;
 import com.changhong.synergystorage.javadata.JavaFolder;
@@ -31,6 +38,7 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -56,7 +64,7 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
     private JavaFolder curfile = null;
     private List<JavaFile> shareFileList;
     private List<JavaFolder> shareFolderList;
-    static private ListView lv_sharepath;
+    private ListView lv_sharepath;
     private TextView tv_path;
     private NetShareFileListAdapter netShareFileListAdapter;
     private MyOnItemClickListener myOnItemClickListener;
@@ -71,7 +79,7 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
     private AlertDialog alertDialog_preview;
     private AlertDialog.Builder builder_preview;
     private ImageView iv_preview;
-
+    private  AlertView alertView;
     private View layout_mediaplayer;
     private AlertDialog alertDialog_mediaplayer;
     private AlertDialog.Builder builder_mediaplayer;
@@ -160,6 +168,11 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(alertView!=null){
+                if(alertView.isShowing()){
+                    alertView.dismiss();
+                     return true;}
+            }
             if (netShareFileListAdapter.isshowcb()) {
                 netShareFileListAdapter.setIsshowcb(false);
                 return true;
@@ -286,15 +299,13 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
                 return;
             }
             file = (JavaFile) parent.getItemAtPosition(position);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(ShowNetFileActivity.this);
-            dialog.setTitle("");
-            String[] dataArray = new String[]{"打开", "下载"};
-            dialog.setItems(dataArray, new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+             alertView =new AlertView("选择操作", null, "取消", null,
+                    new String[]{"打开", "下载"},
+                    ShowNetFileActivity.this, AlertView.Style.ActionSheet, new com.bigkoo.alertview.OnItemClickListener() {
+                public void onItemClick(Object o, int position) {
 
-                    switch (which) {
+                    switch(position){
                         case 0:
                             if (file.getFileType() == JavaFile.FileType.IMAGE) {
                                 showPreviewDialog(file.getLocation());
@@ -322,12 +333,14 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
                             intent.putStringArrayListExtra("downloadlist", downlist);
                             startService(intent);
                             Toast.makeText(ShowNetFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();
-
-                        default:
                             break;
                     }
+
                 }
-            }).show();
+            });
+            alertView.setCancelable(true);
+            alertView.show();
+
         }
     }
 

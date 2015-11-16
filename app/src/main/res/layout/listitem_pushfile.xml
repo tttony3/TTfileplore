@@ -11,10 +11,12 @@
     <CheckBox
         android:id="@+id/cb_pushfile"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:checked="false"
+        style="@style/MyCheckBox"
         />
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -22,8 +24,10 @@
          android:scaleType="centerInside"
         android:layout_toEndOf="@+id/cb_pushfile"
         android:id="@+id/im_pushfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginStart="5dp"
         android:contentDescription="@string/img_description" />
 

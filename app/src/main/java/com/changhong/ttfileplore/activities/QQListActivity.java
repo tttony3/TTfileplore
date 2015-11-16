@@ -49,11 +49,11 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 	private RefreshListView lv_classify;
 	private TextView tv_dir;
 	private TextView tv_count;
-	private List<File> files = new ArrayList<File>();
-	private LinkedList<File> father = new LinkedList<File>();
+	private List<File> files = new ArrayList<>();
+	private LinkedList<File> father = new LinkedList<>();
 	private PloreListAdapter qqAdapter;
 	private AppListAdapter appAdapter;
-	private ArrayList<AppInfo> appList = new ArrayList<AppInfo>();
+	private ArrayList<AppInfo> appList = new ArrayList<>();
 	private int flag;
 	File file;
 	@Override

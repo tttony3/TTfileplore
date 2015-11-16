@@ -510,7 +510,7 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	static ArrayList<Content> getObject(String name) throws Exception {
 		ArrayList<Content> savedArrayList = null;
-		File file = new File(getPath(MyApp.context, name));
+		File file = new File(getPath(MyApp.context.get(), name));
 		if(file.exists()){
 		FileInputStream fileInputStream = null;
 		ObjectInputStream objectInputStream = null;
@@ -531,7 +531,7 @@ public class Utils {
 
 	public static ArrayList<DownData> getDownDataObject(String name) throws Exception {
 		ArrayList<DownData> savedArrayList ;
-		File file = new File(getPath(MyApp.context, name));
+		File file = new File(getPath(MyApp.context.get(), name));
 		FileInputStream fileInputStream ;
 		ObjectInputStream objectInputStream ;
 
@@ -555,7 +555,7 @@ public class Utils {
 	public static void saveObject(String name, Object obj) {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
-		File file = new File(getPath(MyApp.context, name));
+		File file = new File(getPath(MyApp.context.get(), name));
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}

@@ -154,7 +154,7 @@ public class AlertView {
             TextView tvAlert = (TextView) itemView.findViewById(com.bigkoo.alertview.R.id.tvAlert);
             tvAlert.setText(cancel);
             tvAlert.setClickable(true);
-            tvAlert.setTypeface(Typeface.DEFAULT_BOLD);
+            tvAlert.setTypeface(Typeface.DEFAULT);
             tvAlert.setTextColor(context.getResources().getColor(com.bigkoo.alertview.R.color.textColor_alert_button_cancel));
             tvAlert.setBackgroundResource(com.bigkoo.alertview.R.drawable.bg_alertbutton_bottom);
             tvAlert.setOnClickListener(new OnTextClickListener(CANCELPOSITION));
@@ -221,7 +221,7 @@ public class AlertView {
 
                 //取消按钮的样式
                 if (data == cancel){
-                    tvAlert.setTypeface(Typeface.DEFAULT_BOLD);
+                    tvAlert.setTypeface(Typeface.DEFAULT);
                     tvAlert.setTextColor(context.getResources().getColor(com.bigkoo.alertview.R.color.textColor_alert_button_cancel));
                     tvAlert.setOnClickListener(new OnTextClickListener(CANCELPOSITION));
                     position = position - 1;

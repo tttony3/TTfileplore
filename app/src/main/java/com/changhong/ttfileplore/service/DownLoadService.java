@@ -172,7 +172,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
 			downMap.get(fileuri).setDone(true);
 			String download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
 			String appname = FC_GetShareFile.getApplicationName(getApplicationContext());
-			Toast.makeText(MyApp.context,
+			Toast.makeText(MyApp.context.get(),
 					"下载成功,保存在" + download_Path + "/" + appname + "/download/ 目录下", Toast.LENGTH_SHORT).show();
 			showNotification();
 			synchronized (this) {

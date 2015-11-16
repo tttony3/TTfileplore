@@ -21,7 +21,7 @@ import com.changhong.ttfileplore.fragment.PhotoTimeLineFragment;
 import com.changhong.ttfileplore.view.CircleProgress;
 
 /**
- * Created by tangli on 2015/11/2.
+ * Created by tangli on 2015/11/2 !
  */
 public class PhotoActivity extends BaseActivity implements MoreDialogFragment.UpDate{
     private PhotoTimeLineFragment mTimeLineFragment;

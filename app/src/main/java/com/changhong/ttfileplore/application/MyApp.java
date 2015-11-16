@@ -1,6 +1,7 @@
 package com.changhong.ttfileplore.application;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.squareup.leakcanary.LeakCanary;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -42,7 +44,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class MyApp extends CoreApp {	
-	static public Context context;
+	static public WeakReference<Context> context;
 	static public  Context mainContext;
 	String ip;
 	int port;
@@ -90,12 +92,12 @@ public class MyApp extends CoreApp {
 	}
 
 	public Context getContext() {
-		return context;
+		return context.get();
 	}
 
 
-	public void setContext(Context context) {
-		MyApp.context = context;
+	static public void setContext(Context context) {
+		MyApp.context= new WeakReference<>(context);
 	}
 
 	public void setFileList(ArrayList<File> fileList) {
@@ -124,6 +126,7 @@ public class MyApp extends CoreApp {
 
 	public void onCreate() {
 		super.onCreate();
+		LeakCanary.install(this);
 //		CrashHandler crashHandler = CrashHandler.getInstance();
 //		crashHandler.init(this);
 		File folder = new File(Utils.getPath(this, "cache"));
@@ -251,13 +254,13 @@ public class MyApp extends CoreApp {
 
 				};
 			if(context != null) {
-				ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+				ActivityManager manager = (ActivityManager) context.get().getSystemService(ACTIVITY_SERVICE);
 				@SuppressWarnings("deprecation")
 				List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
 				if (runningTaskInfos != null){
 					 if((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore"))
-					reciveDialogFragment.show(((Activity) context).getFragmentManager(), "reciveDialogFragment");
+					reciveDialogFragment.show(((Activity) context.get()).getFragmentManager(), "reciveDialogFragment");
 				}
 
 

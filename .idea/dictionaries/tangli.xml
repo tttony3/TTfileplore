@@ -13,7 +13,9 @@
       <w>fileplore</w>
       <w>filepreview</w>
       <w>foldername</w>
+      <w>framelayout</w>
       <w>griditem</w>
+      <w>isquit</w>
       <w>marginstart</w>
       <w>margintop</w>
       <w>matchfiles</w>
@@ -21,15 +23,20 @@
       <w>newfile</w>
       <w>paddingbot</w>
       <w>paddingtop</w>
+      <w>photolist</w>
       <w>plore</w>
       <w>popupsort</w>
+      <w>recive</w>
+      <w>righttop</w>
       <w>rmvb</w>
       <w>seach</w>
       <w>searchfile</w>
       <w>selectall</w>
       <w>showhidefile</w>
       <w>sorttype</w>
+      <w>tangli</w>
       <w>tencent</w>
+      <w>textcolor</w>
       <w>textmargin</w>
       <w>textsize</w>
       <w>topx</w>

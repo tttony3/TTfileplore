@@ -45,7 +45,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     static final private int UPDATE_LIST = 1;
     static final private int UPDATE_LIST_DELETE = 2;
     private TextView tv_num;
-    static private ListView lv_downlist;
+    private ListView lv_downlist;
     private DownLoadService downLoadService;
     private ArrayList<DownData> downList;
     private ArrayList<DownData> alreadydownList;
@@ -68,7 +68,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
         try {
             alreadydownList = Utils.getDownDataObject("alreadydownlist");
         } catch (Exception e) {
-            alreadydownList = new ArrayList<DownData>();
+            alreadydownList = new ArrayList<>();
         }
         downList = new ArrayList<>();
         mAdapter = new DownFileListAdapter(downList, alreadydownList, this, downLoadService);
@@ -89,7 +89,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
         try {
             alreadydownList = Utils.getDownDataObject("alreadydownlist");
         } catch (Exception e) {
-            alreadydownList = new ArrayList<DownData>();
+            alreadydownList = new ArrayList<>();
         }
         super.onStart();
     }
@@ -141,7 +141,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
                                 alreadydownList = Utils.getDownDataObject("alreadydownlist");
                             } catch (Exception e) {
 
-                                alreadydownList = new ArrayList<DownData>();
+                                alreadydownList = new ArrayList<>();
                             }
                             for (int i = 0; i < alreadydownList.size(); i++) {
                                 if (alreadydownList.get(i).getUri().equals(tmp.getUri())) {
@@ -188,6 +188,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(alertView != null)
            if(alertView.isShowing()){
                alertView.dismiss();
                return true;
