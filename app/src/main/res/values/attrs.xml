@@ -3,6 +3,7 @@
     <attr name="main_bg" format="reference|color"/>
     <attr name="main_bg_deep" format="reference|color"/>
     <attr name="main_textcolor" format="reference|color"/>
+    <attr name="secondary_textcolor" format="reference|color" />
     <attr name="item_bg" format="reference|color"/>
     <attr name="item_bg_deep" format="reference|color"/>
     <attr name="border_onchose" format="reference|color"/>
@@ -15,8 +16,9 @@
     <attr name="corners_lefttop" format="reference"/>
     <attr name="corners_rightbot" format="reference"/>
     <attr name="corners_righttop" format="reference"/>
-    <attr name="mcolorPrimary" format="reference|color"/>
-    <attr name="mcolorPrimaryDark" format="reference|color"/>
-    <attr name="mcolorAccent" format="reference|color"/>
     <attr name="mToolBarTextColor" format="reference|color"/>
+    <attr name="title_changecolor" format="reference|color" />
+    <attr name="navifagionView" format="reference" />
+    <attr name="colorPrimaryLight" format="reference|color" />
+    <attr name="mcolorAccent" format="reference|color" />
 </resources>

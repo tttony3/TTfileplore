@@ -55,7 +55,7 @@
         android:ems="18"
         android:maxLines="1"
         android:paddingTop="3dp"
-        android:textColor="?main_textcolor"
+        android:textColor="?secondary_textcolor"
         android:textSize="12sp" />
 
 </RelativeLayout>

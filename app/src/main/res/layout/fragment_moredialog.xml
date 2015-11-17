@@ -2,7 +2,7 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?main_bg"
     android:padding="1dp">
@@ -18,26 +18,26 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_delete"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?shape_select"
             android:clickable="true" >
 
             <TextView
-
+                android:gravity="center"
                 android:textColor="?main_textcolor"
                 android:id="@+id/tv_moreoption_delete"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
+
                 android:layout_marginTop="8dp"
                 android:text="删除"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_delete"
                 android:layout_marginEnd="7dp"
@@ -48,25 +48,26 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_share"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
               android:background="?shape_select"
             android:clickable="true" >
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/tv_moreoption_share"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
+
                 android:layout_marginTop="8dp"
                 android:text="共享"
                 android:textColor="?main_textcolor"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_share"
                 android:layout_marginEnd="7dp"
@@ -77,25 +78,26 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_push"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
               android:background="?shape_select"
             android:clickable="true" >
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/tv_moreoption_push"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
+
                 android:layout_marginTop="8dp"
                 android:text="推送"
                 android:textColor="?main_textcolor"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_push"
                 android:layout_marginEnd="7dp"
@@ -106,7 +108,7 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_qr"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
               android:background="?shape_select"
             android:clickable="true"
@@ -114,18 +116,18 @@
 
             <TextView
                 android:id="@+id/tv_moreoption_qr"
-                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
                 android:layout_marginTop="8dp"
                 android:text="二维码"
                 android:textColor="?main_textcolor"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_qr"
                 android:layout_marginEnd="7dp"
@@ -136,26 +138,27 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_detail"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?shape_select"
             android:clickable="true"
             android:focusable="true" >
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/tv_moreoption_detail"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
+
                 android:layout_marginTop="8dp"
                 android:text="属性"
                 android:textColor="?main_textcolor"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_detail"
                 android:layout_marginEnd="7dp"
@@ -166,26 +169,27 @@
         <RelativeLayout
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_shareto"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?shape_select"
             android:clickable="true"
             android:focusable="true" >
 
             <TextView
+                android:gravity="center"
                 android:id="@+id/tv_moreoption_shareto"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="15dp"
+
                 android:layout_marginTop="8dp"
                 android:text="@string/shareto"
                 android:textColor="?main_textcolor"
                 android:textSize="@dimen/textsize_option" />
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/tv_moreoption_shareto"
                 android:layout_marginEnd="7dp"

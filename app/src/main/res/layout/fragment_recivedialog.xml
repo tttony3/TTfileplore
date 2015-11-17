@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
 
-    android:background="@color/btnblack">
+    android:background="?attr/mcolorAccent">
     <TextView
         android:id="@+id/tv_title_recivedialog"
 
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:text="@string/recivefile"
-        android:textColor="@color/bright_foreground_disabled_material_dark"
+        android:textColor="?mToolBarTextColor"
         android:lines="1"
         android:textSize="15sp"/>
 
@@ -97,7 +97,7 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/btnblack"
+        android:background="?attr/mcolorAccent"
         android:orientation="horizontal"
         android:visibility="visible">
 
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/look"
-            android:textColor="@color/main_textcolor_night"
+            android:textColor="?mToolBarTextColor"
             android:textSize="15sp" />
 
         <Button
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="@color/main_textcolor_night"
+            android:textColor="?mToolBarTextColor"
             android:textSize="15sp" />
 
 

@@ -34,7 +34,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:textColor="?main_textcolor"
+        android:textColor="?secondary_textcolor"
         android:id="@+id/tv_share_fileurl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

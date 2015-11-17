@@ -1,38 +1,45 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.changhong.ttfileplore.MainActivity">
 
-<item
+    <item
         android:id="@+id/action_net"
+        android:icon="@drawable/net"
         android:orderInCategory="100"
-    app:showAsAction="never"
-        android:title="@string/netfile"/>
-<item
+        android:title="@string/netfile"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_samba"
+        android:icon="@drawable/icon_samba_24dp"
         android:orderInCategory="100"
-    app:showAsAction="never"
-        android:title="@string/sambafile"/>
- <item
+        android:title="@string/sambafile"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_sharefile"
+        android:icon="@drawable/ic_backup_black_24dp"
         android:orderInCategory="100"
-     app:showAsAction="never"
-        android:title="@string/sharefile"/>
-<item
+        android:title="@string/sharefile"
+        android:visible="true"
+        app:showAsAction="never|withText" />
+    <item
         android:id="@+id/action_scanner"
+        android:icon="@drawable/qr_alpha"
         android:orderInCategory="100"
-          android:icon="@drawable/action_qr"
-    app:showAsAction="ifRoom"
-        android:title="@string/scanner"/>
- <item
+        android:title="@string/scanner"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_share"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
         android:orderInCategory="100"
-     app:showAsAction="never"
-        android:title="@string/shareto"/>
- 
+        android:title="@string/shareto"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_set"
+        android:icon="@drawable/ic_settings_black_24dp"
         android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/set"/>
+        android:title="@string/set"
+        app:showAsAction="never" />
 </menu>

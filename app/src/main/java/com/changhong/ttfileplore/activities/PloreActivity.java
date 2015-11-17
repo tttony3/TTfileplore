@@ -26,29 +26,20 @@ import com.changhong.ttfileplore.R;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
-import android.os.Debug;
-import android.os.IBinder;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
@@ -57,7 +48,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -113,7 +103,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plore);
         myapp = (MyApp) getApplication();
-        myapp.setContext(myapp.getMainContext());
+        MyApp.setContext(myapp.getMainContext());
         fileList = myapp.getFileList();
         sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); // 私有数据
         showhidefile = sharedPreferences.getBoolean("showhidefile", false);
@@ -219,6 +209,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
                 mListView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
             }
         });
@@ -300,7 +292,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             case R.id.plore_btn_newfile:
 
                 NewfileDialogFragment newFileDialogFragment = new NewfileDialogFragment();
-                newFileDialogFragment.show(((MainActivity) MyApp.context.get()).getFragmentManager(), "newfiledialog");
+                newFileDialogFragment.show(((MainActivity) myapp.getMainContext()).getFragmentManager(), "newfiledialog");
 
                 break;
 
@@ -335,7 +327,9 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                     String path = mPathView.getText().toString();
                     if (!isCopy) {
                         for (File file : fileList) {
-                            file.renameTo(new File(path + "/" + file.getName()));
+                            if (!file.renameTo(new File(path + "/" + file.getName()))) {
+                                Toast.makeText(PloreActivity.this, file.getName() + "粘贴失败", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         fileList.clear();
                         File folder = new File(mPathView.getText().toString());
@@ -621,7 +615,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                     Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                String ssid = "~";
+                String ssid;
                 WifiManager wifiManager = (WifiManager) PloreActivity.this.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {
                     WifiInfo info = wifiManager.getConnectionInfo();
@@ -631,11 +625,9 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         HPaConnector hpc = HPaConnector.getInstance(PloreActivity.this);
 
                         try {
-                            // hpc.setupWifiAp("hipa2014");
-
                             WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                             ssid = wificonf.SSID;
-                            Thread.sleep(500);
+                            Thread.sleep(1000);
                             final MyApp app = (MyApp) PloreActivity.this.getApplicationContext();
                             app.setConnectedService(new ConnectedService() {
 
@@ -647,7 +639,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                                     binder.StartHttpServer("/", MyApp.context.get());
                                 }
                             });
-                            // hpc.me();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e("eee11", e.getMessage());
@@ -675,9 +666,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                                 binder.StartHttpServer("/", MyApp.context.get());
                             }
                         });
-//                        CoreApp.mBinder.deinit();
-//                        CoreApp.mBinder.init();
-
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("eee22", e.getMessage());

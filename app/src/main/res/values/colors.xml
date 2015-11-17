@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="gray">#8b8b8b</color>
     <color name="main_textcolor_day">#000000</color>
     <color name="item_background_day">#ffffff</color>
     <color name="item_background_deep_day">#e3e3e3</color>
@@ -27,16 +28,25 @@
     <color name="encode_view">#ffffffff</color>
     <color name="possible_result_points">#c0ffbd21</color>
 
-    <color name="toolbar_textcolor_day">#ffffffff</color>
-    <color name="primary_day">#FF03A9F4</color>
-    <color name="primary_dark_day">#FF0288D1</color>
-    <color name="status_bar_color_day">@color/primary_dark_day</color>
+    <color name="color_accent_day">#47CAF6</color>
+    <color name="color_primary_light_day">#B3E5FC</color>
+    <color name="title_changecolor_day">#ffC3C1C2</color>
+    <color name="toolbar_textcolor_day">#FFF5F5F5</color>
+    <color name="color_primary_day">#FF03A9F4</color>
+    <color name="color_primary_dark_day">#FF0288D1</color>
+    <color name="status_bar_color_day">@color/color_primary_dark_day</color>
+    <color name="color_textcolor_primary_day">#212121</color>
+    <color name="color_textcolor_secondary_day">#727272</color>
 
+    <color name="color_accent_night">#FF222222</color>
+    <color name="color_primary_light_night">#FF222222</color>
+    <color name="color_textcolor_primary_night">#838383</color>
+    <color name="color_textcolor_secondary_night">#727272</color>
     <color name="toolbar_textcolor_night">#838383</color>
-    <color name="primary_night">#FF1e1e1e</color>
-    <color name="primary_dark_night">#FF111111</color>
-    <color name="status_bar_color_night">@color/primary_dark_night</color>
-
+    <color name="color_primary_night">#FF1e1e1e</color>
+    <color name="color_primary_dark_night">#FF111111</color>
+    <color name="status_bar_color_night">@color/color_primary_dark_night</color>
+    <color name="title_changecolor_night">@color/toolight_blue</color>
     <!-- Android standard ICS color -->
     <color name="result_minor_text">#ffc0c0c0</color>
     <color name="result_points">#c099cc00</color>

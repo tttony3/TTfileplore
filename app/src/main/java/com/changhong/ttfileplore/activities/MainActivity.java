@@ -1,6 +1,7 @@
 package com.changhong.ttfileplore.activities;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +16,18 @@ import com.chobit.corestorage.CoreService.CoreServiceBinder;
 import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.adapter.MainViewPagerAdapter;
 import com.changhong.ttfileplore.application.MyApp;
-import com.changhong.ttfileplore.fragment.MenuFragment;
 import com.changhong.ttfileplore.utils.Utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
-import android.app.AlertDialog;
+
 import android.app.LocalActivityManager;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
@@ -36,11 +38,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity
 
     final ArrayList<View> list = new ArrayList<>();
     Context context = null;
+
     LocalActivityManager manager = null;
     ViewPager pager = null;
     TableLayout tl_brwloc;
@@ -78,11 +83,7 @@ public class MainActivity extends AppCompatActivity
 
     private int currIndex = 0;// 当前页卡编号
     private long curtime = 0;
-    private ColorTrackView mTab0;
-    private ColorTrackView mTab1;
     private List<ColorTrackView> mTabs = new ArrayList<>();
-    private ColorCursorView mCursor1;
-    private ColorCursorView mCursor2;
     private List<ColorCursorView> mCursors = new ArrayList<>();
     int theme;
     boolean isshare = true;
@@ -172,8 +173,8 @@ public class MainActivity extends AppCompatActivity
     private void initTextView() {
 
         mTabs.clear();
-        mTab0 = (ColorTrackView) findViewById(R.id.text1);
-        mTab1 = (ColorTrackView) findViewById(R.id.text2);
+        ColorTrackView mTab0 = (ColorTrackView) findViewById(R.id.text1);
+        ColorTrackView mTab1 = (ColorTrackView) findViewById(R.id.text2);
         mTab0.setOnClickListener(new MyOnClickListener(0));
         mTab1.setOnClickListener(new MyOnClickListener(1));
         mTabs.add(mTab0);
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity
         myPagerAdapter = new MainViewPagerAdapter(list);
         pager.setAdapter(myPagerAdapter);
         pager.setCurrentItem(0);
-        pager.setOnPageChangeListener(new MyOnPageChangeListener());
+        pager.addOnPageChangeListener(new MyOnPageChangeListener());
 
         iv_apk.setOnClickListener(this);
         iv_apk.setOnLongClickListener(this);
@@ -235,8 +236,8 @@ public class MainActivity extends AppCompatActivity
      */
     private void InitImageView() {
         mCursors.clear();
-        mCursor1 = (ColorCursorView) findViewById(R.id.cursor_1);
-        mCursor2 = (ColorCursorView) findViewById(R.id.cursor_2);
+        ColorCursorView mCursor1 = (ColorCursorView) findViewById(R.id.cursor_1);
+        ColorCursorView mCursor2 = (ColorCursorView) findViewById(R.id.cursor_2);
         mCursors.add(mCursor1);
         mCursors.add(mCursor2);
     }
@@ -249,15 +250,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent();
+
         int id = item.getItemId();
         switch (id){
             case R.id.action_set:
-                Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SetActivity.class);
                 startActivity(intent);
                 break;
-        }
-        if (id == R.id.action_samba) {
+
+            case (R.id.action_samba):
             LayoutInflater inflater = getLayoutInflater();
             final View layout = inflater.inflate(R.layout.samba_option, (ViewGroup) findViewById(R.id.samba_op));
             new AlertDialog.Builder(this).setTitle("samba设置").setView(layout)
@@ -283,24 +285,25 @@ public class MainActivity extends AppCompatActivity
 
                         }
                     }).setPositiveButton("取消", null).show();
+                break;
 
-        } else if (id == R.id.action_net) {
-            Intent intent = new Intent();
+            case (R.id.action_net):
             intent.setClass(MainActivity.this, ShowNetDevActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_scanner) {
+                break;
+            case (R.id.action_scanner):
             if(!sharedPreferences.getBoolean("share",true)){
                 Toast.makeText(this, "未开启共享", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            Intent intent = new Intent();
             intent.setClass(MainActivity.this, CaptureActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_sharefile) {
-            Intent intent = new Intent();
-            intent.setClass(MainActivity.this, ShowSharefileActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_share) {
+                break;
+            case (R.id.action_sharefile):
+                intent.setClass(MainActivity.this, ShowSharefileActivity.class);
+                startActivity(intent);
+                break;
+            case (R.id.action_share):
             ArrayList<File> detailList = new ArrayList<>();
             pager.setCurrentItem(1);
             Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
@@ -322,7 +325,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
             }
 
-
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -346,6 +349,23 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Intent intent = new Intent();
@@ -478,8 +498,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             Log.e("home", "home");
-            MyApp myapp = (MyApp) getApplication();
-            myapp.setContext(null);
+            MyApp.setContext(null);
 
         }
         return super.onKeyDown(keyCode, event);
@@ -515,10 +534,14 @@ public class MainActivity extends AppCompatActivity
         }
         int tmptheme = sharedPreferences.getInt("Theme", theme);
         if (theme != tmptheme) {
+
             setTheme(tmptheme);
             theme = tmptheme;
             setContentView(R.layout.activity_main);
+
             initToolBar();
+            supportInvalidateOptionsMenu();
+            invalidateOptionsMenu();
             InitImageView();
             initTextView();
             ((BrowseActivity) view0.getContext()).onRestart();

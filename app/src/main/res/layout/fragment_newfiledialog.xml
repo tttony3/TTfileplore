@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TableRow android:background="@color/btnblack">
+    <TableRow android:background="?attr/mcolorAccent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:text="@string/newfile"
-            android:textColor="@color/bright_foreground_disabled_material_dark"
+            android:textColor="?mToolBarTextColor"
             android:textSize="15sp"/>
     </TableRow>
 
@@ -20,6 +20,7 @@
         android:paddingBottom="5dp">
 
         <TextView
+            android:textColor="?main_textcolor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -46,7 +47,7 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:background="@color/btnblack"
+        android:background="?attr/mcolorAccent"
         android:orientation="horizontal"
         android:visibility="visible">
 
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/newfile"
-            android:textColor="?attr/main_bg"
+            android:textColor="?mToolBarTextColor"
             android:textSize="15sp" />
 
         <Button
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?attr/main_bg"
+            android:textColor="?mToolBarTextColor"
             android:textSize="15sp" />
 
 

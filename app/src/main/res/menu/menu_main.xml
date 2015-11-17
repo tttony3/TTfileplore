@@ -18,5 +18,5 @@
         android:icon="@drawable/file_icon_photo"/>
     <item  android:id="@+id/left_set" android:title="@string/set"
         android:orderInCategory="100" app:showAsAction="never"
-        android:icon="@drawable/net"/>
+        android:icon="@drawable/ic_settings_black_36dp" />
 </menu>

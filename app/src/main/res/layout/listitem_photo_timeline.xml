@@ -31,7 +31,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?main_textcolor"
+            android:textColor="?secondary_textcolor"
             android:layout_toStartOf="@+id/view"
             android:textSize="@dimen/top_textsize"
             android:paddingStart="2dp"
@@ -43,7 +43,7 @@
         android:layout_alignTop="@+id/left_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?main_textcolor"
+        android:textColor="?secondary_textcolor"
         android:layout_toEndOf="@+id/view"
         android:textSize="13sp"
         android:layout_marginStart="10dp"

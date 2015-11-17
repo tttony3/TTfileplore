@@ -17,13 +17,13 @@
         android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/mcolorPrimary"
+        android:background="?attr/colorPrimary"
         android:fitsSystemWindows="false"
         >
         </android.support.v7.widget.Toolbar>
       <!--  tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark" -->
     <TableLayout
-        android:background="?mcolorPrimary"
+        android:background="?attr/colorPrimary"
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
@@ -41,8 +41,8 @@
                 android:gravity="center"
                 tl:progress="1"
                 tl:text="@string/titlename_1"
-                tl:text_change_color="@color/toolight_blue"
-                tl:text_origin_color="?attr/mToolBarTextColor"
+                tl:text_change_color="?title_changecolor"
+                tl:text_origin_color="?mToolBarTextColor"
                 tl:text_size="@dimen/title_textsize" />
 
             <com.changhong.ttfileplore.view.ColorTrackView
@@ -52,8 +52,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 tl:text="@string/titlename_2"
-                tl:text_change_color="@color/toolight_blue"
-                tl:text_origin_color="?attr/mToolBarTextColor"
+                tl:text_change_color="?title_changecolor"
+                tl:text_origin_color="?mToolBarTextColor"
                 tl:text_size="@dimen/title_textsize" />
         </TableRow>
 
@@ -67,7 +67,7 @@
                 android:layout_height="2dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/img_description"
-                tl:change_color="@color/toolight_blue"
+                tl:change_color="?title_changecolor"
                 tl:progress="1"
                 android:visibility="visible"/>
 
@@ -77,7 +77,7 @@
                 android:layout_height="2dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/img_description"
-                tl:change_color="@color/toolight_blue"
+                tl:change_color="?title_changecolor"
                 android:visibility="visible"/>
         </TableRow>
     </TableLayout>
@@ -91,11 +91,13 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
+        android:background="?main_bg"
         android:id="@+id/id_nv_menu"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
+        tl:theme="?navifagionView"
         tl:headerLayout="@layout/header_just_username"
         tl:menu="@menu/menu_main"
         />
