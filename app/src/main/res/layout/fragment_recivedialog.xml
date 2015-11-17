@@ -96,8 +96,8 @@
         android:layout_below="@+id/rl_content2_recivedialog"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
         android:background="?attr/mcolorAccent"
+        android:layout_height="35dp"
         android:orientation="horizontal"
         android:visibility="visible">
 

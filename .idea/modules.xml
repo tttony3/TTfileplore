@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SlidingMenuLib/SlidingMenuLib.iml" filepath="$PROJECT_DIR$/SlidingMenuLib/SlidingMenuLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/TTfileplore.iml" filepath="$PROJECT_DIR$/TTfileplore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
