@@ -7,7 +7,7 @@
     <dimen name="browse_pic_width">60dp</dimen>
     <dimen name="browse_pic_hight">60dp</dimen>
     <dimen name="griditem_item">110dp</dimen>
-    <dimen name="griditem_img">140dp</dimen>
+    <dimen name="griditem_img">180dp</dimen>
     <dimen name="griditem_img_">145dp</dimen>
     <dimen name="photo_griditem">68dp</dimen>
     <dimen name="slidingmenu_offset">180dp</dimen>
@@ -26,7 +26,7 @@
     <dimen name="title_textsize">15sp</dimen>
     <dimen name="top_textsize">11sp</dimen>
     <dimen name="browse_txtcapacity_size">10sp</dimen>
-    <dimen name="griditem_item_textsize">11sp</dimen>
+    <dimen name="griditem_item_textsize">14sp</dimen>
     <dimen name="browse_pic_textsize">12sp</dimen>
  	<dimen name="browse_table_textsize">15sp</dimen>
     <dimen name="circle_textmarginStart">20dp</dimen>

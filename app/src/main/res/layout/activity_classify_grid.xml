@@ -5,33 +5,32 @@
     xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:background="?main_bg">
     <android.support.v7.widget.Toolbar
-        android:paddingTop="15dp"
         android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:fitsSystemWindows="false"
-        tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+        android:fitsSystemWindows="false">
     </android.support.v7.widget.Toolbar>
-    <TextView
-        android:layout_below="@+id/id_toolbar"
-        android:id="@+id/tv_classify_dir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp" />
+
 
     <GridView
+        android:layout_below="@+id/id_toolbar"
         android:id="@+id/gv_classify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_classify_dir"
-        android:layout_marginEnd="23dp"
-        android:layout_marginStart="23dp"
         android:columnWidth="@dimen/griditem_img"
         android:gravity="center_horizontal"
         android:numColumns="2"
-        android:stretchMode="spacingWidth"
-        android:verticalSpacing="17dp" />
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp" />
 
-
+    <TextView
+        android:background="#20000000"
+        android:textColor="#d0ffffff"
+        android:layout_below="@+id/id_toolbar"
+        android:id="@+id/tv_classify_dir"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
 </RelativeLayout>

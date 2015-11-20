@@ -7,31 +7,42 @@
     android:layout_height="match_parent"
     android:id="@+id/mDrawerLayout"
     >
-    <LinearLayout
+
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/id_main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        android:paddingTop="15dp"
-        android:id="@+id/id_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:fitsSystemWindows="false"
-        >
-        </android.support.v7.widget.Toolbar>
-      <!--  tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark" -->
-    <TableLayout
-        android:background="?attr/colorPrimary"
-        android:id="@+id/tableLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent">
 
-        <TableRow
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+
+                android:id="@+id/id_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="?attr/colorPrimary"
+                tl:layout_scrollFlags="scroll|enterAlways"
+                android:fitsSystemWindows="true" />
+
+            <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/tabs"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+            <TableLayout
+                android:paddingTop="10dp"
+                android:background="?attr/colorPrimary"
+                android:id="@+id/tableLayout1"
             android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-             android:paddingBottom="3dp" >
+                    android:paddingBottom="3dp">
 
             <com.changhong.ttfileplore.view.ColorTrackView
                 android:id="@+id/text1"
@@ -55,9 +66,10 @@
                 tl:text_change_color="?title_changecolor"
                 tl:text_origin_color="?mToolBarTextColor"
                 tl:text_size="@dimen/title_textsize" />
-        </TableRow>
+                </TableRow>
 
-        <TableRow
+                <TableRow
+                    android:paddingTop="6dp"
             android:layout_height="2dp"
             android:layout_width="match_parent">
 
@@ -69,7 +81,7 @@
                 android:contentDescription="@string/img_description"
                 tl:change_color="?title_changecolor"
                 tl:progress="1"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <com.changhong.ttfileplore.view.ColorCursorView
                 android:id="@+id/cursor_2"
@@ -78,17 +90,113 @@
                 android:layout_weight="1"
                 android:contentDescription="@string/img_description"
                 tl:change_color="?title_changecolor"
-                android:visibility="visible"/>
-        </TableRow>
-    </TableLayout>
+                android:visibility="visible" />
+                </TableRow>
+            </TableLayout>
+            <!--android:contentDescription="@string/img_description"-->
+            <!--tl:change_color="?title_changecolor"-->
+            <!--tl:progress="1"-->
+            <!--android:visibility="visible"/>-->
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tableLayout1" />
+            <!--<com.changhong.ttfileplore.view.ColorCursorView-->
+            <!--android:id="@+id/cursor_2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="2dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:contentDescription="@string/img_description"-->
+            <!--tl:change_color="?title_changecolor"-->
+            <!--android:visibility="visible"/>-->
+            <!--</TableRow>-->
+            <!--</TableLayout>-->
+        </android.support.design.widget.AppBarLayout>
 
-    </LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tl:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/appbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!-->-->
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:paddingTop="15dp"-->
+        <!--android:id="@+id/id_toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:fitsSystemWindows="false"-->
+        <!--tl:layout_scrollFlags="scroll|enterAlways"-->
+
+        <!-->-->
+        <!--</android.support.v7.widget.Toolbar>-->
+        <!--&lt;!&ndash;  tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark" &ndash;&gt;-->
+        <!--<TableLayout-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--tl:layout_scrollFlags="scroll|enterAlways"-->
+        <!--android:id="@+id/tableLayout1"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content" >-->
+
+        <!--<TableRow-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingBottom="3dp" >-->
+
+        <!--<com.changhong.ttfileplore.view.ColorTrackView-->
+        <!--android:id="@+id/text1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--tl:progress="1"-->
+        <!--tl:text="@string/titlename_1"-->
+        <!--tl:text_change_color="?title_changecolor"-->
+        <!--tl:text_origin_color="?mToolBarTextColor"-->
+        <!--tl:text_size="@dimen/title_textsize" />-->
+
+        <!--<com.changhong.ttfileplore.view.ColorTrackView-->
+        <!--android:id="@+id/text2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--tl:text="@string/titlename_2"-->
+        <!--tl:text_change_color="?title_changecolor"-->
+        <!--tl:text_origin_color="?mToolBarTextColor"-->
+        <!--tl:text_size="@dimen/title_textsize" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_width="match_parent">-->
+
+        <!--<com.changhong.ttfileplore.view.ColorCursorView-->
+        <!--android:id="@+id/cursor_1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:contentDescription="@string/img_description"-->
+        <!--tl:change_color="?title_changecolor"-->
+        <!--tl:progress="1"-->
+        <!--android:visibility="visible"/>-->
+
+        <!--<com.changhong.ttfileplore.view.ColorCursorView-->
+        <!--android:id="@+id/cursor_2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:contentDescription="@string/img_description"-->
+        <!--tl:change_color="?title_changecolor"-->
+        <!--android:visibility="visible"/>-->
+        <!--</TableRow>-->
+        <!--</TableLayout>-->
+        <!--</android.support.design.widget.AppBarLayout>-->
+
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:background="?main_bg"

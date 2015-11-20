@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="?attr/main_bg"
-    android:orientation="vertical"
     tools:context="com.changhong.fileplore.activities.PloreActivity" >
 
     <RelativeLayout
@@ -50,6 +49,7 @@
             android:textColor="?main_textcolor"
             android:text="@string/default_count"
             android:textSize="@dimen/top_textsize" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -60,19 +60,23 @@
         android:layout_marginTop="2dp"
         android:paddingBottom="2dp"
         android:background="?attr/main_bg"
-        android:orientation="vertical"
         android:paddingEnd="5dp"
         android:paddingStart="5dp" >
 
-        <com.changhong.ttfileplore.view.RefreshListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/file_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             android:background="?main_bg"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="?attr/main_bg"
-            android:dividerHeight="4dp"
-            android:fadingEdge="none" />
+            android:layout_height="match_parent" />
+
+        <!--<com.changhong.ttfileplore.view.RefreshListView-->
+        <!--android:id="@+id/file_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="?main_bg"-->
+        <!--android:cacheColorHint="@android:color/transparent"-->
+        <!--android:divider="?attr/main_bg"-->
+        <!--android:dividerHeight="4dp"-->
+        <!--android:fadingEdge="none" />-->
     </RelativeLayout>
 
     <LinearLayout

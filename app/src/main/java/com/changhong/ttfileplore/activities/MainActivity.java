@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity
     ImageView iv_wechat;
     ImageView iv_app;
     MyApp myapp;
-
     final ArrayList<View> list = new ArrayList<>();
     Context context = null;
 
@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity
      * 初始化标题
      */
     private void initTextView() {
-
         mTabs.clear();
         ColorTrackView mTab0 = (ColorTrackView) findViewById(R.id.text1);
         ColorTrackView mTab1 = (ColorTrackView) findViewById(R.id.text2);
@@ -229,6 +228,15 @@ public class MainActivity extends AppCompatActivity
         iv_qq.setOnClickListener(this);
         iv_wechat.setOnClickListener(this);
         iv_app.setOnClickListener(this);
+
+//        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+//
+//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
+//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
+//
+//        mTabLayout.setupWithViewPager(pager);
+//        mTabLayout.setTabsFromPagerAdapter(myPagerAdapter);
+
     }
 
     /**
@@ -415,17 +423,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onPageSelected(int arg0) {
-
-            switch (arg0) {
-                case 0:
-             //       getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
-                    break;
-                case 1:
-             //       getSlidingMenu().addIgnoredView(getWindow().getDecorView());
-                    break;
-                default:
-                    break;
-            }
             currIndex = arg0;
         }
 
@@ -470,12 +467,10 @@ public class MainActivity extends AppCompatActivity
         public void onClick(View v) {
             if (index == 0) {
                 pager.setCurrentItem(index);
-         //       getSlidingMenu().removeIgnoredView(getWindow().getDecorView());
             }
             if (index == 1) {
                 pager.setCurrentItem(index);
 
-          //      getSlidingMenu().addIgnoredView(getWindow().getDecorView());
             }
         }
     }
@@ -539,14 +534,15 @@ public class MainActivity extends AppCompatActivity
             theme = tmptheme;
             setContentView(R.layout.activity_main);
 
-            initToolBar();
-            supportInvalidateOptionsMenu();
-            invalidateOptionsMenu();
+
             InitImageView();
             initTextView();
             ((BrowseActivity) view0.getContext()).onRestart();
             ((PloreActivity) view1.getContext()).onRestart();
             initPagerViewer();
+            initToolBar();
+            //       supportInvalidateOptionsMenu();
+            //       invalidateOptionsMenu();
 
         }
 

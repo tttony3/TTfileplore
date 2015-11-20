@@ -10,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainViewPagerAdapter extends PagerAdapter {
-	List<View> list = new ArrayList<View>();
+	List<View> list = new ArrayList<>();
+	private List<String> mTitles = new ArrayList<>();
 
 	public View getView(int index) {
 		return list.get(index);
@@ -57,4 +58,5 @@ public class MainViewPagerAdapter extends PagerAdapter {
 	@Override
 	public void startUpdate(View arg0) {
 	}
+
 }

@@ -1,5 +1,6 @@
 package com.changhong.ttfileplore.activities;
 
+import com.changhong.ttfileplore.adapter.RecyclerViewAdapter;
 import com.changhong.ttfileplore.utils.Utils;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -100,7 +103,6 @@ public class BrowseActivity extends Activity {
 	}
 
 	void findView() {
-
 		iv_apk = (ImageView) findViewById(R.id.img_apk);
 		iv_movie = (ImageView) findViewById(R.id.img_movie);
 		iv_music = (ImageView) findViewById(R.id.img_music);

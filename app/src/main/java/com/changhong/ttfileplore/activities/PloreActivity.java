@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.changhong.ttfileplore.adapter.PloreListAdapter;
-import com.changhong.ttfileplore.adapter.PloreListAdapter.ImgOnClick;
+import com.changhong.ttfileplore.adapter.RecyclerViewAdapter;
 import com.changhong.ttfileplore.application.MyApp;
 import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.data.PloreData;
@@ -21,7 +20,6 @@ import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreApp;
 import com.chobit.corestorage.CoreService.CoreServiceBinder;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.changhong.ttfileplore.R;
 
 import android.app.AlertDialog;
@@ -35,14 +33,14 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.AbsListView;
+
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -59,15 +57,15 @@ import com.changhong.ttfileplore.utils.*;
 
 public class PloreActivity extends BaseActivity implements RefreshListView.IOnRefreshListener, View.OnClickListener,
         PloreInterface, OnItemClickListener, OnItemLongClickListener,
-        OnMenuItemClickListener, ImgOnClick, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
+        OnMenuItemClickListener, RecyclerViewAdapter.OnItemClickLitener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
     protected ImageLoader imageLoader = ImageLoader.getInstance();
     protected static final String STATE_PAUSE_ON_SCROLL = "STATE_PAUSE_ON_SCROLL";
     protected static final String STATE_PAUSE_ON_FLING = "STATE_PAUSE_ON_FLING";
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
     private ArrayList<File> fileList;
-
-    private RefreshListView mListView;
+    RecyclerView mListView;
+    //   private RefreshListView mListView;
     private TextView mPathView;
     private ImageView iv_back;
     private TextView mItemCount;
@@ -79,7 +77,8 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private Button btn_copy;
     private Button btn_cut;
     private Button btn_more;
-    public PloreListAdapter mFileAdpter;
+    //  public PloreListAdapter mFileAdpter;
+    public RecyclerViewAdapter mFileAdpter;
     private LinearLayout ll_btn;
     private LinearLayout ll_btn_default;
     public AlertDialog.Builder builder;
@@ -149,74 +148,74 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
     private void initView() {
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            boolean flingAni = true;
-            boolean touchAni = true;
-            Animation animation;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case SCROLL_STATE_IDLE:
-                        flingAni = true;
-                        touchAni = true;
-                        animation = new TranslateAnimation(0, 0, 100, 0);
-                        animation.setFillAfter(true);// True:图片停在动画结束位置
-                        animation.setDuration(500);
-                        if (isdefault_btn) {
-                            ll_btn_default.startAnimation(animation);
-                        } else {
-                            ll_btn.startAnimation(animation);
-                        }
-
-                        break;
-                    case SCROLL_STATE_FLING:
-                        touchAni = false;
-                        if (!flingAni) {
-                            break;
-                        }
-                        animation = new TranslateAnimation(0, 0, 0, 100);
-                        animation.setFillAfter(true);// True:图片停在动画结束位置
-                        animation.setDuration(500);
-                        if (isdefault_btn) {
-                            ll_btn_default.startAnimation(animation);
-                        } else {
-                            ll_btn.startAnimation(animation);
-                        }
-
-
-                        break;
-                    case SCROLL_STATE_TOUCH_SCROLL:
-                        flingAni = false;
-                        if (!touchAni) {
-                            break;
-                        }
-                        animation = new TranslateAnimation(0, 0, 0, 100);
-                        animation.setFillAfter(true);// True:图片停在动画结束位置
-                        animation.setDuration(500);
-                        if (isdefault_btn) {
-                            ll_btn_default.startAnimation(animation);
-                        } else {
-                            ll_btn.startAnimation(animation);
-                        }
-
-                        break;
-
-
-                }
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-
-                mListView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-            }
-        });
-        mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);
-        mListView.setOnRefreshListener(this);
+//        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            boolean flingAni = true;
+//            boolean touchAni = true;
+//            Animation animation;
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                switch (scrollState) {
+//                    case SCROLL_STATE_IDLE:
+//                        flingAni = true;
+//                        touchAni = true;
+//                        animation = new TranslateAnimation(0, 0, 100, 0);
+//                        animation.setFillAfter(true);// True:图片停在动画结束位置
+//                        animation.setDuration(500);
+//                        if (isdefault_btn) {
+//                            ll_btn_default.startAnimation(animation);
+//                        } else {
+//                            ll_btn.startAnimation(animation);
+//                        }
+//
+//                        break;
+//                    case SCROLL_STATE_FLING:
+//                        touchAni = false;
+//                        if (!flingAni) {
+//                            break;
+//                        }
+//                        animation = new TranslateAnimation(0, 0, 0, 100);
+//                        animation.setFillAfter(true);// True:图片停在动画结束位置
+//                        animation.setDuration(500);
+//                        if (isdefault_btn) {
+//                            ll_btn_default.startAnimation(animation);
+//                        } else {
+//                            ll_btn.startAnimation(animation);
+//                        }
+//
+//
+//                        break;
+//                    case SCROLL_STATE_TOUCH_SCROLL:
+//                        flingAni = false;
+//                        if (!touchAni) {
+//                            break;
+//                        }
+//                        animation = new TranslateAnimation(0, 0, 0, 100);
+//                        animation.setFillAfter(true);// True:图片停在动画结束位置
+//                        animation.setDuration(500);
+//                        if (isdefault_btn) {
+//                            ll_btn_default.startAnimation(animation);
+//                        } else {
+//                            ll_btn.startAnimation(animation);
+//                        }
+//
+//                        break;
+//
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//
+//
+//                mListView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+//            }
+//        });
+//        mListView.setonOnItemClickListener(this);
+//        mListView.setOnItemLongClickListener(this);
+//        mListView.setOnRefreshListener(this);
         btn_newfile.setOnClickListener(this);
         btn_paste.setOnClickListener(this);
         btn_sort.setOnClickListener(this);
@@ -230,7 +229,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
 
         ImageView img = new ImageView(this);
         img.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dpTopx(40, this)));
-        mListView.addFooterView(img, null, false);
+        //    mListView.addFooterView(img, null, false);
         File folder = new File("/storage");
         loadData(folder, sorttype);
     }
@@ -260,8 +259,11 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             PloreData mPloreData = new PloreData(folder, showhidefile, sorttype);
             List<File> files = mPloreData.getfiles();
             mItemCount.setText(files.size() + "项");
-            mFileAdpter = new PloreListAdapter(this, files, isRoot, imageLoader);
+            mFileAdpter = new RecyclerViewAdapter(this, files, imageLoader);
+            mListView.setLayoutManager(new LinearLayoutManager(mListView.getContext()));
+            mFileAdpter.setOnItemClickLitener(this);
             mListView.setAdapter(mFileAdpter);
+            //      mListView.setAdapter(mFileAdpter);
         }
 
     }
@@ -443,6 +445,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.file_list:
+                Log.e("11", "11");
                 if (!(view instanceof ImageView))
                     if (!mFileAdpter.isShow_cb()) {
                         mFileAdpter.setShow_cb(true);
@@ -511,7 +514,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
     private void applyScrollListener() {
-        mListView.setOnScrollListener(new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling));
+        //  mListView.setOnScrollListener(new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling));
     }
 
     @Override
@@ -800,6 +803,39 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         return true;
     }
 
+    @Override
+    public void onClickImg(View v, File file) {
+        if (!file.canRead()) {
+            Toast.makeText(this, "打不开", Toast.LENGTH_SHORT).show();
+        } else if (file.isDirectory()) {
+            loadData(file, sorttype);
+        } else {
+            startActivity(Utils.openFile(file));
+        }
+    }
+
+    @Override
+    public void onItemClick(RecyclerViewAdapter adapter, View view, int position) {
+        File file = (File) adapter.getItem(position);
+        if (!file.canRead()) {
+            Toast.makeText(this, "打不开", Toast.LENGTH_SHORT).show();
+        } else if (file.isDirectory()) {
+            loadData(file, sorttype);
+        } else {
+            startActivity(Utils.openFile(file));
+        }
+    }
+
+    @Override
+    public void onItemLongClick(RecyclerViewAdapter adapter, View view, int position) {
+        if (!(view instanceof ImageView))
+            if (!mFileAdpter.isShow_cb()) {
+                mFileAdpter.setShow_cb(true);
+                setSecondBtn();
+                mFileAdpter.notifyDataSetChanged();
+            }
+    }
+
     class RefreshDataAsynTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -816,21 +852,10 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         @Override
         protected void onPostExecute(Void result) {
             loadData(new File(mPathView.getText().toString()), sorttype);
-            mListView.onRefreshComplete();
+            //     mListView.onRefreshComplete();
         }
 
     }
 
 
-    @Override
-    public void onClick(View v, File file) {
-        if (!file.canRead()) {
-            Toast.makeText(this, "打不开", Toast.LENGTH_SHORT).show();
-        } else if (file.isDirectory()) {
-            loadData(file, sorttype);
-        } else {
-            startActivity(Utils.openFile(file));
-        }
-
-    }
 }

@@ -2,12 +2,17 @@ package com.changhong.ttfileplore.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -40,10 +45,12 @@ import android.provider.MediaStore.Images;
 import android.text.format.Formatter;
 import android.util.Log;
 
+@SuppressWarnings("unused")
 public class Utils {
-	static ArrayList<Content> results = new ArrayList<Content>();
+	static ArrayList<Content> results = new ArrayList<>();
+	static final private Object lock = new Object();
 	static ExecutorService pool;
-
+	static DateFormat df = DateFormat.getDateTimeInstance();
 	/**
 	 * 
 	 * @return 手机内部存储空间字符串数组（总空间，可用空间，可用百分比）
@@ -84,15 +91,15 @@ public class Utils {
 	}
 
 	/**
-	 * 
-	 * @param context
+	 *
 	 * @return Arraylist<content> content包含路径，标题，缩略图
 	 */
 	public static ArrayList<Content> getVideo(Context context) {
-		ArrayList<Content> results = new ArrayList<Content>();
+		ArrayList<Content> results = new ArrayList<>();
 		ContentResolver contentResolver = context.getContentResolver();
 		Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null,
 				MediaStore.Video.Media.DEFAULT_SORT_ORDER);
+		if (cursor != null) {
 		cursor.moveToFirst();
 		int counter = cursor.getCount();
 		for (int j = 0; j < counter; j++) {
@@ -108,92 +115,95 @@ public class Utils {
 
 		}
 		cursor.close();
+		}
 		return results;
 	}
 
 	/**
-	 * 
-	 * @param context
+	 *
 	 * @return Arraylist<content> content包含路径，标题，演唱者
 	 */
 	public static ArrayList<Content> getMusic(Context context) {
-		ArrayList<Content> results = new ArrayList<Content>();
+		ArrayList<Content> results = new ArrayList<>();
 		ContentResolver contentResolver = context.getContentResolver();
 		Cursor cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
 				MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-		cursor.moveToFirst();
-		int counter = cursor.getCount();
-		for (int j = 0; j < counter; j++) {
-			String albumArt = cursor.getString(0);
-			Bitmap bm = null;
-			if (albumArt == null) {
-				Content content = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),
-						cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)),
-						cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)), null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			int counter = cursor.getCount();
+			for (int j = 0; j < counter; j++) {
+				String albumArt = cursor.getString(0);
+				Bitmap bm;
+				if (albumArt == null) {
+					Content content = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),
+							cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)),
+							cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)), null);
 
-				results.add(content);
-				cursor.moveToNext();
-			} else {
-				bm = BitmapFactory.decodeFile(albumArt);
-				@SuppressWarnings("deprecation")
-				BitmapDrawable bmpDraw = new BitmapDrawable(bm);
+					results.add(content);
+					cursor.moveToNext();
+				} else {
+					bm = BitmapFactory.decodeFile(albumArt);
+					@SuppressWarnings("deprecation")
+					BitmapDrawable bmpDraw = new BitmapDrawable(bm);
 
-				Content video = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),
-						cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)),
-						cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)),
-						bmpDraw.getBitmap());
+					Content video = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)),
+							cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)),
+							cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)),
+							bmpDraw.getBitmap());
 
-				results.add(video);
-				cursor.moveToNext();
+					results.add(video);
+					cursor.moveToNext();
+
+				}
 
 			}
-
+			cursor.close();
 		}
-		cursor.close();
 		return results;
 	}
 
 	/**
 	 * 获取系统内图片相册
-	 * 
-	 * @param context
+	 *
 	 * @return 返回相册列表的Arraylist<content> content包含 dir:路径，(title:相册名)，缩略图
 	 */
 	public static ArrayList<Content> getPhotoCata(Context context) {
 
-		ArrayList<Content> results = new ArrayList<Content>();
+		ArrayList<Content> results = new ArrayList<>();
 		ContentResolver contentResolver = context.getContentResolver();
 		Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
 				MediaStore.Images.Media.DEFAULT_SORT_ORDER);
-		cursor.moveToFirst();
-		int counter = cursor.getCount();
-		String tmp = "";
-		for (int j = 0; j < counter; j++) {
-			String dir = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+		if (cursor != null) {
+			cursor.moveToFirst();
+			int counter = cursor.getCount();
+			String tmp = "";
+			for (int j = 0; j < counter; j++) {
+				String dir = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
 
-			if (tmp.equalsIgnoreCase(dir.substring(0, dir.lastIndexOf("/")))) {
-				// Log.e("tmp","tmp"+tmp);
+				if (tmp.equalsIgnoreCase(dir.substring(0, dir.lastIndexOf("/")))) {
+					// Log.e("tmp","tmp"+tmp);
+					cursor.moveToNext();
+					continue;
+				}
+
+				tmp = dir.substring(0, dir.lastIndexOf("/"));
+				// Log.e("dir", dir+"");
+				int origId = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+				String[] path = dir.split("/");
+				// Log.e("222",
+				// cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));
+				Content photo = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)),
+						// cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)),
+						path[path.length - 2], MediaStore.Images.Thumbnails.getThumbnail(contentResolver, origId,
+						Images.Thumbnails.MICRO_KIND, null),
+						origId);
+
+				results.add(photo);
 				cursor.moveToNext();
-				continue;
+
 			}
-
-			tmp = dir.substring(0, dir.lastIndexOf("/"));
-			// Log.e("dir", dir+"");
-			int origId = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-			String[] path = dir.split("/");
-			// Log.e("222",
-			// cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));
-			Content photo = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)),
-					// cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)),
-					path[path.length - 2], MediaStore.Images.Thumbnails.getThumbnail(contentResolver, origId,
-							Images.Thumbnails.MICRO_KIND, null),
-					origId);
-
-			results.add(photo);
-			cursor.moveToNext();
-
+			cursor.close();
 		}
-		cursor.close();
 		return results;
 
 	}
@@ -219,8 +229,7 @@ public class Utils {
 
 		pool = Executors.newFixedThreadPool(20);
 		results.clear();
-		File root = new File("/storage");
-		File file = root;
+		File file = new File("/storage");
 		if (type.equals("doc")) {
 			GetResult gr1 = new Utils().new GetResult(file, "doc", 0);
 			pool.submit(gr1);
@@ -245,14 +254,20 @@ public class Utils {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 		sortList(results);
-		if (type.equals("doc")) {
-			saveObject("result_doc", results);
-		} else if (type.equals("zip")) {
-			saveObject("result_zip", results);
-		} else if (type.equals("apk")) {
-			saveObject("result_apk", results);
+
+		switch (type) {
+			case "doc":
+				saveObject("result_doc", results);
+				break;
+			case "zip":
+				saveObject("result_zip", results);
+				break;
+			case "apk":
+				saveObject("result_apk", results);
+				break;
+			default:
+				break;
 		}
 
 	}
@@ -263,9 +278,8 @@ public class Utils {
 				results = getObject("result_apk");
 				if(results.size()==0)
 					reSeach("apk");
-			} catch (Exception e2) {
+			} catch (Exception e) {
 				reSeach("apk");
-
 			}
 			return results;
 		} else
@@ -311,19 +325,19 @@ public class Utils {
 
 	}
 
+	@SuppressWarnings("unused")
 	public static Bitmap getImageThumbnail(String imagePath, int width, int height) {
-		Bitmap bitmap = null;
+		Bitmap bitmap;
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		// 获取这个图片的宽和高，注意此处的bitmap为null
-		bitmap = BitmapFactory.decodeFile(imagePath, options);
 		options.inJustDecodeBounds = false; // 设为 false
 		// 计算缩放比
 		int h = options.outHeight;
 		int w = options.outWidth;
 		int beWidth = w / width;
 		int beHeight = h / height;
-		int be = 1;
+		int be;
 		if (beWidth < beHeight) {
 			be = beWidth;
 		} else {
@@ -342,8 +356,7 @@ public class Utils {
 
 	/**
 	 * 使用系统工具打开文件
-	 * 
-	 * @param file
+	 *
 	 * @return 对应的Intent
 	 */
 	public static Intent openFile(File file) {
@@ -357,7 +370,7 @@ public class Utils {
 	}
 
 	public static String getMIMEType(File file) {
-		String type = "";
+		String type;
 		String name = file.getName();
 
 		String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
@@ -391,15 +404,15 @@ public class Utils {
 				String[] files = file.list();
 				if (null == files)
 					return;
-				for (int i = 0; i < files.length; i++) {
+				for (String tmpStr : files) {
 					if (n < 2) {
 						try {
-							pool.execute(new GetResult(new File(file.getPath() + "/" + files[i]), type, n + 1));
+							pool.execute(new GetResult(new File(file.getPath() + "/" + tmpStr), type, n + 1));
 						} catch (RejectedExecutionException e) {
-							getresult(new File(file.getPath() + "/" + files[i]), type);
+							getresult(new File(file.getPath() + "/" + tmpStr), type);
 						}
 					} else
-						getresult(new File(file.getPath() + "/" + files[i]), type);
+						getresult(new File(file.getPath() + "/" + tmpStr), type);
 				}
 
 			} else if (file.canRead()) {
@@ -407,24 +420,28 @@ public class Utils {
 				String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
 				if (type.equals("zip")) {
 					if (end.equals("zip") || end.equals("rar") || end.equals("7z")) {
-						synchronized (results) {
+						synchronized (lock) {
+							Date date = new Date(file.lastModified());
 							results.add(new Content(file.getPath(), file.getName(), null,
-									new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+									df.format(date), null));
 						}
 
 					}
 				} else if (type.equals("doc")) {
 					if (end.equals("txt") || end.equals("doc") || end.equals("docx")) {
-						synchronized (results) {
+						synchronized (lock) {
+							Date date = new Date(file.lastModified());
+
 							results.add(new Content(file.getPath(), file.getName(), null,
-									new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+									df.format(date), null));
 						}
 					}
 				} else if (type.equals("apk")) {
 					if (end.equals("apk")) {
-						synchronized (results) {
+						synchronized (lock) {
+							Date date = new Date(file.lastModified());
 							results.add(new Content(file.getPath(), file.getName(), null,
-									new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+									df.format(date), null));
 						}
 					}
 				}
@@ -434,8 +451,7 @@ public class Utils {
 
 	/**
 	 * 从指定文件递归获取文件列表
-	 * 
-	 * @param file
+	 *
 	 * @param type
 	 *            "zip","doc","apk"其中之一
 	 */
@@ -446,15 +462,16 @@ public class Utils {
 				String[] files = file.list();
 				if (null == files)
 					return;
-				for (int i = 0; i < files.length; i++)
-					getresult(new File(file.getPath() + "/" + files[i]), type);
+				for (String tmpStr : files)
+					getresult(new File(file.getPath() + "/" + tmpStr), type);
 
 			} else if (file.canRead()) {
 				String name = file.getName();
+				Date date = new Date(file.lastModified());
 				String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
 				if (end.equals("zip") || end.equals("rar") || end.equals("7z")) {
 					results.add(new Content(file.getPath(), file.getName(), null,
-							new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+							df.format(date), null));
 				}
 			}
 
@@ -463,18 +480,18 @@ public class Utils {
 				String[] files = file.list();
 				if (null == files)
 					return;
-				for (int i = 0; i < files.length; i++) {
-					getresult(new File(file.getPath() + "/" + files[i]), type);
+				for (String tmpStr : files) {
+					getresult(new File(file.getPath() + "/" + tmpStr), type);
 
 				}
 
 			} else if (file.canRead()) {
-
+				Date date = new Date(file.lastModified());
 				String name = file.getName();
 				String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
 				if (end.equals("doc") || end.equals("docx") || end.equals("txt")) {
 					results.add(new Content(file.getPath(), file.getName(), null,
-							new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+							df.format(date), null));
 				}
 			}
 
@@ -483,15 +500,16 @@ public class Utils {
 				String[] files = file.list();
 				if (null == files)
 					return;
-				for (int i = 0; i < files.length; i++)
-					getresult(new File(file.getPath() + "/" + files[i]), type);
+				for (String tmpStr : files)
+					getresult(new File(file.getPath() + "/" + tmpStr), type);
 
 			} else if (file.canRead()) {
 				String name = file.getName();
+				Date date = new Date(file.lastModified());
 				String end = name.substring(name.lastIndexOf(".") + 1, name.length()).toLowerCase();
 				if (end.equals("apk")) {
 					results.add(new Content(file.getPath(), file.getName(), null,
-							new SimpleDateFormat("yyyy/MM/dd").format(file.lastModified()), null));
+							df.format(date), null));
 				}
 			}
 
@@ -508,19 +526,27 @@ public class Utils {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	static ArrayList<Content> getObject(String name) throws Exception {
-		ArrayList<Content> savedArrayList = null;
+	static ArrayList<Content> getObject(String name) {
+		ArrayList<Content> savedArrayList = new ArrayList<>();
 		File file = new File(getPath(MyApp.context.get(), name));
 		if(file.exists()){
-		FileInputStream fileInputStream = null;
-		ObjectInputStream objectInputStream = null;
+			FileInputStream fileInputStream;
+			ObjectInputStream objectInputStream;
+			try {
+				fileInputStream = new FileInputStream(file.toString());
+				objectInputStream = new ObjectInputStream(fileInputStream);
+				Object obj = objectInputStream.readObject();
+				if (obj != null) {
+					savedArrayList = (ArrayList<Content>) obj;
+				}
+				objectInputStream.close();
+				fileInputStream.close();
+				return savedArrayList;
+			} catch (IOException | ClassNotFoundException e) {
+				Log.e("e", e.getMessage());
+				return savedArrayList;
+			}
 
-		fileInputStream = new FileInputStream(file.toString());
-		objectInputStream = new ObjectInputStream(fileInputStream);
-		savedArrayList = (ArrayList<Content>) objectInputStream.readObject();
-		objectInputStream.close();
-		fileInputStream.close();
-		return savedArrayList;
 		}else{
 			savedArrayList = new ArrayList<>();
 			return savedArrayList;
@@ -529,17 +555,24 @@ public class Utils {
 	}
 
 
-	public static ArrayList<DownData> getDownDataObject(String name) throws Exception {
-		ArrayList<DownData> savedArrayList ;
+	public static ArrayList<DownData> getDownDataObject(String name) {
+		ArrayList<DownData> savedArrayList = new ArrayList<>();
 		File file = new File(getPath(MyApp.context.get(), name));
 		FileInputStream fileInputStream ;
 		ObjectInputStream objectInputStream ;
-
-		fileInputStream = new FileInputStream(file.toString());
-		objectInputStream = new ObjectInputStream(fileInputStream);
-		savedArrayList = (ArrayList<DownData>) objectInputStream.readObject();
-		objectInputStream.close();
-		fileInputStream.close();
+		try {
+			fileInputStream = new FileInputStream(file.toString());
+			objectInputStream = new ObjectInputStream(fileInputStream);
+			Object obj = objectInputStream.readObject();
+			if (obj != null) {
+				savedArrayList = (ArrayList<DownData>) obj;
+			}
+			objectInputStream.close();
+			fileInputStream.close();
+		} catch (IOException | ClassNotFoundException e) {
+			Log.e("e", e.getMessage());
+			return savedArrayList;
+		}
 		return savedArrayList;
 
 	}
@@ -557,14 +590,15 @@ public class Utils {
 		ObjectOutputStream oos = null;
 		File file = new File(getPath(MyApp.context.get(), name));
 		if (!file.getParentFile().exists()) {
-			file.getParentFile().mkdirs();
+			if (!file.getParentFile().mkdirs())
+				return;
 		}
 
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
+				if (!file.createNewFile())
+					return;
 			} catch (IOException e) {
-				//
 				e.printStackTrace();
 			}
 		}
@@ -607,32 +641,38 @@ public class Utils {
 	 */
 	public static int getCount(String type, Context context) {
 		ArrayList<Content> results ;
-		ArrayList<File> files = new ArrayList<File>();
-		int count;
+		ArrayList<File> files = new ArrayList<>();
+		int count = 0;
 		if (type.equals("result_movie")) {
 
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);
+			if (cursor != null) {
 			cursor.moveToFirst();
 			count = cursor.getCount();
-			cursor.close();
+				cursor.close();
+			}
 		} else if (type.equals("result_music")) {
 
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);
+			if (cursor != null) {
 			cursor.moveToFirst();
 			count = cursor.getCount();
-			cursor.close();
+				cursor.close();
+			}
 		} else if (type.equals("result_photo")) {
 
 			ContentResolver contentResolver = context.getContentResolver();
 			Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null,
 					MediaStore.Video.Media.DEFAULT_SORT_ORDER);
+			if (cursor != null) {
 			cursor.moveToFirst();
 			count = cursor.getCount();
-			cursor.close();
+				cursor.close();
+			}
 		} else if (type.equals("result_qq")) {
 			File file = new File("/storage/sdcard0/tencent/QQfile_recv");
 			File sdfile = new File("/storage/sdcard1/tencent/QQfile_recv");
@@ -660,17 +700,17 @@ public class Utils {
 			File sdfile = new File("/storage/sdcard1/tencent/MicroMsg");
 			if (file.exists()) {
 				File[] mfils1 = file.listFiles();
-				for (int i = 0; i < mfils1.length; i++) {
-					if (mfils1[i].getName().length() > 25 && mfils1[i].isDirectory())
-						wcfiles.add(mfils1[i]);
+				for (File tmpFile : mfils1) {
+					if (tmpFile.getName().length() > 25 && tmpFile.isDirectory())
+						wcfiles.add(tmpFile);
 
 				}
 			}
 			if (sdfile.exists()) {
 				File[] mfils2 = sdfile.listFiles();
-				for (int i = 0; i < mfils2.length; i++) {
-					if (mfils2[i].getName().length() > 25 && mfils2[i].isDirectory())
-						wcfiles.add(mfils2[i]);
+				for (File tmpFile : mfils2) {
+					if (tmpFile.getName().length() > 25 && tmpFile.isDirectory())
+						wcfiles.add(tmpFile);
 
 				}
 			}

@@ -120,7 +120,8 @@ public class WifiAutoConnectManager {
 				try {
 					// 为了避免程序一直while循环，让它睡个100毫秒检测……
 					Thread.sleep(100);
-				} catch (InterruptedException ie) {
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 
@@ -149,11 +150,11 @@ public class WifiAutoConnectManager {
 		final int len = wepKey.length();
 
 		// WEP-40, WEP-104, and some vendors using 256-bit WEP (WEP-232?)
-		if (len != 10 && len != 26 && len != 58) {
-			return false;
-		}
+//		if (len != 10 && len != 26 && len != 58) {
+//			return false;
+//		}
 
-		return isHex(wepKey);
+		return !(len != 10 && len != 26 && len != 58) && isHex(wepKey);
 	}
 
 	private static boolean isHex(String key) {

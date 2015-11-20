@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:background="?attr/main_bg">
 
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TableLayout
         android:id="@+id/browse_tab_1"
         android:layout_width="match_parent"
@@ -504,6 +508,7 @@
             android:layout_marginEnd="5dp"
             android:contentDescription="@string/img_description"
             android:src="@drawable/jiantou" />
+    </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

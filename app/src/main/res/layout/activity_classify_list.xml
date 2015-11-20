@@ -7,13 +7,11 @@
     android:orientation="vertical"
     tools:context="com.changhong.fileplore.activities.PloreActivity">
     <android.support.v7.widget.Toolbar
-        android:paddingTop="15dp"
         android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:fitsSystemWindows="false"
-        tl:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+        android:fitsSystemWindows="false">
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:id="@+id/top"

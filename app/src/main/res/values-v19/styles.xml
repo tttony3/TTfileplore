@@ -7,7 +7,7 @@
     -->
     <style name="DayTheme" parent="@style/AppTheme">
 
-        <item name="android:windowTranslucentStatus">true</item>
+
         <item name="main_bg">@color/main_background_day</item>
         <item name="border_onchose">@color/border_onchose_day</item>
         <item name="main_bg_deep">@color/main_background_deep_day</item>
@@ -32,7 +32,7 @@
 
         <item name="navifagionView">@style/navifagionView_day</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorSecondary">@color/color_primary_light_day</item>
         <item name="colorPrimary">@color/color_primary_day</item>
         <item name="colorPrimaryDark">@color/color_primary_dark_day</item>
         <item name="colorPrimaryLight">@color/color_primary_light_day</item>
@@ -42,7 +42,6 @@
     </style>
     <style name="NightTheme" parent="@style/AppTheme">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="border_onchose">@color/border_onchose_night</item>
         <item name="main_bg">@color/main_background_night</item>
         <item name="main_bg_deep">@color/main_background_deep_night</item>

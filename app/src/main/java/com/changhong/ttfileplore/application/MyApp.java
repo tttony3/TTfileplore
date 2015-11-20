@@ -139,9 +139,9 @@ public class MyApp extends CoreApp {
 				.threadPoolSize(2)//线程池内加载的数量
 			    .threadPriority(Thread.NORM_PRIORITY - 2)
 		//	    .denyCacheImageMultipleSizesInMemory()
-				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
-			    .memoryCacheSize(2 * 1024 * 1024)    
-			    .diskCacheSize(50 * 1024 * 1024)    
+				.memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
+				.memoryCacheSize(5 * 1024 * 1024)
+				.diskCacheSize(50 * 1024 * 1024)
 			    .diskCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密  
 			    .tasksProcessingOrder(QueueProcessingType.LIFO)  
 			    .diskCacheFileCount(300) //缓存的文件数量  
