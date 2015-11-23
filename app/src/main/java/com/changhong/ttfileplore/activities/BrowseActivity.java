@@ -1,6 +1,5 @@
 package com.changhong.ttfileplore.activities;
 
-import com.changhong.ttfileplore.adapter.RecyclerViewAdapter;
 import com.changhong.ttfileplore.utils.Utils;
 
 import java.util.ArrayList;
@@ -19,15 +18,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressWarnings("unused")
+
 public class BrowseActivity extends Activity {
 	TextView tv_phoneTotal;
 	TextView tv_phoneNotUse;
@@ -67,8 +64,7 @@ public class BrowseActivity extends Activity {
 				break;
 		}
 		setContentView(R.layout.activity_browse);
-		MyApp myapp = (MyApp) getApplication();
-		myapp.setContext(this);
+		MyApp.setContext(this);
 		findView();
 		setView();
 
@@ -109,7 +105,6 @@ public class BrowseActivity extends Activity {
 		iv_photo = (ImageView) findViewById(R.id.img_photo);
 		iv_txt = (ImageView) findViewById(R.id.img_txt);
 		iv_zip = (ImageView) findViewById(R.id.img_zip);
-
 		tv_apk = (TextView) findViewById(R.id.tv_apk);
 		tv_movie = (TextView) findViewById(R.id.tv_movie);
 		tv_music = (TextView) findViewById(R.id.tv_music);
@@ -174,14 +169,13 @@ public class BrowseActivity extends Activity {
 
 		@Override
 		protected Map<String, Integer> doInBackground(Void... params) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
+			Map<String, Integer> map = new HashMap<>();
 			map.put("result_apk", Utils.getCount("result_apk", BrowseActivity.this));
 			map.put("result_music", Utils.getCount("result_music", BrowseActivity.this));
 			map.put("result_photo", Utils.getCount("result_photo", BrowseActivity.this));
 			map.put("result_movie", Utils.getCount("result_movie", BrowseActivity.this));
 			map.put("result_zip", Utils.getCount("result_zip", BrowseActivity.this));
 			map.put("result_doc", Utils.getCount("result_doc", BrowseActivity.this));
-			//map.put("result_app", Utils.getCount("result_doc", BrowseActivity.this));
 			map.put("result_wechat", Utils.getCount("result_wechat", BrowseActivity.this));
 			map.put("result_qq", Utils.getCount("result_qq", BrowseActivity.this));
 			return map;
@@ -201,16 +195,16 @@ public class BrowseActivity extends Activity {
 			tv_sdNotUse.setText(sdSpace[1]);
 
 			pb_sd.setProgress(100 - Integer
-					.parseInt(sdSpace[2].substring(0, (sdSpace[2].indexOf(".") == -1) ? 2 : sdSpace[2].indexOf("."))));
+					.parseInt(sdSpace[2].substring(0, (!sdSpace[2].contains(".")) ? 2 : sdSpace[2].indexOf("."))));
 			pb_phone.setProgress(100 - Integer.parseInt(
-					phoneSpace[2].substring(0, (phoneSpace[2].indexOf(".") == -1) ? 2 : phoneSpace[2].indexOf("."))));
+					phoneSpace[2].substring(0, (!phoneSpace[2].contains(".")) ? 2 : phoneSpace[2].indexOf("."))));
 
 			super.onPostExecute(result);
 		}
 
 		@Override
 		protected Map<String, String[]> doInBackground(Void... params) {
-			Map<String, String[]> map = new HashMap<String, String[]>();
+			Map<String, String[]> map = new HashMap<>();
 			String[] phoneSpace = Utils.getPhoneSpace(BrowseActivity.this);
 			String[] sdSpace = Utils.getSdSpace(BrowseActivity.this);
 			map.put("phoneSpace", phoneSpace);
@@ -232,9 +226,9 @@ public class BrowseActivity extends Activity {
 
 		@Override
 		protected Map<String, Integer> doInBackground(Void... params) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
+			Map<String, Integer> map = new HashMap<>();
 			List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
-			ArrayList<AppInfo> appList = new ArrayList<AppInfo>();
+			ArrayList<AppInfo> appList = new ArrayList<>();
 			for (int i = 0; i < packages.size(); i++) {
 				PackageInfo packageInfo = packages.get(i);
 				AppInfo tmpInfo = new AppInfo();

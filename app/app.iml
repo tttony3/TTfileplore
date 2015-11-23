@@ -92,8 +92,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="haha-1.1" level="project" />
     <orderEntry type="library" exported="" name="core-2.3.0" level="project" />
-    <orderEntry type="library" exported="" name="universal-image-loader-1.9.4-with-sources" level="project" />
     <orderEntry type="library" exported="" name="CoreSynergyStorage" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.4-with-sources" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="fancybuttons-1.5" level="project" />

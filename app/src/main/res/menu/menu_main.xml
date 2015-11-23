@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:title="查看" >
+    <menu>
     <item android:id="@+id/left_netfile" android:title="@string/netfile"
         android:orderInCategory="100" app:showAsAction="never"
         android:icon="@drawable/net"/>
@@ -16,7 +18,14 @@
     <item  android:id="@+id/left_photo" android:title="@string/photo"
     android:orderInCategory="100" app:showAsAction="never"
         android:icon="@drawable/file_icon_photo"/>
-    <item  android:id="@+id/left_set" android:title="@string/set"
-        android:orderInCategory="100" app:showAsAction="never"
-        android:icon="@drawable/ic_settings_black_36dp" />
+    </menu>
+    </item>
+    <item android:title="其他">
+        <menu>
+            <item  android:id="@+id/left_set" android:title="@string/set"
+                android:orderInCategory="100" app:showAsAction="never"
+                android:icon="@drawable/ic_settings_black_36dp" />
+        </menu>
+    </item>
+
 </menu>
