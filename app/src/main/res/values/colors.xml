@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="gray">#8b8b8b</color>
+    <color name="gray_alph">#408b8b8b</color>
     <color name="main_textcolor_day">#000000</color>
     <color name="item_background_day">#ffffff</color>
     <color name="item_background_deep_day">#e3e3e3</color>

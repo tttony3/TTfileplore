@@ -49,11 +49,11 @@ public class MyApp extends CoreApp {
 	String ip;
 	int port;
 	public DeviceInfo devinfo;
-	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.file_icon_photo)
+	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.color.gray_alph)
 			.showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
 			.cacheInMemory(true).cacheOnDisk(false).bitmapConfig(Bitmap.Config.RGB_565)
 			//.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
-			.displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
+			.displayer(new FadeInBitmapDisplayer(400))//是否图片加载好后渐入的动画时间
 			.build();
 	static public ArrayList<List<String>> recivePushList = new ArrayList<>();
 	public String getIp() {

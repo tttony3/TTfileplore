@@ -65,7 +65,6 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
         isshare = sharedPreferences.getBoolean("share", true);
         filePath = path;
         file  = new File(filePath);
-        setAnimationStyle(R.style.PopupAnimation);
         findView();
         initView();
     }

@@ -225,11 +225,14 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
                 final Content content = (Content) parent.getItemAtPosition(position);
                 if(content.getDir()==null)
                     return true;
+
                 MoreDialogFragment moreDialog = new MoreDialogFragment();
+
                 Bundle bundle = new Bundle();
                 bundle.putString("filePath", content.getDir());
                 moreDialog.setArguments(bundle);
                 moreDialog.show(getFragmentManager(), "moreDialog");
+
                 return true;
             }
         });

@@ -1,9 +1,11 @@
 package com.changhong.ttfileplore.fragment;
 
 import android.app.Fragment;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,24 +209,42 @@ public class PhotoTimeLineFragment extends Fragment {
                 (tmpView.findViewById(R.id.griditem_img)).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
-                        lp.alpha=0.5f;
+                        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                        lp.alpha = 0.5f;
                         getActivity().getWindow().setAttributes(lp);
-                        PopupMoreDialog p = new PopupMoreDialog(getActivity(),300, ViewGroup.LayoutParams.WRAP_CONTENT, true,file.getPath());
-                        p.showAsDropDown(v);
+                        PopupMoreDialog p = new PopupMoreDialog(getActivity(), 300, ViewGroup.LayoutParams.WRAP_CONTENT, true, file.getPath());
+                        int[] viewLocation = new int[2];
+                        v.getLocationInWindow(viewLocation);
+                        int viewX = viewLocation[0]; // x 坐标
+                        int viewY = viewLocation[1]; // y 坐标
+                        Point point = new Point();
+                        getActivity().getWindow().getWindowManager().getDefaultDisplay().getSize(point);
+                        if (point.x - viewX > 300) {
+                            if (point.y - viewY > 400) {
+                                p.setAnimationStyle(R.style.PopupAnimationTop);
+                                p.showAsDropDown(v, 50, -50);
+                            } else {
+                                p.setAnimationStyle(R.style.PopupAnimationBottom);
+                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX + 50, viewY - 350);
+                            }
+                        } else {
+                            if (point.y - viewY > 400) {
+                                p.setAnimationStyle(R.style.PopupAnimationTopRight);
+                                p.showAsDropDown(v, -250, -50);
+                            } else {
+                                p.setAnimationStyle(R.style.PopupAnimationBottomRight);
+                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX - 250, viewY - 350);
+                            }
+                        }
                         p.setOnDismissListener(new PopupWindow.OnDismissListener() {
                             @Override
                             public void onDismiss() {
-                                WindowManager.LayoutParams lp=getActivity().getWindow().getAttributes();
-                                lp.alpha=1f;
+                                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                                lp.alpha = 1f;
                                 getActivity().getWindow().setAttributes(lp);
                             }
                         });
-//                        MoreDialogFragment moreDialog = new MoreDialogFragment();
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("filePath", file.getPath());
-//                        moreDialog.setArguments(bundle);
-//                        moreDialog.show(getActivity().getFragmentManager(), "detailDialog");
+
                         return true;
                     }
                 });

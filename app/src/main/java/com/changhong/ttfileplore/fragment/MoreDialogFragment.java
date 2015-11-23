@@ -1,5 +1,6 @@
 package com.changhong.ttfileplore.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
@@ -63,6 +64,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         baseContext = getActivity();
         View view = inflater.inflate(R.layout.fragment_moredialog, container);
@@ -73,6 +75,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         file = new File(filePath);
         isshare = sharedPreferences.getBoolean("share", true);
         initView();
+        this.getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);//消除黑色棱角
 
         return view;
     }

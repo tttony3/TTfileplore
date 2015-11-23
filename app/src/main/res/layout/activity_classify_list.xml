@@ -56,7 +56,7 @@
             android:layout_height="match_parent"
             android:cacheColorHint="@android:color/transparent"
             android:divider="?attr/main_bg"
-            android:dividerHeight="4dp"
+            android:dividerHeight="2dp"
             android:fadingEdge="none" />
     </RelativeLayout>
 

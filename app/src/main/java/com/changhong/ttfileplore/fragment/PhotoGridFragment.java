@@ -2,8 +2,10 @@ package com.changhong.ttfileplore.fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +71,31 @@ public class PhotoGridFragment extends Fragment implements AdapterView.OnItemLon
         lp.alpha=0.5f;
         getActivity().getWindow().setAttributes(lp);
         PopupMoreDialog p = new PopupMoreDialog(getActivity(),300, ViewGroup.LayoutParams.WRAP_CONTENT, true,file.getPath());
-        p.showAsDropDown(view);
+        int[] viewLocation = new int[2];
+        view.getLocationInWindow(viewLocation);
+        int viewX = viewLocation[0]; // x 坐标
+        int viewY = viewLocation[1]; // y 坐标
+        Point point = new Point();
+        getActivity().getWindow().getWindowManager().getDefaultDisplay().getSize(point);
+        Log.e("yy", p.getHeight() + " " + p.getWidth());
+        if (point.x - viewX > 300) {
+            if (point.y - viewY > 400) {
+                p.setAnimationStyle(R.style.PopupAnimationTop);
+                p.showAsDropDown(view, 150, -250);
+            } else {
+                p.setAnimationStyle(R.style.PopupAnimationBottom);
+                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + 150, viewY - 350);
+            }
+        } else {
+            if (point.y - viewY > 350) {
+                p.setAnimationStyle(R.style.PopupAnimationTopRight);
+                p.showAsDropDown(view, -150, -250);
+            } else {
+                p.setAnimationStyle(R.style.PopupAnimationBottomRight);
+                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - 150, viewY - 350);
+            }
+        }
+
         p.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -79,11 +105,6 @@ public class PhotoGridFragment extends Fragment implements AdapterView.OnItemLon
             }
         });
 
-//            MoreDialogFragment moreDialog = new MoreDialogFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putString("filePath", file.getPath());
-//            moreDialog.setArguments(bundle);
-//            moreDialog.show(getActivity().getFragmentManager(), "moreDialog");
             return true;
 
 

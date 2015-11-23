@@ -1,6 +1,7 @@
 package com.changhong.ttfileplore.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,6 @@ public class PhotoGirdAdapter2 extends BaseAdapter {
 		viewHolder.title.setText(results.get(position).getName());
 		final String path = results.get(position).getPath();
 		imageLoader.displayImage("file://" + path, viewHolder.image);
-
 		return convertView;
 	}
 	class ViewHolder {

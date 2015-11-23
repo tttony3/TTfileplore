@@ -9,6 +9,7 @@
     <attr name="border_onchose" format="reference|color"/>
     <attr name="shape_select" format="reference"/>
     <attr name="shape_tablebg" format="reference"/>
+    <attr name="shape_popmenu" format="reference" />
     <attr name="item_shape" format="reference"/>
     <attr name="item_select" format="reference"/>
     <attr name="shape_bg" format="reference"/>
@@ -21,4 +22,5 @@
     <attr name="navifagionView" format="reference" />
     <attr name="colorPrimaryLight" format="reference|color" />
     <attr name="mcolorAccent" format="reference|color" />
+    <attr name="popmenu_item_select" format="reference" />
 </resources>

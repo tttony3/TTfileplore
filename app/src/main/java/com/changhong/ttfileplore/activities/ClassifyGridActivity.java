@@ -21,10 +21,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,18 +109,34 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         final Content content = (Content) parent.getItemAtPosition(position);
-//                        MoreDialogFragment moreDialog = new MoreDialogFragment();
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("filePath", content.getDir());
-//                        moreDialog.setArguments(bundle);
-//                        moreDialog.show(getFragmentManager(), "moreDialog");
-
                         WindowManager.LayoutParams lp=getWindow().getAttributes();
                         lp.alpha=0.5f;
                        getWindow().setAttributes(lp);
                         PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this,300, ViewGroup.LayoutParams.WRAP_CONTENT,
                                 true,content.getDir());
-                        p.showAsDropDown(view);
+                        int[] viewLocation = new int[2];
+                        view.getLocationInWindow(viewLocation);
+                        int viewX = viewLocation[0]; // x 坐标
+                        int viewY = viewLocation[1]; // y 坐标
+                        Point point = new Point();
+                        getWindow().getWindowManager().getDefaultDisplay().getSize(point);
+                        if (point.x - viewX > 300) {
+                            if (point.y - viewY > 350) {
+                                p.setAnimationStyle(R.style.PopupAnimationTop);
+                                p.showAsDropDown(view, 150, -250);
+                            } else {
+                                p.setAnimationStyle(R.style.PopupAnimationBottom);
+                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + 150, viewY - 200);
+                            }
+                        } else {
+                            if (point.y - viewY > 350) {
+                                p.setAnimationStyle(R.style.PopupAnimationTopRight);
+                                p.showAsDropDown(view, -150, -250);
+                            } else {
+                                p.setAnimationStyle(R.style.PopupAnimationBottomRight);
+                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - 150, viewY - 200);
+                            }
+                        }
                         p.setOnDismissListener(new PopupWindow.OnDismissListener() {
                             @Override
                             public void onDismiss() {

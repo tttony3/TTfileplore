@@ -509,6 +509,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onRestart() {
+        Log.e("onRestart", "onRestart");
         super.onRestart();
         ((PloreActivity) list.get(1).getContext()).showhidefile = sharedPreferences.getBoolean("showhidefile", false);
         myapp = (MyApp) getApplication();
@@ -528,6 +529,7 @@ public class MainActivity extends AppCompatActivity
             });
         }
         int tmptheme = sharedPreferences.getInt("Theme", theme);
+        Log.e("tmptheme", tmptheme + " " + theme);
         if (theme != tmptheme) {
 
             setTheme(tmptheme);
