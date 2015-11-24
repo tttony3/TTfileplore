@@ -7,6 +7,7 @@ import com.changhong.ttfileplore.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,14 +18,12 @@ public class ClassifyGridAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ArrayList<Content> pictures;
 	private int type = 0;
-
+public int x;
+	public int y ;
 	/**
 	 * 
 	 * @param pictures
 	 *            适配列表
-	 * @param context
-	 * @param type
-	 *            按钮id(R.id.XX)
 	 */
 	public void updateList(ArrayList<Content> pictures){
 		this.pictures = pictures;
@@ -84,6 +83,19 @@ public class ClassifyGridAdapter extends BaseAdapter {
 			viewHolder.image.setBackgroundResource(R.drawable.file_icon_photo);
 		else
 			viewHolder.image.setBackgroundResource(R.drawable.file_icon_unknown);
+		convertView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN){
+					x=(int)event.getX();
+					y=(int)event.getY();
+				}else{
+					x=0;y=0;
+				}
+				return false;
+			}
+
+		});
 		return convertView;
 	}
 

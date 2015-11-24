@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +41,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class ClassifyListActivity extends BaseActivity implements RefreshListView.IOnRefreshListener, MoreDialogFragment.UpDate {
+public class ClassifyListActivity extends BaseActivity implements RefreshListView.IOnRefreshListener, MoreDialogFragment.UpDate, View.OnClickListener {
     static private final int APK = 1;
     static private final int DOC = 2;
     static private final int ZIP = 3;
@@ -58,6 +59,7 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
     int flg;
     MyHandler handler;
     ClassifyListAdapter listAdapter;
+    FloatingActionButton fab;
 
     @Override
     public void update() {
@@ -91,6 +93,19 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
                 break;
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                if (listAdapter.isShow_cb()) {
+                    listAdapter.setShow_cb(false);
+                } else {
+                    listAdapter.setShow_cb(true);
+                }
+                break;
+        }
     }
 
     class MyHandler extends Handler {
@@ -160,13 +175,16 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
         initView(flg);
         initToolBar();
     }
+
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
     }
+
     private void initView(final int flg) {
 
         switch (flg) {
+
             case R.id.img_music:
                 mProgressView.startAnim();
                 alertDialog.show();
@@ -204,6 +222,8 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
             default:
                 break;
         }
+        fab.setOnClickListener(this);
+
         lv_classify.setOnRefreshListener(this);
         lv_classify.setOnItemClickListener(new OnItemClickListener() {
 
@@ -218,18 +238,20 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
             }
 
         });
+
         lv_classify.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final Content content = (Content) parent.getItemAtPosition(position);
-                if(content.getDir()==null)
+                if (content.getDir() == null)
                     return true;
-
                 MoreDialogFragment moreDialog = new MoreDialogFragment();
-
+                moreDialog.setSource(view);
                 Bundle bundle = new Bundle();
                 bundle.putString("filePath", content.getDir());
+                bundle.putInt("x", listAdapter.x);
+                bundle.putInt("y", listAdapter.y);
                 moreDialog.setArguments(bundle);
                 moreDialog.show(getFragmentManager(), "moreDialog");
 
@@ -242,6 +264,7 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
     @Override
     public void findView() {
         inflater = getLayoutInflater();
+        fab = findView(R.id.fab);
         lv_classify = (RefreshListView) findViewById(R.id.file_list);
         tv_dir = (TextView) findViewById(R.id.path);
         tv_count = (TextView) findViewById(R.id.item_count);

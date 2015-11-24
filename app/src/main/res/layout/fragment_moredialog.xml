@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="?shape_popmenu"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="?shape_popmenu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="230dp"
         android:orientation="vertical" >
         <RelativeLayout
+
             android:background="?popmenu_item_select"
             android:layout_margin="1dp"
             android:id="@+id/rl_moreoption_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true" >
+            android:clickable="true">
 
             <TextView
                 android:gravity="center"
@@ -169,6 +166,5 @@
                 android:textSize="@dimen/textsize_option" />
 
         </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
 

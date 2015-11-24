@@ -27,6 +27,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,13 +41,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QQListActivity extends BaseActivity implements OnItemClickListener, OnItemLongClickListener,
-		MoreDialogFragment.UpDate ,PloreListAdapter.ImgOnClick{
+		MoreDialogFragment.UpDate ,PloreListAdapter.ImgOnClick, View.OnClickListener {
 	private RefreshDataAsynTask mRefreshAsynTask;
 	LayoutInflater inflater;
 	AlertDialog alertDialog;
 	AlertDialog.Builder builder;
 	CircleProgress mProgressView;
 	View layout;
+	private FloatingActionButton fab ;
 	private RefreshListView lv_classify;
 	private TextView tv_dir;
 	private TextView tv_count;
@@ -92,23 +94,23 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 
 			case R.id.img_wechat:
 
-				ArrayList<File> wcfiles = new ArrayList<File>();
+				ArrayList<File> wcfiles = new ArrayList<>();
 				tv_dir.setText("微信小视频");
 				file = new File("/storage/sdcard0/tencent/MicroMsg");
 				sdfile = new File("/storage/sdcard1/tencent/MicroMsg");
 				if (file.exists()) {
 					File[] mfils1 = file.listFiles();
-					for (int i = 0; i < mfils1.length; i++) {
-						if (mfils1[i].getName().length() > 25 && mfils1[i].isDirectory())
-							wcfiles.add(mfils1[i]);
+					for (File tmpfile:mfils1) {
+						if (tmpfile.getName().length() > 25 && tmpfile.isDirectory())
+							wcfiles.add(tmpfile);
 
 					}
 				}
 				if (sdfile.exists()) {
 					File[] mfils2 = sdfile.listFiles();
-					for (int i = 0; i < mfils2.length; i++) {
-						if (mfils2[i].getName().length() > 25 && mfils2[i].isDirectory())
-							wcfiles.add(mfils2[i]);
+					for (File tmpfile:mfils2) {
+						if (tmpfile.getName().length() > 25 && tmpfile.isDirectory())
+							wcfiles.add(tmpfile);
 
 					}
 				}
@@ -147,6 +149,7 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 			}
 
 			tv_count.setText(files.size() + "项");
+			fab.setOnClickListener(this);
 			qqAdapter = new PloreListAdapter(QQListActivity.this, files, true, ImageLoader.getInstance());
 			lv_classify.setAdapter(qqAdapter);
 			lv_classify.setOnItemClickListener(this);
@@ -157,6 +160,7 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 	@Override
 	protected void findView() {
 		getLayoutInflater();
+		fab  = findView(R.id.fab);
 		lv_classify = (RefreshListView) findViewById(R.id.file_list);
 		tv_dir = (TextView) findViewById(R.id.path);
 		tv_count = (TextView) findViewById(R.id.item_count);
@@ -214,8 +218,11 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 
 			  file = (File) parent.getItemAtPosition(position);
 			MoreDialogFragment moreDialog = new MoreDialogFragment();
+			moreDialog.setSource(view);
 			Bundle bundle = new Bundle();
 			bundle.putString("filePath", file.getPath());
+			bundle.putInt("x", qqAdapter.x);
+			bundle.putInt("y", qqAdapter.y);
 			moreDialog.setArguments(bundle);
 			moreDialog.show(getFragmentManager(), "detailDialog");
 
@@ -255,6 +262,20 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 			father.add(file.getParentFile());
 		}else{
 			startActivity(Utils.openFile(file));
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.fab:
+				if(qqAdapter.isShow_cb()){
+					qqAdapter.setShow_cb(false);
+				}else{
+					qqAdapter.setShow_cb(true);
+				}
+				qqAdapter.notifyDataSetChanged();
+				break;
 		}
 	}
 

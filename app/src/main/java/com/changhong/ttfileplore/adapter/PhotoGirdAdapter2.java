@@ -3,6 +3,7 @@ package com.changhong.ttfileplore.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,7 +20,8 @@ public class PhotoGirdAdapter2 extends BaseAdapter {
 	ArrayList<File> results;
 	private LayoutInflater inflater;
 	ImageLoader imageLoader =ImageLoader.getInstance() ;
-
+	public int x;
+	public int y;
 	public void updateList(ArrayList<File> results) {
 		this.results = results;
 		notifyDataSetChanged();
@@ -62,6 +64,20 @@ public class PhotoGirdAdapter2 extends BaseAdapter {
 		viewHolder.title.setText(results.get(position).getName());
 		final String path = results.get(position).getPath();
 		imageLoader.displayImage("file://" + path, viewHolder.image);
+		convertView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					x = (int) event.getX();
+					y = (int) event.getY();
+				} else {
+					x = 0;
+					y = 0;
+				}
+				return false;
+			}
+
+		});
 		return convertView;
 	}
 	class ViewHolder {

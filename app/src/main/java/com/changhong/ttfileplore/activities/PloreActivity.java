@@ -55,7 +55,7 @@ import android.widget.Toast;
 
 import com.changhong.ttfileplore.utils.*;
 
-public class PloreActivity extends BaseActivity implements RefreshListView.IOnRefreshListener, View.OnClickListener,
+public class PloreActivity extends BaseActivity implements  View.OnClickListener,
         PloreInterface, OnItemClickListener, OnItemLongClickListener,
         OnMenuItemClickListener, RecyclerViewAdapter.OnItemClickLitener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
     protected ImageLoader imageLoader = ImageLoader.getInstance();
@@ -64,8 +64,7 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
     private ArrayList<File> fileList;
-    RecyclerView mListView;
-    //   private RefreshListView mListView;
+    private  RecyclerView mListView;
     private TextView mPathView;
     private ImageView iv_back;
     private TextView mItemCount;
@@ -77,7 +76,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     private Button btn_copy;
     private Button btn_cut;
     private Button btn_more;
-    //  public PloreListAdapter mFileAdpter;
     public RecyclerViewAdapter mFileAdpter;
     private LinearLayout ll_btn;
     private LinearLayout ll_btn_default;
@@ -148,74 +146,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
     private void initView() {
-//        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            boolean flingAni = true;
-//            boolean touchAni = true;
-//            Animation animation;
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                switch (scrollState) {
-//                    case SCROLL_STATE_IDLE:
-//                        flingAni = true;
-//                        touchAni = true;
-//                        animation = new TranslateAnimation(0, 0, 100, 0);
-//                        animation.setFillAfter(true);// True:图片停在动画结束位置
-//                        animation.setDuration(500);
-//                        if (isdefault_btn) {
-//                            ll_btn_default.startAnimation(animation);
-//                        } else {
-//                            ll_btn.startAnimation(animation);
-//                        }
-//
-//                        break;
-//                    case SCROLL_STATE_FLING:
-//                        touchAni = false;
-//                        if (!flingAni) {
-//                            break;
-//                        }
-//                        animation = new TranslateAnimation(0, 0, 0, 100);
-//                        animation.setFillAfter(true);// True:图片停在动画结束位置
-//                        animation.setDuration(500);
-//                        if (isdefault_btn) {
-//                            ll_btn_default.startAnimation(animation);
-//                        } else {
-//                            ll_btn.startAnimation(animation);
-//                        }
-//
-//
-//                        break;
-//                    case SCROLL_STATE_TOUCH_SCROLL:
-//                        flingAni = false;
-//                        if (!touchAni) {
-//                            break;
-//                        }
-//                        animation = new TranslateAnimation(0, 0, 0, 100);
-//                        animation.setFillAfter(true);// True:图片停在动画结束位置
-//                        animation.setDuration(500);
-//                        if (isdefault_btn) {
-//                            ll_btn_default.startAnimation(animation);
-//                        } else {
-//                            ll_btn.startAnimation(animation);
-//                        }
-//
-//                        break;
-//
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//
-//
-//                mListView.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-//            }
-//        });
-//        mListView.setonOnItemClickListener(this);
-//        mListView.setOnItemLongClickListener(this);
-//        mListView.setOnRefreshListener(this);
         btn_newfile.setOnClickListener(this);
         btn_paste.setOnClickListener(this);
         btn_sort.setOnClickListener(this);
@@ -251,8 +181,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     @Override
     public void loadData(File folder, int sorttype) {
         setDefaultBtn();
-
-        boolean isRoot = (folder.getParent() == null);
         if (folder.canRead()) {
             String path = folder.getPath();
             mPathView.setText(path);
@@ -263,7 +191,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
             mListView.setLayoutManager(new LinearLayoutManager(mListView.getContext()));
             mFileAdpter.setOnItemClickLitener(this);
             mListView.setAdapter(mFileAdpter);
-            //      mListView.setAdapter(mFileAdpter);
         }
 
     }
@@ -445,7 +372,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.file_list:
-                Log.e("11", "11");
                 if (!(view instanceof ImageView))
                     if (!mFileAdpter.isShow_cb()) {
                         mFileAdpter.setShow_cb(true);
@@ -453,7 +379,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
                         mFileAdpter.notifyDataSetChanged();
                     }
                 return true;
-
             default:
                 break;
         }
@@ -481,12 +406,12 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
     }
 
 
-    @Override
-    public void OnRefresh() {
-        RefreshDataAsynTask mRefreshAsynTask = new RefreshDataAsynTask();
-        mRefreshAsynTask.execute();
-
-    }
+//    @Override
+//    public void OnRefresh() {
+//        RefreshDataAsynTask mRefreshAsynTask = new RefreshDataAsynTask();
+//        mRefreshAsynTask.execute();
+//
+//    }
 
 
     @Override
@@ -852,7 +777,6 @@ public class PloreActivity extends BaseActivity implements RefreshListView.IOnRe
         @Override
         protected void onPostExecute(Void result) {
             loadData(new File(mPathView.getText().toString()), sorttype);
-            //     mListView.onRefreshComplete();
         }
 
     }

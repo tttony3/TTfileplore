@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -75,14 +76,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_plore, parent, false);
+        View view;
+        if(viewType ==VIEW_TYPES.Footer){
+            view = new ImageView(context);
+            view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, Utils.dpTopx(40, context)));
+        }
+        else
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_plore, parent, false);
         return new ViewHolder(view);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final RecyclerViewAdapter.ViewHolder viewHolder, final int position) {
+        if(position==files.size())
+            return;
         final File file = files.get(position);
         if (mOnItemClickLitener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -119,10 +127,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             @Override
             public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    checkbox_list[position] = true;
-                } else
-                    checkbox_list[position] = false;
+                checkbox_list[position]=((CheckBox) v).isChecked();
+
             }
         });
         if (file.isDirectory()) {
@@ -133,7 +139,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     ((OnItemClickLitener) context).onClickImg(v, file);
-                    ;
 
                 }
             });
@@ -145,6 +150,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if (!file.exists() || !file.canRead() || !file.isDirectory())
                         return false;
                     FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
+                    filePreViewFragment.setSource(v);
                     Bundle bundle = new Bundle();
                     bundle.putString("filePath", file.getPath());
                     bundle.putInt("type", FilePreViewFragment.OTHER);
@@ -164,7 +170,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     ((OnItemClickLitener) context).onClickImg(v, file);
-                    ;
 
                 }
             });
@@ -212,7 +217,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return files.size();
+        return files.size()+1;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -228,6 +233,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             time = (TextView) view.findViewById(R.id.lasttime);
             img = (ImageView) view.findViewById(R.id.fileimg);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+       if(position== files.size())
+            return VIEW_TYPES.Footer;
+        else
+            return VIEW_TYPES.Normal;
+
     }
 
     public int getMIMEType(String name) {
@@ -290,5 +305,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<File> getAllFiles() {
 
         return files;
+    }
+
+    private class VIEW_TYPES {
+        public static final int Header = 1;
+        public static final int Normal = 2;
+        public static final int Footer = 3;
     }
 }

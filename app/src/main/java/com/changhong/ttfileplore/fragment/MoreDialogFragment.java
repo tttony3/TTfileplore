@@ -15,12 +15,17 @@ import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.Layout;
 import android.text.format.Formatter;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,26 +61,48 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     private ImageView iv_qr;
     SharedPreferences sharedPreferences;
     boolean isshare = true;
+    private View source;
+    private int x;
+    private int y;
+
     /**
-     *  刷新界面，由activity实现
+     * 刷新界面，由activity实现
      */
-    public interface UpDate{
+    public interface UpDate {
         void update();
     }
+
+    public MoreDialogFragment() {
+
+    }
+
+    public void setSource(View v) {
+        source = v;
+    }
+
+    public View getSource() {
+        return source;
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         baseContext = getActivity();
+
         View view = inflater.inflate(R.layout.fragment_moredialog, container);
-        findView(view,container);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //背景透明
+        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        findView(view, container);
         sharedPreferences = getActivity().getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
         Bundle bundle = getArguments();
         filePath = bundle.getString("filePath");
+        x = bundle.getInt("x", 0);
+        y = bundle.getInt("y", 0);
         file = new File(filePath);
         isshare = sharedPreferences.getBoolean("share", true);
+//        setDialogPosition();
         initView();
-        this.getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);//消除黑色棱角
 
         return view;
     }
@@ -90,7 +117,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
 
     }
 
-    private void findView(View view,ViewGroup container) {
+    private void findView(View view, ViewGroup container) {
         rl_delete = (RelativeLayout) view.findViewById(R.id.rl_moreoption_delete);
         rl_qr = (RelativeLayout) view.findViewById(R.id.rl_moreoption_qr);
         rl_detail = (RelativeLayout) view.findViewById(R.id.rl_moreoption_detail);
@@ -103,6 +130,92 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         alertDialog_qr = builder_qr.create();
         iv_qr = (ImageView) layout_qr.findViewById(R.id.iv_qr);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setDialogPosition();
+    }
+
+    private void setDialogPosition() {
+        if (source == null) {
+            return; // Leave the dialog in default position
+        }
+
+        // Find out location of source component on screen
+        // see http://stackoverflow.com/a/6798093/56285
+        int[] location = new int[2];
+        source.getLocationOnScreen(location);
+        if (x != 0 && y != 0) {
+            y=location[1];
+            Window window = getDialog().getWindow();
+            DisplayMetrics dm = new DisplayMetrics();
+            window.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int sceenHeight = dm.heightPixels;//高度
+            int sceenWidth = dm.widthPixels;//高度
+            window.setGravity(Gravity.TOP | Gravity.START);
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = dpToPx(150);
+            // Just an example; edit to suit your needs.
+
+            if (x + dpToPx(150) < sceenWidth) {
+                params.x = x;
+                if (y + dpToPx(240) < sceenHeight) {
+                    getDialog().getWindow()
+                            .getAttributes().windowAnimations = R.style.PopupAnimationTop;
+                    params.y = y; // below source view
+                } else {
+                    getDialog().getWindow()
+                            .getAttributes().windowAnimations = R.style.PopupAnimationBottom;
+                    params.y = y - dpToPx(230);// above source view
+                }
+            } else {
+                params.x = x-dpToPx(150);
+                if (y + dpToPx(240) < sceenHeight) {
+                    getDialog().getWindow()
+                            .getAttributes().windowAnimations = R.style.PopupAnimationTopRight;
+                    params.y = y; // below source view
+                } else {
+                    getDialog().getWindow()
+                            .getAttributes().windowAnimations = R.style.PopupAnimationBottomRight;
+                    params.y = y - dpToPx(230);// above source view
+                }
+            }
+
+
+            window.setAttributes(params);
+        } else {
+            int sourceX = location[0];
+            int sourceY = location[1];
+            Window window = getDialog().getWindow();
+
+            DisplayMetrics dm = new DisplayMetrics();
+            window.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            //     int width = dm.widthPixels;//宽度
+            int height = dm.heightPixels;//高度
+            window.setGravity(Gravity.TOP | Gravity.START);
+
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = dpToPx(150);
+            // Just an example; edit to suit your needs.
+            params.x = sourceX + dpToPx(60);
+            if (sourceY + dpToPx(240) < height) {
+                getDialog().getWindow()
+                        .getAttributes().windowAnimations = R.style.PopupAnimationTop;
+                params.y = sourceY + dpToPx(3); // below source view
+            } else {
+                getDialog().getWindow()
+                        .getAttributes().windowAnimations = R.style.PopupAnimationBottom;
+                params.y = sourceY - dpToPx(230);// above source view
+            }
+            window.setAttributes(params);
+        }
+    }
+
+    public int dpToPx(float valueInDp) {
+        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
     @Override
@@ -122,10 +235,10 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 this.dismiss();
                 break;
             case R.id.rl_moreoption_qr:
-               if(!isshare){
-                   Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
-                   break;
-               }
+                if (!isshare) {
+                    Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 String ssid = "~";
                 WifiManager wifiManager = (WifiManager) baseContext.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {
@@ -226,7 +339,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
 
                 break;
             case R.id.rl_moreoption_share:
-                if(!isshare){
+                if (!isshare) {
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -238,7 +351,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                 }
                 break;
             case R.id.rl_moreoption_push:
-                if(!isshare){
+                if (!isshare) {
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }

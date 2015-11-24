@@ -1,10 +1,13 @@
 package com.changhong.ttfileplore.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Created by tangli on 2015/11/2.
+ * Website: https://github.com/tttony3
  */
 public class PhotoTimeLineFragment extends Fragment {
     private View view ;
@@ -42,10 +46,12 @@ public class PhotoTimeLineFragment extends Fragment {
     private ArrayList<PhotoItem> fileitems= new ArrayList<>();
     private  File[] listFiles;
     private String path;
+    public Context baseContext;
     ExecutorService threadPool=Executors.newFixedThreadPool(2);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        baseContext = getActivity();
         view =inflater.inflate(R.layout.fragment_photo_timeline, container, false);
         Bundle b =getArguments();
         path =b.getString("path");
@@ -124,7 +130,10 @@ public class PhotoTimeLineFragment extends Fragment {
             }
         return  listFiles;
     }
-
+    public int dpToPx(float valueInDp) {
+        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
+    }
 
     class PhotoItem{
 
@@ -207,33 +216,35 @@ public class PhotoTimeLineFragment extends Fragment {
                     }
                 });
                 (tmpView.findViewById(R.id.griditem_img)).setOnLongClickListener(new View.OnLongClickListener() {
+
+
                     @Override
                     public boolean onLongClick(View v) {
                         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
                         lp.alpha = 0.5f;
                         getActivity().getWindow().setAttributes(lp);
-                        PopupMoreDialog p = new PopupMoreDialog(getActivity(), 300, ViewGroup.LayoutParams.WRAP_CONTENT, true, file.getPath());
+                        PopupMoreDialog p = new PopupMoreDialog(getActivity(), Utils.dpTopx(150,baseContext), ViewGroup.LayoutParams.WRAP_CONTENT, true, file.getPath());
                         int[] viewLocation = new int[2];
                         v.getLocationInWindow(viewLocation);
                         int viewX = viewLocation[0]; // x 坐标
                         int viewY = viewLocation[1]; // y 坐标
                         Point point = new Point();
                         getActivity().getWindow().getWindowManager().getDefaultDisplay().getSize(point);
-                        if (point.x - viewX > 300) {
-                            if (point.y - viewY > 400) {
+                        if (point.x - viewX > Utils.dpTopx(150,baseContext)) {
+                            if (point.y - viewY-dpToPx(40) > dpToPx(240)) {
                                 p.setAnimationStyle(R.style.PopupAnimationTop);
-                                p.showAsDropDown(v, 50, -50);
+                                p.showAsDropDown(v, dpToPx(20), -dpToPx(20));
                             } else {
                                 p.setAnimationStyle(R.style.PopupAnimationBottom);
-                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX + 50, viewY - 350);
+                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX + dpToPx(20), viewY - dpToPx(240)+dpToPx(20));
                             }
                         } else {
-                            if (point.y - viewY > 400) {
+                            if (point.y - viewY-dpToPx(40) > dpToPx(240)) {
                                 p.setAnimationStyle(R.style.PopupAnimationTopRight);
-                                p.showAsDropDown(v, -250, -50);
+                                p.showAsDropDown(v, -dpToPx(120), -dpToPx(20));
                             } else {
                                 p.setAnimationStyle(R.style.PopupAnimationBottomRight);
-                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX - 250, viewY - 350);
+                                p.showAtLocation(v, Gravity.NO_GRAVITY, viewX - dpToPx(120), viewY - dpToPx(240)+dpToPx(20));
                             }
                         }
                         p.setOnDismissListener(new PopupWindow.OnDismissListener() {

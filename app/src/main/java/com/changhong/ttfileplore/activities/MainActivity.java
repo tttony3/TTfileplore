@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     final ArrayList<View> list = new ArrayList<>();
     Context context = null;
 
+    @SuppressWarnings("deprecation")
     LocalActivityManager manager = null;
     ViewPager pager = null;
     TableLayout tl_brwloc;
@@ -121,11 +122,13 @@ public class MainActivity extends AppCompatActivity
                     CoreServiceBinder binder = (CoreServiceBinder) b;
                     binder.init();
                     binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
+                    //noinspection deprecation
                     binder.StartHttpServer("/", context);
                 }
             });
         }
 
+        //noinspection deprecation
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
 
@@ -524,6 +527,7 @@ public class MainActivity extends AppCompatActivity
                     CoreServiceBinder binder = (CoreServiceBinder) b;
                     binder.init();
                     binder.setCoreHttpServerCBFunction(myapp.httpServerCB);
+                    //noinspection deprecation
                     binder.StartHttpServer("/", context);
                 }
             });
@@ -652,13 +656,13 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.img_movie:
-                onLongClick("/Movies", "/DCIM/Camera", "video/*");
+                onLongClick("/Movies", "/DCIM/Camera", "video/*",v);
                 break;
             case R.id.img_music:
-                onLongClick("/Music", null, "audio/*");
+                onLongClick("/Music", null, "audio/*",v);
                 break;
             case R.id.img_photo:
-                onLongClick("/DCIM/Camera", "/Pictures/Saved Pictures", "image/*");
+                onLongClick("/DCIM/Camera", "/Pictures/Saved Pictures", "image/*",v);
                 break;
             case R.id.img_txt:
 
@@ -678,7 +682,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void onLongClick(String foldername1, String foldername2, String type) {
+    private void onLongClick(String foldername1, String foldername2, String type,View v) {
         ArrayList<File> filelist = new ArrayList<>();
         if (null != foldername1) {
             File file1 = new File("/storage/sdcard1" + foldername1);
@@ -727,6 +731,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
         FilePreViewFragment filePreViewFragment = new FilePreViewFragment();
+        filePreViewFragment.setSource(v);
         Bundle bundle = new Bundle();
         bundle.putSerializable("filelist", files1);
         bundle.putInt("type", FilePreViewFragment.MAIN);

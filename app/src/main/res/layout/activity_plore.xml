@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="?attr/main_bg"
-    tools:context="com.changhong.fileplore.activities.PloreActivity" >
+    tools:context="com.changhong.fileplore.activities.PloreActivity">
 
     <RelativeLayout
         android:id="@+id/top"
@@ -28,10 +28,9 @@
             android:id="@+id/path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-              android:paddingTop="2dp"
+
             android:layout_marginStart="7dp"
-            android:layout_marginTop="2dp"
+
             android:layout_toEndOf="@+id/iv_back"
             android:background="?shape_bg"
             android:maxEms="20"
@@ -52,41 +51,27 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/ll_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/top"
-        android:layout_marginTop="2dp"
-        android:paddingBottom="2dp"
-        android:background="?attr/main_bg"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp" >
+
 
         <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/top"
             android:id="@+id/file_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true" />
 
-        <!--<com.changhong.ttfileplore.view.RefreshListView-->
-        <!--android:id="@+id/file_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="?main_bg"-->
-        <!--android:cacheColorHint="@android:color/transparent"-->
-        <!--android:divider="?attr/main_bg"-->
-        <!--android:dividerHeight="4dp"-->
-        <!--android:fadingEdge="none" />-->
-    </RelativeLayout>
+
+
+
 
     <LinearLayout
-       
+
         android:id="@+id/ll_btn"
         style="?android:attr/buttonBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        
+
         android:orientation="horizontal"
         android:background="@color/btnblack"
         android:visibility="gone" >
@@ -128,16 +113,16 @@
             android:text="@string/more" />
     </LinearLayout>
  <LinearLayout
-      
+
         android:id="@+id/ll_btn_default"
         style="?android:attr/buttonBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-       
+
         android:orientation="horizontal"
         android:background="@color/btnblack"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <Button
             android:id="@+id/plore_btn_newfile"

@@ -3,7 +3,10 @@ package com.changhong.ttfileplore.fragment;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,20 +47,25 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 	File file;
 	File[] resultfiles;
 	ImageLoader imageLoader = ImageLoader.getInstance();
+	private View source;
+	int x;
+	int y;
+	public void setSource(View view){source = view;}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		baseContext = getActivity();
 		if(baseContext instanceof PloreActivity){
 			baseContext = MyApp.mainContext;
-			Log.e("instan","instan");
 		}
 		View view = inflater.inflate(R.layout.fragment_filepreview_dialog, container);
 		findView(view,container);
 
 		Bundle bundle = getArguments();
 		if(bundle.getInt("type")==2) {
-			filePath = bundle.getString("filePath");
+			filePath = bundle.getString("filePath","/");
 			file = new File(filePath);
 			File[] files = file.listFiles();
 			resultfiles = getMaxSort(files);
@@ -65,6 +73,8 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 		else if(bundle.getInt("type")==1){
 			resultfiles=(File[])bundle.getSerializable("filelist");
 		}
+		x=bundle.getInt("x",0);
+		x=bundle.getInt("y",0);
 		initView();
 
 		return view;
@@ -153,7 +163,11 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 		 iv_4 = (ImageView) view.findViewById(R.id.iv_filepreview_4);
 
 	}
-
+	@Override
+	public void onStart() {
+		super.onStart();
+		setDialogPosition();
+	}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
@@ -182,10 +196,10 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 	}
 
 	private File[] getMaxSort(File[] files) {
-		ArrayList<File> list = new ArrayList<File>();
-		for (int i = 0; i < files.length; i++) {
-			if (!files[i].isDirectory()) {
-				list.add(files[i]);
+		ArrayList<File> list = new ArrayList<>();
+		for (File tmp:files) {
+			if (!tmp.isDirectory()) {
+				list.add(tmp);
 			}
 		}
 		File[] files1 = list.toArray(new File[list.size()]);
@@ -246,6 +260,7 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 			case R.id.tr_filepreview_1:
 
 				bundle.putString("filePath", resultfiles[0].getPath());
+				moreDialog.setSource(v);
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
 				break;
@@ -254,6 +269,7 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 			case R.id.tr_filepreview_2:
 
 				bundle.putString("filePath", resultfiles[1].getPath());
+				moreDialog.setSource(v);
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
 				break;
@@ -263,6 +279,7 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 
 
 				bundle.putString("filePath", resultfiles[2].getPath());
+				moreDialog.setSource(v);
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
 				break;
@@ -272,10 +289,39 @@ public class FilePreViewFragment extends DialogFragment implements View.OnClickL
 
 
 				bundle.putString("filePath", resultfiles[3].getPath());
+				moreDialog.setSource(v);
 				moreDialog.setArguments(bundle);
 				moreDialog.show(getFragmentManager(), "moreDialog");
 				break;
 		}
 		return true;
+	}
+	private void setDialogPosition() {
+		if (source == null) {
+			return; // Leave the dialog in default position
+		}
+		// Find out location of source component on screen
+		// see http://stackoverflow.com/a/6798093/56285
+		int[] location = new int[2];
+		source.getLocationOnScreen(location);
+			int sourceX = location[0];
+			int sourceY = location[1];
+			Window window = getDialog().getWindow();
+			window.setGravity(Gravity.TOP | Gravity.START);
+
+			WindowManager.LayoutParams params = window.getAttributes();
+			// Just an example; edit to suit your needs.
+			params.x = sourceX + dpToPx(20);
+			params.y = sourceY ;
+			getDialog().getWindow()
+					.getAttributes().windowAnimations = R.style.PopupAnimationTop;
+
+			window.setAttributes(params);
+
+	}
+
+	public int dpToPx(float valueInDp) {
+		DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
 	}
 }

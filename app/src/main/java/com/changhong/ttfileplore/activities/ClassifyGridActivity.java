@@ -63,7 +63,7 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
         }
         setContentView(R.layout.activity_classify_grid);
         MyApp myapp = (MyApp) getApplication();
-        myapp.setContext(this);
+        MyApp.setContext(this);
         flg = getIntent().getIntExtra("key", 0);
         findView();
         initView(flg);
@@ -112,7 +112,7 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                         WindowManager.LayoutParams lp=getWindow().getAttributes();
                         lp.alpha=0.5f;
                        getWindow().setAttributes(lp);
-                        PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this,300, ViewGroup.LayoutParams.WRAP_CONTENT,
+                        PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this,Utils.dpTopx(150,ClassifyGridActivity.this), ViewGroup.LayoutParams.WRAP_CONTENT,
                                 true,content.getDir());
                         int[] viewLocation = new int[2];
                         view.getLocationInWindow(viewLocation);
@@ -120,23 +120,44 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                         int viewY = viewLocation[1]; // y 坐标
                         Point point = new Point();
                         getWindow().getWindowManager().getDefaultDisplay().getSize(point);
-                        if (point.x - viewX > 300) {
-                            if (point.y - viewY > 350) {
+                        if(gridAdapter.x!=0&&gridAdapter.y!=0){
+                            if (point.x -viewX- gridAdapter.x > Utils.dpTopx(150,ClassifyGridActivity.this)) {
+                                if (point.y -viewY- gridAdapter.y > Utils.dpTopx(240,ClassifyGridActivity.this)) {
+                                    p.setAnimationStyle(R.style.PopupAnimationTop);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x, viewY + gridAdapter.y);
+                                } else {
+                                    p.setAnimationStyle(R.style.PopupAnimationBottom);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX +  gridAdapter.x, viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+gridAdapter.y);
+                                }
+                            } else {
+                                if (point.y - viewY-gridAdapter.y >Utils.dpTopx(240,ClassifyGridActivity.this)) {
+                                    p.setAnimationStyle(R.style.PopupAnimationTopRight);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x-Utils.dpTopx(150,ClassifyGridActivity.this), viewY + gridAdapter.y);
+                                } else {
+                                    p.setAnimationStyle(R.style.PopupAnimationBottomRight);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x-Utils.dpTopx(150,ClassifyGridActivity.this), viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+gridAdapter.y);
+                                }
+                            }
+                        }else{
+                        if (point.x - viewX > Utils.dpTopx(150,ClassifyGridActivity.this)) {
+                            if (point.y - viewY > Utils.dpTopx(240,ClassifyGridActivity.this)) {
                                 p.setAnimationStyle(R.style.PopupAnimationTop);
-                                p.showAsDropDown(view, 150, -250);
+                                p.showAsDropDown(view, Utils.dpTopx(80,ClassifyGridActivity.this), -Utils.dpTopx(80,ClassifyGridActivity.this));
                             } else {
                                 p.setAnimationStyle(R.style.PopupAnimationBottom);
-                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + 150, viewY - 200);
+                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + Utils.dpTopx(80,ClassifyGridActivity.this),
+                                        viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+Utils.dpTopx(80,ClassifyGridActivity.this));
                             }
                         } else {
-                            if (point.y - viewY > 350) {
+                            if (point.y - viewY >Utils.dpTopx(240,ClassifyGridActivity.this)) {
                                 p.setAnimationStyle(R.style.PopupAnimationTopRight);
-                                p.showAsDropDown(view, -150, -250);
+                                p.showAsDropDown(view, -Utils.dpTopx(80,ClassifyGridActivity.this), -Utils.dpTopx(80,ClassifyGridActivity.this));
                             } else {
                                 p.setAnimationStyle(R.style.PopupAnimationBottomRight);
-                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - 150, viewY - 200);
+                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - Utils.dpTopx(80,ClassifyGridActivity.this),
+                                        viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+Utils.dpTopx(80,ClassifyGridActivity.this));
                             }
-                        }
+                        }}
                         p.setOnDismissListener(new PopupWindow.OnDismissListener() {
                             @Override
                             public void onDismiss() {

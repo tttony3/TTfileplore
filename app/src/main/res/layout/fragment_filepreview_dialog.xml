@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="?main_bg">
+    android:background="?shape_popmenu">
 
     <TableRow
         android:id="@+id/tr_filepreview_1"
@@ -18,7 +18,7 @@
             android:layout_width="@dimen/filepreview_img_size"
             android:layout_height="@dimen/filepreview_img_size"
             android:contentDescription="@string/img_description"
-            android:scaleType="centerInside" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:textColor="?main_textcolor"
@@ -34,7 +34,10 @@
             android:paddingTop="5dp"
             android:textSize="12sp" />
     </TableRow>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/main_bg" />
     <TableRow
         android:id="@+id/tr_filepreview_2"
         android:layout_margin="1dp"
@@ -47,7 +50,8 @@
             android:id="@+id/iv_filepreview_2"
             android:layout_width="@dimen/filepreview_img_size"
             android:layout_height="@dimen/filepreview_img_size"
-            android:contentDescription="@string/img_description" />
+            android:contentDescription="@string/img_description"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:textColor="?main_textcolor"
@@ -63,7 +67,10 @@
             android:paddingTop="5dp"
             android:textSize="12sp" />
     </TableRow>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/main_bg" />
     <TableRow
         android:id="@+id/tr_filepreview_3"
         android:layout_margin="1dp"
@@ -74,9 +81,11 @@
         <com.makeramen.roundedimageview.RoundedImageView
             app:riv_corner_radius="5dip"
             android:id="@+id/iv_filepreview_3"
+            android:scaleType="centerCrop"
             android:layout_width="@dimen/filepreview_img_size"
             android:layout_height="@dimen/filepreview_img_size"
-            android:contentDescription="@string/img_description" />
+            android:contentDescription="@string/img_description"
+            />
 
         <TextView
             android:textColor="?main_textcolor"
@@ -92,7 +101,10 @@
             android:paddingTop="5dp"
             android:textSize="12sp" />
     </TableRow>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/main_bg" />
     <TableRow
         android:id="@+id/tr_filepreview_4"
         android:layout_margin="1dp"
@@ -105,7 +117,8 @@
             android:id="@+id/iv_filepreview_4"
             android:layout_width="@dimen/filepreview_img_size"
             android:layout_height="@dimen/filepreview_img_size"
-            android:contentDescription="@string/img_description" />
+            android:contentDescription="@string/img_description"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:textColor="?main_textcolor"
