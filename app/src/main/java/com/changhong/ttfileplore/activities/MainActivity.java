@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-
         myapp = (MyApp) getApplication();
         MyApp.setContext(this);
         myapp.setMainContext(this);
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.mDrawerLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.cancel, R.string.capacity) {
             @Override
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         };
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);//设置监听器
-        NavigationView navigationView = (NavigationView)mDrawerLayout.findViewById(R.id.id_nv_menu);
+        NavigationView navigationView = (NavigationView) mDrawerLayout.findViewById(R.id.id_nv_menu);
         navigationView.getMenu().findItem(R.id.left_movie).setOnMenuItemClickListener(this);
         navigationView.getMenu().findItem(R.id.left_set).setOnMenuItemClickListener(this);
         navigationView.getMenu().findItem(R.id.left_music).setOnMenuItemClickListener(this);
@@ -167,7 +166,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().findItem(R.id.left_photo).setOnMenuItemClickListener(this);
         navigationView.getMenu().findItem(R.id.left_netfile).setOnMenuItemClickListener(this);
     }
-
 
 
     /**
@@ -264,77 +262,77 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent();
 
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_set:
                 intent.setClass(MainActivity.this, SetActivity.class);
                 startActivity(intent);
                 break;
 
             case (R.id.action_samba):
-            LayoutInflater inflater = getLayoutInflater();
-            final View layout = inflater.inflate(R.layout.samba_option, (ViewGroup) findViewById(R.id.samba_op));
-            new AlertDialog.Builder(this).setTitle("samba设置").setView(layout)
-                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                LayoutInflater inflater = getLayoutInflater();
+                final View layout = inflater.inflate(R.layout.samba_option, (ViewGroup) findViewById(R.id.samba_op));
+                new AlertDialog.Builder(this).setTitle("samba设置").setView(layout)
+                        .setNegativeButton("确定", new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            EditText ip = (EditText) layout.findViewById(R.id.ip);
-                            EditText user = (EditText) layout.findViewById(R.id.user);
-                            EditText password = (EditText) layout.findViewById(R.id.password);
-                            EditText dir = (EditText) layout.findViewById(R.id.dir);
-                            if (!ip.getText().toString().isEmpty() && !user.getText().toString().isEmpty()
-                                    && !password.getText().toString().isEmpty()) {
-                                Intent intent = new Intent();
-                                intent.putExtra("ip", ip.getText().toString());
-                                intent.putExtra("user", user.getText().toString());
-                                intent.putExtra("password", password.getText().toString());
-                                intent.putExtra("dir", dir.getText().toString());
-                                intent.setClass(MainActivity.this, SambaActivity.class);
-                                startActivity(intent);
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText ip = (EditText) layout.findViewById(R.id.ip);
+                                EditText user = (EditText) layout.findViewById(R.id.user);
+                                EditText password = (EditText) layout.findViewById(R.id.password);
+                                EditText dir = (EditText) layout.findViewById(R.id.dir);
+                                if (!ip.getText().toString().isEmpty() && !user.getText().toString().isEmpty()
+                                        && !password.getText().toString().isEmpty()) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("ip", ip.getText().toString());
+                                    intent.putExtra("user", user.getText().toString());
+                                    intent.putExtra("password", password.getText().toString());
+                                    intent.putExtra("dir", dir.getText().toString());
+                                    intent.setClass(MainActivity.this, SambaActivity.class);
+                                    startActivity(intent);
+
+                                }
 
                             }
-
-                        }
-                    }).setPositiveButton("取消", null).show();
+                        }).setPositiveButton("取消", null).show();
                 break;
 
             case (R.id.action_net):
-            intent.setClass(MainActivity.this, ShowNetDevActivity.class);
-            startActivity(intent);
+                intent.setClass(MainActivity.this, ShowNetDevActivity.class);
+                startActivity(intent);
                 break;
             case (R.id.action_scanner):
-            if(!sharedPreferences.getBoolean("share",true)){
-                Toast.makeText(this, "未开启共享", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            intent.setClass(MainActivity.this, CaptureActivity.class);
-            startActivity(intent);
+                if (!sharedPreferences.getBoolean("share", true)) {
+                    Toast.makeText(this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                intent.setClass(MainActivity.this, CaptureActivity.class);
+                startActivity(intent);
                 break;
             case (R.id.action_sharefile):
                 intent.setClass(MainActivity.this, ShowSharefileActivity.class);
                 startActivity(intent);
                 break;
             case (R.id.action_share):
-            ArrayList<File> detailList = new ArrayList<>();
-            pager.setCurrentItem(1);
-            Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
-            for (int i = 0; i < mlist.length; i++) {
-                if (mlist[i]) {
-                    File file = (File) ((PloreActivity) view1.getContext()).mFileAdpter.getItem(i);
-                    if (!file.isDirectory()) {
-                        detailList.add(file);
-                    } else {
-                        Toast.makeText(MainActivity.this, "文件夹不支持分享", Toast.LENGTH_SHORT).show();
+                ArrayList<File> detailList = new ArrayList<>();
+                pager.setCurrentItem(1);
+                Boolean[] mlist = ((PloreActivity) view1.getContext()).mFileAdpter.getCheckBox_List();
+                for (int i = 0; i < mlist.length; i++) {
+                    if (mlist[i]) {
+                        File file = (File) ((PloreActivity) view1.getContext()).mFileAdpter.getItem(i);
+                        if (!file.isDirectory()) {
+                            detailList.add(file);
+                        } else {
+                            Toast.makeText(MainActivity.this, "文件夹不支持分享", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
-            if (detailList.size() == 1) {
-                File detailfile = detailList.get(0);
-                onClickShare(detailfile);
+                if (detailList.size() == 1) {
+                    File detailfile = detailList.get(0);
+                    onClickShare(detailfile);
 
-            } else if (detailList.size() > 1) {
-                Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
-            }
+                } else if (detailList.size() > 1) {
+                    Toast.makeText(MainActivity.this, "一次只能分享一个文件", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
         }
@@ -377,10 +375,11 @@ public class MainActivity extends AppCompatActivity
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Intent intent = new Intent();
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.left_set:
                 intent.setClass(MainActivity.this, SetActivity.class);
                 startActivity(intent);
@@ -402,9 +401,8 @@ public class MainActivity extends AppCompatActivity
                 if (isshare) {
                     intent.setClass(MainActivity.this, ShowNetDevActivity.class);
                     startActivity(intent);
-                }
-                else
-                    Toast.makeText(MainActivity.this,"没开启共享",Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(MainActivity.this, "没开启共享", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.left_photo:
                 intent.setClass(MainActivity.this, ClassifyGridActivity.class);
@@ -490,8 +488,8 @@ public class MainActivity extends AppCompatActivity
                 } else
                     finish();
             } else if (currIndex == 1) {
-                if(!((PloreActivity)view1.getContext()).onKeyDown(keyCode,event))
-                   pager.setCurrentItem(0);
+                if (!((PloreActivity) view1.getContext()).onKeyDown(keyCode, event))
+                    pager.setCurrentItem(0);
                 return true;
             }
         } else if (keyCode == KeyEvent.KEYCODE_HOME) {
@@ -606,9 +604,8 @@ public class MainActivity extends AppCompatActivity
                 if (isshare) {
                     intent.setClass(MainActivity.this, ShowNetDevActivity.class);
                     startActivity(intent);
-                }
-                else
-                    Toast.makeText(MainActivity.this,"没开启共享",Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(MainActivity.this, "没开启共享", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.browse_rl_downlist:
                 intent.setClass(MainActivity.this, ShowDownFileActivity.class);
@@ -656,13 +653,13 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.img_movie:
-                onLongClick("/Movies", "/DCIM/Camera", "video/*",v);
+                onLongClick("/Movies", "/DCIM/Camera", "video/*", v);
                 break;
             case R.id.img_music:
-                onLongClick("/Music", null, "audio/*",v);
+                onLongClick("/Music", null, "audio/*", v);
                 break;
             case R.id.img_photo:
-                onLongClick("/DCIM/Camera", "/Pictures/Saved Pictures", "image/*",v);
+                onLongClick("/DCIM/Camera", "/Pictures/Saved Pictures", "image/*", v);
                 break;
             case R.id.img_txt:
 
@@ -682,7 +679,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void onLongClick(String foldername1, String foldername2, String type,View v) {
+    private void onLongClick(String foldername1, String foldername2, String type, View v) {
         ArrayList<File> filelist = new ArrayList<>();
         if (null != foldername1) {
             File file1 = new File("/storage/sdcard1" + foldername1);

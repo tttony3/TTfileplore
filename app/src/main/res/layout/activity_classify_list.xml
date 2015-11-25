@@ -46,10 +46,11 @@
         android:layout_marginTop="5dp"
         android:background="?attr/main_bg"
         android:orientation="vertical"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp" >
+       >
 
         <com.changhong.ttfileplore.view.RefreshListView
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
             android:id="@+id/file_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,13 +61,73 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
+            android:src="@drawable/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="5dp"
             />
+        <io.codetail.widget.RevealFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/ll_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@color/btnblack"
+            android:visibility="invisible" >
+
+            <Button
+                android:id="@+id/classify_btn_selectall"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="?attr/item_bg_deep"
+                android:text="@string/selectall" />
+
+            <Button
+                android:id="@+id/classify_btn_share"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="?attr/item_bg_deep"
+                android:text="@string/share" />
+            <Button
+                android:id="@+id/classify_btn_push"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="?attr/item_bg_deep"
+                android:text="@string/push" />
+            <Button
+                android:id="@+id/classify_btn_qr"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="?attr/item_bg_deep"
+                android:text="@string/qr" />
+
+            <Button
+                android:id="@+id/classify_btn_delete"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textColor="?attr/item_bg_deep"
+                android:text="@string/delete" />
+        </LinearLayout>
+       </io.codetail.widget.RevealFrameLayout>
     </RelativeLayout>
 
 </LinearLayout>

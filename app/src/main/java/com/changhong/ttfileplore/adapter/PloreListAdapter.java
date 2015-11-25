@@ -140,7 +140,7 @@ public class PloreListAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                checkbox_list[position] =((CheckBox) v).isChecked();
+                checkbox_list[position] = ((CheckBox) v).isChecked();
 
             }
         });
@@ -322,7 +322,7 @@ public class PloreListAdapter extends BaseAdapter {
 
     private File[] getMaxSort(File[] files) {
         ArrayList<File> list = new ArrayList<>();
-        for (File tmpfile:files) {
+        for (File tmpfile : files) {
             if (!tmpfile.isDirectory()) {
                 list.add(tmpfile);
             }

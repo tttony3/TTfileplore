@@ -45,7 +45,7 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
     PhotoGirdAdapter imageAdapter;
     String[] content;
     ProgressDialog dialog;
-    SharedPreferences sharedPreferences ;
+    SharedPreferences sharedPreferences;
     MyApp myapp;
 
     @Override
@@ -59,7 +59,7 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
-        switch(sharedPreferences.getInt("Theme",R.style.DayTheme)){
+        switch (sharedPreferences.getInt("Theme", R.style.DayTheme)) {
             case R.style.DayTheme:
                 setTheme(R.style.DayTheme);
                 break;
@@ -228,20 +228,21 @@ public class PhotoGridActivity extends AbsListViewBaseActivity {
     }
 
 
-    static  class PhotoHandler extends Handler{
+    static class PhotoHandler extends Handler {
 
         WeakReference<PhotoGridActivity> mActivity;
 
         PhotoHandler(PhotoGridActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
+
         @Override
         public void handleMessage(Message msg) {
             PhotoGridActivity theActivity = mActivity.get();
             ArrayList<Content> results = (ArrayList<Content>) msg.getData().get("txts");
-            theActivity. imageAdapter = new PhotoGirdAdapter(results, theActivity, theActivity.imageLoader);
+            theActivity.imageAdapter = new PhotoGirdAdapter(results, theActivity, theActivity.imageLoader);
             theActivity.dialog.dismiss();
-            theActivity. listView.setAdapter(theActivity.imageAdapter);
+            theActivity.listView.setAdapter(theActivity.imageAdapter);
             super.handleMessage(msg);
         }
 

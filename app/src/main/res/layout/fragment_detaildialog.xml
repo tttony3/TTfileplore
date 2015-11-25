@@ -3,16 +3,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:background="?item_bg">
+    android:background="?shape_popmenu">
 
     <TableRow
+
+        android:paddingBottom="3dp"
         android:background="?item_bg">
 
         <TextView
+            android:paddingStart="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="文件名     ："
+            android:text="文件名称 ："
             android:textColor="?main_textcolor"/>
 
         <TextView
@@ -21,14 +23,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:ems="10"
+            android:paddingEnd="3dp"
             android:textColor="?main_textcolor" />
 
     </TableRow>
-
+    <ImageView android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="?attr/main_bg"/>
     <TableRow
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:background="?item_bg">
 
         <TextView
+            android:paddingStart="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="文件路径 ："
@@ -41,15 +49,20 @@
             android:layout_marginStart="5dp"
             android:ems="10"
             android:labelFor="@+id/user"
-
+            android:paddingEnd="3dp"
             android:textColor="?main_textcolor" />
 
     </TableRow>
-
+    <ImageView android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="?attr/main_bg"/>
     <TableRow
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:background="?item_bg">
 
         <TextView
+            android:paddingStart="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="文件大小 ："
@@ -59,24 +72,29 @@
             android:id="@+id/tv_detail_space"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:paddingEnd="3dp"
             android:layout_marginStart="5dp"
             android:ems="10"
             android:labelFor="@+id/password"
             android:textColor="?main_textcolor" />
 
     </TableRow>
-
+    <ImageView android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="?attr/main_bg"/>
     <TableRow
+        android:paddingTop="3dp"
         android:background="?item_bg">
 
         <TextView
+            android:paddingStart="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="修改时间 ："
             android:textColor="?main_textcolor"/>
 
         <TextView
+            android:paddingEnd="3dp"
             android:id="@+id/tv_detail_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -54,6 +54,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     private MyDownHandler mHandler;
     private SharedPreferences sharedPreferences;
     AlertView alertView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +79,12 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
         lv_downlist.setOnItemLongClickListener(this);
         initToolBar();
     }
+
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
     }
+
     @Override
     protected void onStart() {
 
@@ -121,14 +124,14 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     }
 
     @Override
-    public boolean onItemLongClick( AdapterView<?> parent, View view, int fileposition, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int fileposition, long id) {
         final DownData tmp = (DownData) parent.getItemAtPosition(fileposition);
-         alertView =new AlertView("选择操作", null, "取消", null,
+        alertView = new AlertView("选择操作", null, "取消", null,
                 new String[]{"打开", "删除"},
                 this, AlertView.Style.ActionSheet, new com.bigkoo.alertview.OnItemClickListener() {
             public void onItemClick(Object o, int position) {
 
-                switch(position){
+                switch (position) {
                     case 0:
                         String download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
                         String appname = FC_GetShareFile.getApplicationName(ShowDownFileActivity.this);
@@ -191,11 +194,11 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if(alertView != null)
-           if(alertView.isShowing()){
-               alertView.dismiss();
-               return true;
-           }
+            if (alertView != null)
+                if (alertView.isShowing()) {
+                    alertView.dismiss();
+                    return true;
+                }
 
         }
         return super.onKeyDown(keyCode, event);
@@ -204,12 +207,12 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final DownData tmp = (DownData) parent.getItemAtPosition(position);
-        alertView =new AlertView("选择操作", null, "取消", null,
+        alertView = new AlertView("选择操作", null, "取消", null,
                 new String[]{"打开", "删除"},
                 this, AlertView.Style.ActionSheet, new com.bigkoo.alertview.OnItemClickListener() {
             public void onItemClick(Object o, int position) {
 
-                switch(position){
+                switch (position) {
                     case 0:
                         String download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
                         String appname = FC_GetShareFile.getApplicationName(ShowDownFileActivity.this);

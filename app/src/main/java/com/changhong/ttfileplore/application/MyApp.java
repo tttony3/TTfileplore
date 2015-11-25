@@ -43,231 +43,231 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class MyApp extends CoreApp {	
-	static public WeakReference<Context> context;
-	static public  Context mainContext;
-	String ip;
-	int port;
-	public DeviceInfo devinfo;
-	DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.color.gray_alph)
-			.showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
-			.cacheInMemory(true).cacheOnDisk(false).bitmapConfig(Bitmap.Config.RGB_565)
-			//.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
-			.displayer(new FadeInBitmapDisplayer(400))//是否图片加载好后渐入的动画时间
-			.build();
-	static public ArrayList<List<String>> recivePushList = new ArrayList<>();
-	public String getIp() {
-		return ip;
-	}
+public class MyApp extends CoreApp {
+    static public WeakReference<Context> context;
+    static public Context mainContext;
+    String ip;
+    int port;
+    public DeviceInfo devinfo;
+    DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.color.gray_alph)
+            .showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
+            .cacheInMemory(true).cacheOnDisk(false).bitmapConfig(Bitmap.Config.RGB_565)
+                    //.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
+            .displayer(new FadeInBitmapDisplayer(400))//是否图片加载好后渐入的动画时间
+            .build();
+    static public ArrayList<List<String>> recivePushList = new ArrayList<>();
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
+    public String getIp() {
+        return ip;
+    }
 
-	public int getPort() {
-		return port;
-	}
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
-	public void setPort(int port) {
-		this.port = port;
-	}
+    public int getPort() {
+        return port;
+    }
 
-	public Context getMainContext() {
-		return mainContext;
-	}
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-	public void setMainContext(Context mainContext) {
-		MyApp.mainContext = mainContext;
-	}
+    public Context getMainContext() {
+        return mainContext;
+    }
 
-	ArrayList<File> fileList = new ArrayList<>();
+    public void setMainContext(Context mainContext) {
+        MyApp.mainContext = mainContext;
+    }
 
-	/**
-	 * 获取复制剪贴的文件列表
-	 * 
-	 * @return ArrayList
-	 */
-	public ArrayList<File> getFileList() {
-		return fileList;
-	}
+    ArrayList<File> fileList = new ArrayList<>();
 
-	public Context getContext() {
-		return context.get();
-	}
+    /**
+     * 获取复制剪贴的文件列表
+     *
+     * @return ArrayList
+     */
+    public ArrayList<File> getFileList() {
+        return fileList;
+    }
+
+    public Context getContext() {
+        return context.get();
+    }
 
 
-	static public void setContext(Context context) {
-		MyApp.context= new WeakReference<>(context);
-	}
+    static public void setContext(Context context) {
+        MyApp.context = new WeakReference<>(context);
+    }
 
-	public void setFileList(ArrayList<File> fileList) {
-		this.fileList = fileList;
-	}
+    public void setFileList(ArrayList<File> fileList) {
+        this.fileList = fileList;
+    }
 
-	/**
-	 * 清空复制剪贴的文件列表
-	 */
-	public void clearFileList() {
-		fileList.clear();
-		;
-	}
+    /**
+     * 清空复制剪贴的文件列表
+     */
+    public void clearFileList() {
+        fileList.clear();
+        ;
+    }
 
-	@Override
-	public void onLowMemory() {
+    @Override
+    public void onLowMemory() {
 
-		super.onLowMemory();
-	}
+        super.onLowMemory();
+    }
 
-	@Override
-	public void onTerminate() {
+    @Override
+    public void onTerminate() {
 
-		super.onTerminate();
-	}
+        super.onTerminate();
+    }
 
-	public void onCreate() {
-		super.onCreate();
-		LeakCanary.install(this);
+    public void onCreate() {
+        super.onCreate();
+        LeakCanary.install(this);
 //		CrashHandler crashHandler = CrashHandler.getInstance();
 //		crashHandler.init(this);
-		File folder = new File(Utils.getPath(this, "cache"));
-		if (!folder.exists())
-			folder.mkdir();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration  
-			    .Builder(this)  
-		//	    .memoryCacheExtraOptions(200, 200) // max width, max height，即保存的每个缓存文件的最大长宽
-		//	    .diskCacheExtraOptions(200, 200, null) // Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个
-				.threadPoolSize(2)//线程池内加载的数量
-			    .threadPriority(Thread.NORM_PRIORITY - 2)
-		//	    .denyCacheImageMultipleSizesInMemory()
-				.memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
-				.memoryCacheSize(5 * 1024 * 1024)
-				.diskCacheSize(50 * 1024 * 1024)
-			    .diskCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密  
-			    .tasksProcessingOrder(QueueProcessingType.LIFO)  
-			    .diskCacheFileCount(300) //缓存的文件数量  
-		//	    .diskCache(new UnlimitedDiskCache(folder))//自定义缓存路径
-			    .defaultDisplayImageOptions(options)  
-			    .imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间  
-			    .writeDebugLogs() // Remove for release app  
-				.build();//开始构建
-		ImageLoader.getInstance().init(config);
-	}
+        File folder = new File(Utils.getPath(this, "cache"));
+        if (!folder.exists())
+            folder.mkdir();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration
+                .Builder(this)
+                .memoryCacheExtraOptions(500, 500) // max width, max height，即保存的每个缓存文件的最大长宽
+                        //	    .diskCacheExtraOptions(200, 200, null) // Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个
+                .threadPoolSize(2)//线程池内加载的数量
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                        //	    .denyCacheImageMultipleSizesInMemory()
+                        //		.memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
+                .memoryCacheSize(10 * 1024 * 1024)
+                        //		.diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())//将保存的时候的URI名称用MD5 加密
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .diskCacheFileCount(300) //缓存的文件数量
+                        //	    .diskCache(new UnlimitedDiskCache(folder))//自定义缓存路径
+                .defaultDisplayImageOptions(options)
+                .imageDownloader(new BaseImageDownloader(this, 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间
+                .writeDebugLogs() // Remove for release app
+                .build();//开始构建
+        ImageLoader.getInstance().init(config);
+    }
 
 
+    public CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
 
-	public CoreHttpServerCB httpServerCB = new CoreHttpServerCB() {
+        @Override
+        public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
+            Log.e("onTransportUpdata",
+                    "agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
 
-		@Override
-		public void onTransportUpdata(String arg0, String arg1, long arg2, long arg3, long arg4) {
-			Log.e("onTransportUpdata",
-					"agr0 " + arg0 + " arg1 " + arg1 + " arg2 " + arg2 + " arg3 " + arg3 + " arg4  " + arg4);
+        }
 
-		}
+        @Override
+        public void onHttpServerStop() {
 
-		@Override
-		public void onHttpServerStop() {
+        }
 
-		}
+        @Override
+        public void onHttpServerStart(String ip, int port) {
+            setIp(ip);
+            setPort(port);
+        }
 
-		@Override
-		public void onHttpServerStart(String ip, int port) {
-			setIp(ip);
-			setPort(port);
-		}
+        @Override
+        public String onGetRealFullPath(String arg0) {
+            return null;
+        }
 
-		@Override
-		public String onGetRealFullPath(String arg0) {
-			return null;
-		}
+        @Override
+        public void recivePushResources(List<String> pushList) {
+            recivePushList.add(pushList);
+            final List<String> list = new ArrayList<>();
+            list.addAll(pushList);
+            String jsonString = list.remove(0);
+            Log.e("pushList", pushList.size() + "");
+            Log.e("list", list.size() + "");
+            Log.e("recivePushList", recivePushList.size() + "");
+            String message = null;
+            int filenum = 0;
+            String http1 = "";
+            String device_id1 = "";
+            try {
+                JSONObject jsonObj = new JSONObject(jsonString);
+                message = jsonObj.getString("message");
+                filenum = jsonObj.getInt("filenum");
+                http1 = jsonObj.getString("http");
+                device_id1 = jsonObj.getString("device_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            final String device_id = device_id1;
+            final String http = http1;
+            final String msg = message;
+            ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
+                @Override
+                public void onReciveFragmentEnter() {
+                    if (list.size() > 0) {
+                        Intent intent = new Intent();
+                        intent.setClass(getContext(), ShowPushFileActivity.class);
+                        intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+                        startActivity(intent);
+                        dismiss();
+                    }
+                }
 
-		@Override
-		public void recivePushResources(List<String> pushList) {
-			recivePushList .add(pushList);
-			final List<String> list = new ArrayList<>();
-			list.addAll(pushList);
-			String jsonString = list.remove(0);
-			Log.e("pushList",pushList.size()+"");
-			Log.e("list", list.size()+"");
-			Log.e("recivePushList", recivePushList.size()+"");
-			String message = null;
-			int filenum =0;
-			String http1 ="";
-			String device_id1="";
-			try {
-				JSONObject jsonObj = new JSONObject(jsonString);
-				message = jsonObj.getString("message");
-				filenum = jsonObj.getInt("filenum");
-				http1= jsonObj.getString("http");
-				device_id1 = jsonObj.getString("device_id");
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			final String device_id=device_id1;
-			final String http=http1;
-			final String msg=message;
-				ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
-					@Override
-					public void onReciveFragmentEnter() {
-						if(list.size()>0){
-						Intent intent = new Intent();
-						intent.setClass(getContext(), ShowPushFileActivity.class);
-						intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
-						startActivity(intent);
-						dismiss();
-						}
-					}
+                @Override
+                public void setReciveFragmentMessage(TextView tv_message) {
+                    tv_message.setText(msg == null ? "" : msg);
+                }
 
-					@Override
-					public void setReciveFragmentMessage(TextView tv_message) {
-						tv_message.setText(msg==null?"":msg);
-					}
+                @Override
+                public void onReciveFragmentReply(String message) {
+                    DeviceInfo info = null;
+                    for (DeviceInfo tmp : ClientBusHandler.List_DeviceInfo) {
+                        if (tmp.getM_deviceid().equals(device_id)) {
+                            info = tmp;
+                            break;
+                        }
+                    }
+                    if (info != null) {
+                        JSONObject pushJson = new JSONObject();
+                        try {
+                            TelephonyManager tm = (TelephonyManager) MyApp.this
+                                    .getSystemService(Context.TELEPHONY_SERVICE);
+                            String DEVICE_ID = tm.getDeviceId();
+                            pushJson.put("device_id", DEVICE_ID);
+                            pushJson.put("message", message);
+                            pushJson.put("filenum", 0);
+                            pushJson.put("http", "http://" + ip + ":" + port);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ArrayList<String> tmp = new ArrayList<>();
+                        tmp.add(0, pushJson.toString());
+                        CoreApp.mBinder.PushResourceToDevice(info, tmp);
 
-					@Override
-					public void onReciveFragmentReply(String message) {
-						DeviceInfo info = null;
-						for(DeviceInfo tmp : ClientBusHandler.List_DeviceInfo){
-							if(tmp.getM_deviceid().equals(device_id)){
-								info=tmp;
-								break;
-							}
-						}
-						if(info !=null) {
-							JSONObject pushJson = new JSONObject();
-							try {
-								TelephonyManager tm = (TelephonyManager) MyApp.this
-										.getSystemService(Context.TELEPHONY_SERVICE);
-								String DEVICE_ID = tm.getDeviceId();
-								pushJson.put("device_id", DEVICE_ID);
-								pushJson.put("message", message);
-								pushJson.put("filenum", 0);
-								pushJson.put("http", "http://" + ip + ":" + port);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-							ArrayList<String> tmp = new ArrayList<>();
-							tmp.add(0, pushJson.toString());
-							CoreApp.mBinder.PushResourceToDevice(info, tmp);
-
-						}
-						}
-
-
-				};
-			if(context != null) {
-				ActivityManager manager = (ActivityManager) context.get().getSystemService(ACTIVITY_SERVICE);
-				@SuppressWarnings("deprecation")
-				List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
-
-				if (runningTaskInfos != null){
-					 if((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore"))
-					reciveDialogFragment.show(((Activity) context.get()).getFragmentManager(), "reciveDialogFragment");
-				}
+                    }
+                }
 
 
-			}
+            };
+            if (context != null) {
+                ActivityManager manager = (ActivityManager) context.get().getSystemService(ACTIVITY_SERVICE);
+                @SuppressWarnings("deprecation")
+                List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+
+                if (runningTaskInfos != null) {
+                    if ((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore"))
+                        reciveDialogFragment.show(((Activity) context.get()).getFragmentManager(), "reciveDialogFragment");
+                }
 
 
-		}
-	};
+            }
+
+
+        }
+    };
 
 }

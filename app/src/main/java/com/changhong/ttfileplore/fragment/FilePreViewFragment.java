@@ -28,300 +28,305 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class FilePreViewFragment extends DialogFragment implements View.OnClickListener, View.OnLongClickListener {
-	public static int MAIN =1;
-	public static int OTHER =2;
-	TableRow tr_1;
-	TableRow tr_2 ;
-	TableRow tr_3 ;
-	TableRow tr_4 ;
-	TextView tv_1 ;
-	TextView tv_2;
-	TextView tv_3 ;
-	TextView tv_4 ;
-	ImageView iv_1 ;
-	ImageView iv_2 ;
-	ImageView iv_3;
-	ImageView iv_4 ;
-	Context baseContext;
-	String filePath;
-	File file;
-	File[] resultfiles;
-	ImageLoader imageLoader = ImageLoader.getInstance();
-	private View source;
-	int x;
-	int y;
-	public void setSource(View view){source = view;}
+    public static int MAIN = 1;
+    public static int OTHER = 2;
+    TableRow tr_1;
+    TableRow tr_2;
+    TableRow tr_3;
+    TableRow tr_4;
+    TextView tv_1;
+    TextView tv_2;
+    TextView tv_3;
+    TextView tv_4;
+    ImageView iv_1;
+    ImageView iv_2;
+    ImageView iv_3;
+    ImageView iv_4;
+    Context baseContext;
+    String filePath;
+    File file;
+    File[] resultfiles;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    private View source;
+    int x;
+    int y;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-		baseContext = getActivity();
-		if(baseContext instanceof PloreActivity){
-			baseContext = MyApp.mainContext;
-		}
-		View view = inflater.inflate(R.layout.fragment_filepreview_dialog, container);
-		findView(view,container);
+    public void setSource(View view) {
+        source = view;
+    }
 
-		Bundle bundle = getArguments();
-		if(bundle.getInt("type")==2) {
-			filePath = bundle.getString("filePath","/");
-			file = new File(filePath);
-			File[] files = file.listFiles();
-			resultfiles = getMaxSort(files);
-		}
-		else if(bundle.getInt("type")==1){
-			resultfiles=(File[])bundle.getSerializable("filelist");
-		}
-		x=bundle.getInt("x",0);
-		x=bundle.getInt("y",0);
-		initView();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        baseContext = getActivity();
+        if (baseContext instanceof PloreActivity) {
+            baseContext = MyApp.mainContext;
+        }
+        View view = inflater.inflate(R.layout.fragment_filepreview_dialog, container);
+        findView(view, container);
 
-		return view;
-	}
+        Bundle bundle = getArguments();
+        if (bundle.getInt("type") == 2) {
+            filePath = bundle.getString("filePath", "/");
+            file = new File(filePath);
+            File[] files = file.listFiles();
+            resultfiles = getMaxSort(files);
+        } else if (bundle.getInt("type") == 1) {
+            resultfiles = (File[]) bundle.getSerializable("filelist");
+        }
+        x = bundle.getInt("x", 0);
+        x = bundle.getInt("y", 0);
+        initView();
 
-	private void initView() {
+        return view;
+    }
 
-
-		switch(resultfiles.length){
-			case 0:
-				tv_1.setText("最近没有文件");
-				iv_1.setVisibility(View.GONE);
-				tr_2.setVisibility(View.GONE);
-				tr_3.setVisibility(View.GONE);
-				tr_4.setVisibility(View.GONE);
-				return;
-			case 1:
-				tr_2.setVisibility(View.GONE);
-				tr_3.setVisibility(View.GONE);
-				tr_4.setVisibility(View.GONE);
-				break;
-			case 2:
-				tr_3.setVisibility(View.GONE);
-				tr_4.setVisibility(View.GONE);
-				break;
-			case 3:
-				tr_4.setVisibility(View.GONE);
-				break;
-		}
-		tr_1.setOnClickListener(this);
-		tr_2.setOnClickListener(this);
-		tr_3.setOnClickListener(this);
-		tr_4.setOnClickListener(this);
-		tv_1.setOnClickListener(this);
-		tv_2.setOnClickListener(this);
-		tv_3.setOnClickListener(this);
-		tv_4.setOnClickListener(this);
-		iv_1 .setOnClickListener(this);
-		iv_2 .setOnClickListener(this);
-		iv_3 .setOnClickListener(this);
-		iv_4 .setOnClickListener(this);
-		tr_1.setOnLongClickListener(this);
-		tr_2.setOnLongClickListener(this);
-		tr_3.setOnLongClickListener(this);
-		tr_4.setOnLongClickListener(this);
-		tv_1.setOnLongClickListener(this);
-		tv_2.setOnLongClickListener(this);
-		tv_3.setOnLongClickListener(this);
-		tv_4.setOnLongClickListener(this);
-		iv_1.setOnLongClickListener(this);
-		iv_2 .setOnLongClickListener(this);
-		iv_3 .setOnLongClickListener(this);
-		iv_4.setOnLongClickListener(this);
-		if (resultfiles.length >= 1 && resultfiles[0] != null) {
-			tv_1.setText(resultfiles[0].getName());
-			setImage(iv_1, resultfiles[0]);
+    private void initView() {
 
 
-		}
-		if (resultfiles.length >= 2 && resultfiles[1] != null) {
-			tv_2.setText(resultfiles[1].getName());
-			setImage(iv_2, resultfiles[1]);
-		}
-		if (resultfiles.length >= 3 && resultfiles[2] != null) {
-			tv_3.setText(resultfiles[2].getName());
-			setImage(iv_3, resultfiles[2]);
-		}
-		if (resultfiles.length >= 4 && resultfiles[3] != null) {
-			tv_4.setText(resultfiles[3].getName());
-			setImage(iv_4, resultfiles[3]);
-		}
-	}
-
-	private void findView(View view,ViewGroup container) {
-		 tr_1 = (TableRow) view.findViewById(R.id.tr_filepreview_1);
-		 tr_2 = (TableRow) view.findViewById(R.id.tr_filepreview_2);
-		 tr_3 = (TableRow) view.findViewById(R.id.tr_filepreview_3);
-		 tr_4 = (TableRow) view.findViewById(R.id.tr_filepreview_4);
-		 tv_1 = (TextView) view.findViewById(R.id.tv_filepreview_1);
-		 tv_2 = (TextView) view.findViewById(R.id.tv_filepreview_2);
-		 tv_3 = (TextView) view.findViewById(R.id.tv_filepreview_3);
-		 tv_4 = (TextView) view.findViewById(R.id.tv_filepreview_4);
-		 iv_1 = (ImageView) view.findViewById(R.id.iv_filepreview_1);
-		 iv_2 = (ImageView) view.findViewById(R.id.iv_filepreview_2);
-		 iv_3 = (ImageView) view.findViewById(R.id.iv_filepreview_3);
-		 iv_4 = (ImageView) view.findViewById(R.id.iv_filepreview_4);
-
-	}
-	@Override
-	public void onStart() {
-		super.onStart();
-		setDialogPosition();
-	}
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()){
-			case R.id.iv_filepreview_1:
-			case R.id.tv_filepreview_1:
-			case R.id.tr_filepreview_1:
-				baseContext.startActivity(Utils.openFile(resultfiles[0]));
-				break;
-			case R.id.iv_filepreview_2:
-			case R.id.tv_filepreview_2:
-			case R.id.tr_filepreview_2:
-				baseContext.startActivity(Utils.openFile(resultfiles[1]));
-
-			case R.id.iv_filepreview_3:
-			case R.id.tv_filepreview_3:
-			case R.id.tr_filepreview_3:
-				baseContext.startActivity(Utils.openFile(resultfiles[2]));
-				break;
-			case R.id.iv_filepreview_4:
-			case R.id.tv_filepreview_4:
-			case R.id.tr_filepreview_4:
-				baseContext.startActivity(Utils.openFile(resultfiles[3]));
-				break;
-		}
-
-	}
-
-	private File[] getMaxSort(File[] files) {
-		ArrayList<File> list = new ArrayList<>();
-		for (File tmp:files) {
-			if (!tmp.isDirectory()) {
-				list.add(tmp);
-			}
-		}
-		File[] files1 = list.toArray(new File[list.size()]);
-		for (int i = 0; i<4; ++i) {
-			for (int j = i+1; j < files1.length; ++j) {
-				if (files1[i].lastModified() < files1[j].lastModified()) {
-					File tmp = files1[j];
-					files1[j] = files1[i];
-					files1[i] = tmp;
-				}
-			}
-		}
-		return files1;
-	}
-
-	private void setImage(ImageView iv_1, File file) {
-		switch (Utils.getMIMEType(file.getName())) {
-			case "video":
-				final String path1 = file.getPath();
-				//	final String name1 = file.getName();
-				imageLoader.displayImage("file://" + path1, iv_1);
-				// viewHolder.img.setImageResource(R.drawable.file_icon_movie);
-				break;
-			case "audio":
-				iv_1.setImageResource(R.drawable.file_icon_music);
-				break;
-			case "image":
-				final String path = file.getPath();
-				imageLoader.displayImage("file://" + path, iv_1);
-
-				break;
-			case "doc":
-				iv_1.setImageResource(R.drawable.file_icon_txt);
-				break;
-			case "*":
-				iv_1.setImageResource(R.drawable.file_icon_unknown);
-				break;
-			case "zip":
-				iv_1.setImageResource(R.drawable.file_icon_zip);
-				break;
-			case "apk":
-				iv_1.setImageResource(R.drawable.file_icon_apk);
-				break;
-			default:
-				break;
-		}
-
-	}
-
-	@Override
-	public boolean onLongClick(View v) {
-		MoreDialogFragment moreDialog = new MoreDialogFragment();
-		Bundle bundle = new Bundle();
-
-		switch (v.getId()){
-			case R.id.iv_filepreview_1:
-			case R.id.tv_filepreview_1:
-			case R.id.tr_filepreview_1:
-
-				bundle.putString("filePath", resultfiles[0].getPath());
-				moreDialog.setSource(v);
-				moreDialog.setArguments(bundle);
-				moreDialog.show(getFragmentManager(), "moreDialog");
-				break;
-			case R.id.iv_filepreview_2:
-			case R.id.tv_filepreview_2:
-			case R.id.tr_filepreview_2:
-
-				bundle.putString("filePath", resultfiles[1].getPath());
-				moreDialog.setSource(v);
-				moreDialog.setArguments(bundle);
-				moreDialog.show(getFragmentManager(), "moreDialog");
-				break;
-			case R.id.iv_filepreview_3:
-			case R.id.tv_filepreview_3:
-			case R.id.tr_filepreview_3:
+        switch (resultfiles.length) {
+            case 0:
+                tv_1.setText("最近没有文件");
+                iv_1.setVisibility(View.GONE);
+                tr_2.setVisibility(View.GONE);
+                tr_3.setVisibility(View.GONE);
+                tr_4.setVisibility(View.GONE);
+                return;
+            case 1:
+                tr_2.setVisibility(View.GONE);
+                tr_3.setVisibility(View.GONE);
+                tr_4.setVisibility(View.GONE);
+                break;
+            case 2:
+                tr_3.setVisibility(View.GONE);
+                tr_4.setVisibility(View.GONE);
+                break;
+            case 3:
+                tr_4.setVisibility(View.GONE);
+                break;
+        }
+        tr_1.setOnClickListener(this);
+        tr_2.setOnClickListener(this);
+        tr_3.setOnClickListener(this);
+        tr_4.setOnClickListener(this);
+        tv_1.setOnClickListener(this);
+        tv_2.setOnClickListener(this);
+        tv_3.setOnClickListener(this);
+        tv_4.setOnClickListener(this);
+        iv_1.setOnClickListener(this);
+        iv_2.setOnClickListener(this);
+        iv_3.setOnClickListener(this);
+        iv_4.setOnClickListener(this);
+        tr_1.setOnLongClickListener(this);
+        tr_2.setOnLongClickListener(this);
+        tr_3.setOnLongClickListener(this);
+        tr_4.setOnLongClickListener(this);
+        tv_1.setOnLongClickListener(this);
+        tv_2.setOnLongClickListener(this);
+        tv_3.setOnLongClickListener(this);
+        tv_4.setOnLongClickListener(this);
+        iv_1.setOnLongClickListener(this);
+        iv_2.setOnLongClickListener(this);
+        iv_3.setOnLongClickListener(this);
+        iv_4.setOnLongClickListener(this);
+        if (resultfiles.length >= 1 && resultfiles[0] != null) {
+            tv_1.setText(resultfiles[0].getName());
+            setImage(iv_1, resultfiles[0]);
 
 
-				bundle.putString("filePath", resultfiles[2].getPath());
-				moreDialog.setSource(v);
-				moreDialog.setArguments(bundle);
-				moreDialog.show(getFragmentManager(), "moreDialog");
-				break;
-			case R.id.iv_filepreview_4:
-			case R.id.tv_filepreview_4:
-			case R.id.tr_filepreview_4:
+        }
+        if (resultfiles.length >= 2 && resultfiles[1] != null) {
+            tv_2.setText(resultfiles[1].getName());
+            setImage(iv_2, resultfiles[1]);
+        }
+        if (resultfiles.length >= 3 && resultfiles[2] != null) {
+            tv_3.setText(resultfiles[2].getName());
+            setImage(iv_3, resultfiles[2]);
+        }
+        if (resultfiles.length >= 4 && resultfiles[3] != null) {
+            tv_4.setText(resultfiles[3].getName());
+            setImage(iv_4, resultfiles[3]);
+        }
+    }
+
+    private void findView(View view, ViewGroup container) {
+        tr_1 = (TableRow) view.findViewById(R.id.tr_filepreview_1);
+        tr_2 = (TableRow) view.findViewById(R.id.tr_filepreview_2);
+        tr_3 = (TableRow) view.findViewById(R.id.tr_filepreview_3);
+        tr_4 = (TableRow) view.findViewById(R.id.tr_filepreview_4);
+        tv_1 = (TextView) view.findViewById(R.id.tv_filepreview_1);
+        tv_2 = (TextView) view.findViewById(R.id.tv_filepreview_2);
+        tv_3 = (TextView) view.findViewById(R.id.tv_filepreview_3);
+        tv_4 = (TextView) view.findViewById(R.id.tv_filepreview_4);
+        iv_1 = (ImageView) view.findViewById(R.id.iv_filepreview_1);
+        iv_2 = (ImageView) view.findViewById(R.id.iv_filepreview_2);
+        iv_3 = (ImageView) view.findViewById(R.id.iv_filepreview_3);
+        iv_4 = (ImageView) view.findViewById(R.id.iv_filepreview_4);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setDialogPosition();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_filepreview_1:
+            case R.id.tv_filepreview_1:
+            case R.id.tr_filepreview_1:
+                baseContext.startActivity(Utils.openFile(resultfiles[0]));
+                break;
+            case R.id.iv_filepreview_2:
+            case R.id.tv_filepreview_2:
+            case R.id.tr_filepreview_2:
+                baseContext.startActivity(Utils.openFile(resultfiles[1]));
+
+            case R.id.iv_filepreview_3:
+            case R.id.tv_filepreview_3:
+            case R.id.tr_filepreview_3:
+                baseContext.startActivity(Utils.openFile(resultfiles[2]));
+                break;
+            case R.id.iv_filepreview_4:
+            case R.id.tv_filepreview_4:
+            case R.id.tr_filepreview_4:
+                baseContext.startActivity(Utils.openFile(resultfiles[3]));
+                break;
+        }
+
+    }
+
+    private File[] getMaxSort(File[] files) {
+        ArrayList<File> list = new ArrayList<>();
+        for (File tmp : files) {
+            if (!tmp.isDirectory()) {
+                list.add(tmp);
+            }
+        }
+        File[] files1 = list.toArray(new File[list.size()]);
+        for (int i = 0; i < 4; ++i) {
+            for (int j = i + 1; j < files1.length; ++j) {
+                if (files1[i].lastModified() < files1[j].lastModified()) {
+                    File tmp = files1[j];
+                    files1[j] = files1[i];
+                    files1[i] = tmp;
+                }
+            }
+        }
+        return files1;
+    }
+
+    private void setImage(ImageView iv_1, File file) {
+        switch (Utils.getMIMEType(file.getName())) {
+            case "video":
+                final String path1 = file.getPath();
+                //	final String name1 = file.getName();
+                imageLoader.displayImage("file://" + path1, iv_1);
+                // viewHolder.img.setImageResource(R.drawable.file_icon_movie);
+                break;
+            case "audio":
+                iv_1.setImageResource(R.drawable.file_icon_music);
+                break;
+            case "image":
+                final String path = file.getPath();
+                imageLoader.displayImage("file://" + path, iv_1);
+
+                break;
+            case "doc":
+                iv_1.setImageResource(R.drawable.file_icon_txt);
+                break;
+            case "*":
+                iv_1.setImageResource(R.drawable.file_icon_unknown);
+                break;
+            case "zip":
+                iv_1.setImageResource(R.drawable.file_icon_zip);
+                break;
+            case "apk":
+                iv_1.setImageResource(R.drawable.file_icon_apk);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        MoreDialogFragment moreDialog = new MoreDialogFragment();
+        Bundle bundle = new Bundle();
+
+        switch (v.getId()) {
+            case R.id.iv_filepreview_1:
+            case R.id.tv_filepreview_1:
+            case R.id.tr_filepreview_1:
+
+                bundle.putString("filePath", resultfiles[0].getPath());
+                moreDialog.setSource(v);
+                moreDialog.setArguments(bundle);
+                moreDialog.show(getFragmentManager(), "moreDialog");
+                break;
+            case R.id.iv_filepreview_2:
+            case R.id.tv_filepreview_2:
+            case R.id.tr_filepreview_2:
+
+                bundle.putString("filePath", resultfiles[1].getPath());
+                moreDialog.setSource(v);
+                moreDialog.setArguments(bundle);
+                moreDialog.show(getFragmentManager(), "moreDialog");
+                break;
+            case R.id.iv_filepreview_3:
+            case R.id.tv_filepreview_3:
+            case R.id.tr_filepreview_3:
 
 
-				bundle.putString("filePath", resultfiles[3].getPath());
-				moreDialog.setSource(v);
-				moreDialog.setArguments(bundle);
-				moreDialog.show(getFragmentManager(), "moreDialog");
-				break;
-		}
-		return true;
-	}
-	private void setDialogPosition() {
-		if (source == null) {
-			return; // Leave the dialog in default position
-		}
-		// Find out location of source component on screen
-		// see http://stackoverflow.com/a/6798093/56285
-		int[] location = new int[2];
-		source.getLocationOnScreen(location);
-			int sourceX = location[0];
-			int sourceY = location[1];
-			Window window = getDialog().getWindow();
-			window.setGravity(Gravity.TOP | Gravity.START);
+                bundle.putString("filePath", resultfiles[2].getPath());
+                moreDialog.setSource(v);
+                moreDialog.setArguments(bundle);
+                moreDialog.show(getFragmentManager(), "moreDialog");
+                break;
+            case R.id.iv_filepreview_4:
+            case R.id.tv_filepreview_4:
+            case R.id.tr_filepreview_4:
 
-			WindowManager.LayoutParams params = window.getAttributes();
-			// Just an example; edit to suit your needs.
-			params.x = sourceX + dpToPx(20);
-			params.y = sourceY ;
-			getDialog().getWindow()
-					.getAttributes().windowAnimations = R.style.PopupAnimationTop;
 
-			window.setAttributes(params);
+                bundle.putString("filePath", resultfiles[3].getPath());
+                moreDialog.setSource(v);
+                moreDialog.setArguments(bundle);
+                moreDialog.show(getFragmentManager(), "moreDialog");
+                break;
+        }
+        return true;
+    }
 
-	}
+    private void setDialogPosition() {
+        if (source == null) {
+            return; // Leave the dialog in default position
+        }
+        // Find out location of source component on screen
+        // see http://stackoverflow.com/a/6798093/56285
+        int[] location = new int[2];
+        source.getLocationOnScreen(location);
+        int sourceX = location[0];
+        int sourceY = location[1];
+        Window window = getDialog().getWindow();
+        window.setGravity(Gravity.TOP | Gravity.START);
 
-	public int dpToPx(float valueInDp) {
-		DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
-	}
+        WindowManager.LayoutParams params = window.getAttributes();
+        // Just an example; edit to suit your needs.
+        params.x = sourceX + dpToPx(20);
+        params.y = sourceY;
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.PopupAnimationTop;
+
+        window.setAttributes(params);
+
+    }
+
+    public int dpToPx(float valueInDp) {
+        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
+    }
 }

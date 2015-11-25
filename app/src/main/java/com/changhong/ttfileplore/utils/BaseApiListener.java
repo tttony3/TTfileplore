@@ -14,53 +14,59 @@ import com.tencent.tauth.IRequestListener;
 
 @SuppressWarnings("deprecation")
 public class BaseApiListener implements IRequestListener {
-	
-	//////////////////////////////////////
-	@Override
-	public void onComplete(JSONObject arg0) {
 
-		
-	}
-	
-	@Override
-	public void onHttpStatusException(HttpStatusException arg0) {
+    //////////////////////////////////////
+    @Override
+    public void onComplete(JSONObject arg0) {
 
-		
-	}
-	@Override
-	public void onIOException(IOException arg0) {
 
-		
-	}
-	@Override
-	public void onJSONException(JSONException arg0) {
+    }
 
-		
-	}
-	@Override
-	public void onMalformedURLException(MalformedURLException arg0) {
+    @Override
+    public void onHttpStatusException(HttpStatusException arg0) {
 
-		
-	}
-	@Override
-	public void onNetworkUnavailableException(NetworkUnavailableException arg0) {
 
-		
-	}
-	@Override
-	public void onSocketTimeoutException(SocketTimeoutException arg0) {
+    }
 
-		
-	}
-	@Override
-	public void onUnknowException(Exception arg0) {
+    @Override
+    public void onIOException(IOException arg0) {
 
-		
-	}
 
-	@Override
-	public void onConnectTimeoutException(ConnectTimeoutException arg0) {
+    }
 
-		
-	}
-	}
+    @Override
+    public void onJSONException(JSONException arg0) {
+
+
+    }
+
+    @Override
+    public void onMalformedURLException(MalformedURLException arg0) {
+
+
+    }
+
+    @Override
+    public void onNetworkUnavailableException(NetworkUnavailableException arg0) {
+
+
+    }
+
+    @Override
+    public void onSocketTimeoutException(SocketTimeoutException arg0) {
+
+
+    }
+
+    @Override
+    public void onUnknowException(Exception arg0) {
+
+
+    }
+
+    @Override
+    public void onConnectTimeoutException(ConnectTimeoutException arg0) {
+
+
+    }
+}

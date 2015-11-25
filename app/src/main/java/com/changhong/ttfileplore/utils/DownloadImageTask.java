@@ -13,43 +13,44 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-	ImageView im;
-	int opInt;
-	public DownloadImageTask(ImageView im,int op) {
-		this.im = im;
-		this.opInt=op;
-	}
+    ImageView im;
+    int opInt;
 
-	protected Bitmap doInBackground(String... urls) {
+    public DownloadImageTask(ImageView im, int op) {
+        this.im = im;
+        this.opInt = op;
+    }
 
-		return loadImageFromNetwork(urls[0]);
-	}
+    protected Bitmap doInBackground(String... urls) {
 
-	private Bitmap loadImageFromNetwork(String string) {
-		Bitmap bitmap = null;
-		URL url;
-		try {
-			url = new URL(string);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET"); // 设置请求方法为GET
-			conn.setReadTimeout(5 * 1000); // 设置请求过时时间为5秒
-			InputStream inputStream = conn.getInputStream(); // 通过输入流获得图片数据
-			byte[] data = StreamTool.readInputStream(inputStream);
-			Options op = new Options();
-			op.inSampleSize = opInt;
-			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, op);
-		} catch (MalformedURLException e) {
+        return loadImageFromNetwork(urls[0]);
+    }
 
-			e.printStackTrace();
-		} catch (IOException e) {
+    private Bitmap loadImageFromNetwork(String string) {
+        Bitmap bitmap = null;
+        URL url;
+        try {
+            url = new URL(string);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET"); // 设置请求方法为GET
+            conn.setReadTimeout(5 * 1000); // 设置请求过时时间为5秒
+            InputStream inputStream = conn.getInputStream(); // 通过输入流获得图片数据
+            byte[] data = StreamTool.readInputStream(inputStream);
+            Options op = new Options();
+            op.inSampleSize = opInt;
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, op);
+        } catch (MalformedURLException e) {
 
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        } catch (IOException e) {
 
-		return bitmap;
-	}
+            e.printStackTrace();
+        }
 
-	protected void onPostExecute(Bitmap result) {
-		im.setImageBitmap(result);
-	}
+        return bitmap;
+    }
+
+    protected void onPostExecute(Bitmap result) {
+        im.setImageBitmap(result);
+    }
 }

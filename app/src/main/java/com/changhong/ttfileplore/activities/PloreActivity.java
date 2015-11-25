@@ -55,7 +55,7 @@ import android.widget.Toast;
 
 import com.changhong.ttfileplore.utils.*;
 
-public class PloreActivity extends BaseActivity implements  View.OnClickListener,
+public class PloreActivity extends BaseActivity implements View.OnClickListener,
         PloreInterface, OnItemClickListener, OnItemLongClickListener,
         OnMenuItemClickListener, RecyclerViewAdapter.OnItemClickLitener, SearchDialogFragment.OnClickSearchDialog, NewfileDialogFragment.OnClickNewfileDialog {
     protected ImageLoader imageLoader = ImageLoader.getInstance();
@@ -64,7 +64,7 @@ public class PloreActivity extends BaseActivity implements  View.OnClickListener
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
     private ArrayList<File> fileList;
-    private  RecyclerView mListView;
+    private RecyclerView mListView;
     private TextView mPathView;
     private ImageView iv_back;
     private TextView mItemCount;
@@ -89,6 +89,7 @@ public class PloreActivity extends BaseActivity implements  View.OnClickListener
     private boolean isdefault_btn = true;
     int theme;
     MyApp myapp;
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         pauseOnScroll = savedInstanceState.getBoolean(STATE_PAUSE_ON_SCROLL, false);
@@ -478,7 +479,7 @@ public class PloreActivity extends BaseActivity implements  View.OnClickListener
                 break;
 
             case R.id.it_meun_share:
-                if(!sharedPreferences.getBoolean("share",true)){
+                if (!sharedPreferences.getBoolean("share", true)) {
                     Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -502,7 +503,7 @@ public class PloreActivity extends BaseActivity implements  View.OnClickListener
 
                 break;
             case R.id.it_meun_push:
-                if(!sharedPreferences.getBoolean("share",true)){
+                if (!sharedPreferences.getBoolean("share", true)) {
                     Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -539,7 +540,7 @@ public class PloreActivity extends BaseActivity implements  View.OnClickListener
                 break;
 
             case R.id.it_meun_qr:
-                if(!sharedPreferences.getBoolean("share",true)){
+                if (!sharedPreferences.getBoolean("share", true)) {
                     Toast.makeText(PloreActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }

@@ -24,6 +24,7 @@ public class ShowReciveDevActivity extends BaseActivity implements AdapterView.O
     private TextView tv_num;
     private TextView tv_path;
     private ReciveListAdapter reciveListAdapter;
+
     @Override
     protected void findView() {
         lv_recivefile = findView(R.id.lv_recivefile);
@@ -38,26 +39,27 @@ public class ShowReciveDevActivity extends BaseActivity implements AdapterView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         findView();
-        reciveListAdapter = new ReciveListAdapter(MyApp.recivePushList,ShowReciveDevActivity.this);
+        reciveListAdapter = new ReciveListAdapter(MyApp.recivePushList, ShowReciveDevActivity.this);
         lv_recivefile.setAdapter(reciveListAdapter);
         lv_recivefile.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
+        switch (parent.getId()) {
             case R.id.lv_recivefile:
                 Intent intent = new Intent();
                 intent.setClass(ShowReciveDevActivity.this, ShowPushFileActivity.class);
-                List<String> list=(List<String>)parent.getItemAtPosition(position);
-                if(list.size()>0){
-                    intent.putStringArrayListExtra("pushList",(ArrayList<String>)list);
-                    intent.putExtra("hasJson",true);
+                List<String> list = (List<String>) parent.getItemAtPosition(position);
+                if (list.size() > 0) {
+                    intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
+                    intent.putExtra("hasJson", true);
                     startActivity(intent);
                 }
                 break;
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

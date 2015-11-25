@@ -24,7 +24,7 @@ import com.changhong.ttfileplore.view.CircleProgress;
 /**
  * Created by tangli on 2015/11/2 !
  */
-public class PhotoActivity extends BaseActivity implements MoreDialogFragment.UpDate{
+public class PhotoActivity extends BaseActivity implements MoreDialogFragment.UpDate {
     private PhotoTimeLineFragment mTimeLineFragment;
     private PhotoGridFragment mGridFragment;
     private String[] content;
@@ -50,10 +50,12 @@ public class PhotoActivity extends BaseActivity implements MoreDialogFragment.Up
         showDialog();
         initToolBar();
     }
+
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
     }
+
     public void showDialog() {
         mProgressView.startAnim();
         alertDialog.show();

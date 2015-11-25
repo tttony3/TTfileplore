@@ -32,6 +32,7 @@
         android:paddingTop="0dp"
         android:text=""
         android:textColor="#d0ffffff"
-        android:textSize="@dimen/griditem_item_textsize" />
+        android:textSize="@dimen/griditem_item_textsize"
+        android:visibility="gone"/>
 
 </FrameLayout>

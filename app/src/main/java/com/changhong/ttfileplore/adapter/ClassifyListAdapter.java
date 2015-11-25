@@ -79,7 +79,7 @@ public class ClassifyListAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                checkbox_list[position] =((CheckBox) v).isChecked();
+                checkbox_list[position] = ((CheckBox) v).isChecked();
             }
         });
         viewHolder.title.setText(content.get(position).getTitle());

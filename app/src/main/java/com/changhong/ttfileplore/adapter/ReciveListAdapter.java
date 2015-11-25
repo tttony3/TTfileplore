@@ -22,14 +22,17 @@ import java.util.List;
 
 /**
  * Created by tangli on 2015/11/9.
+ * Website: https://github.com/tttony3
  */
-public class ReciveListAdapter extends BaseAdapter{
-    private List<List<String>> reciveList =new ArrayList<>();
+public class ReciveListAdapter extends BaseAdapter {
+    private List<List<String>> reciveList = new ArrayList<>();
     private Context context;
-    public ReciveListAdapter(List<List<String>> reciveList,Context context){
+
+    public ReciveListAdapter(List<List<String>> reciveList, Context context) {
         this.reciveList.addAll(reciveList);
-        this.context=context;
+        this.context = context;
     }
+
     @Override
     public int getCount() {
         return reciveList.size();
@@ -47,26 +50,26 @@ public class ReciveListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder ;
-        if(convertView == null){
+        ViewHolder viewHolder;
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.listitem_netfile, null);
             viewHolder = new ViewHolder();
             viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_net_filename);
             viewHolder.tv_message = (TextView) convertView.findViewById(R.id.tv_net_fileurl);
             viewHolder.img = (ImageView) convertView.findViewById(R.id.im_file);
             convertView.setTag(viewHolder);
-        }else{
-            viewHolder = (ViewHolder)convertView.getTag();
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-       List<String> tmpList =reciveList.get(position);
-        String jsonString  =tmpList.get(0);
+        List<String> tmpList = reciveList.get(position);
+        String jsonString = tmpList.get(0);
         try {
             JSONObject jsonObj = new JSONObject(jsonString);
             viewHolder.tv_message.setText(jsonObj.getString("message"));
             String device_id = jsonObj.getString("device_id");
-            String device_name="该设备已离线";
-            for(DeviceInfo tmp : ClientBusHandler.List_DeviceInfo){
-                if(tmp.getM_deviceid().equals(device_id)){
+            String device_name = "该设备已离线";
+            for (DeviceInfo tmp : ClientBusHandler.List_DeviceInfo) {
+                if (tmp.getM_deviceid().equals(device_id)) {
                     device_name = tmp.getM_devicename();
                     break;
                 }
@@ -80,7 +83,7 @@ public class ReciveListAdapter extends BaseAdapter{
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         public TextView tv_title;
         public TextView tv_message;
         public ImageView img;

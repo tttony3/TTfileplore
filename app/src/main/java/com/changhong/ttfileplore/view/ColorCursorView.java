@@ -28,7 +28,6 @@ public class ColorCursorView extends ImageView {
         super(context, attrs);
 
 
-
         TypedArray ta = context.obtainStyledAttributes(attrs,
                 R.styleable.ColorCursorView);
         mOriginColor = ta.getColor(
@@ -74,12 +73,12 @@ public class ColorCursorView extends ImageView {
 
     private void drawChangeRight(Canvas canvas, int r) {
         drawText_h(canvas, mChangeColor,
-                (int) ( (1 - mProgress) * getWidth()), getWidth());
+                (int) ((1 - mProgress) * getWidth()), getWidth());
     }
 
     private void drawOriginRight(Canvas canvas, int r) {
         drawText_h(canvas, mOriginColor, 0,
-                (int) (  (1 - mProgress) * getWidth()));
+                (int) ((1 - mProgress) * getWidth()));
     }
 
 
@@ -98,9 +97,11 @@ public class ColorCursorView extends ImageView {
         this.mProgress = progress;
         invalidate();
     }
+
     public void setDirection(int direction) {
         mDirection = direction;
     }
+
     private static final String KEY_STATE_PROGRESS = "key_progress";
     private static final String KEY_DEFAULT_STATE = "key_default_state";
 

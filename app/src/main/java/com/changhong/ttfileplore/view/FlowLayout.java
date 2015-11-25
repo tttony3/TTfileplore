@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 /**
  * Created by tangli on 2015/11/3.
+ * Website: https://github.com/tttony3
  */
 public class FlowLayout extends ViewGroup {
     private float mVerticalSpacing; //每个item纵向间距
@@ -55,7 +56,7 @@ public class FlowLayout extends ViewGroup {
                             childLayoutParams.height));
             int childWidth = childView.getMeasuredWidth();
             int childHeight = childView.getMeasuredHeight();
-            if (i < 4 && selfWidth<=childWidth*3.5) {
+            if (i < 4 && selfWidth <= childWidth * 3.5) {
                 selfWidth = selfWidth + childWidth;
             }
             lineHeight = Math.max(childHeight, lineHeight);
@@ -73,8 +74,8 @@ public class FlowLayout extends ViewGroup {
         }
 
         int wantedHeight = childTop + lineHeight + paddingBottom;
-        setMeasuredDimension(resolveSize(selfWidth,widthMeasureSpec), resolveSize(wantedHeight, heightMeasureSpec));
-      //  setMeasuredDimension(selfWidth, wantedHeight);
+        setMeasuredDimension(resolveSize(selfWidth, widthMeasureSpec), resolveSize(wantedHeight, heightMeasureSpec));
+        //  setMeasuredDimension(selfWidth, wantedHeight);
 
     }
 

@@ -14,6 +14,7 @@ import com.changhong.ttfileplore.view.CircleProgress;
 import com.changhong.ttfileplore.view.RefreshListView;
 import com.chobit.corestorage.CoreApp;
 import com.changhong.ttfileplore.R;
+import com.konifar.fab_transformation.FabTransformation;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -36,6 +37,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,6 +63,12 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
     MyHandler handler;
     ClassifyListAdapter listAdapter;
     FloatingActionButton fab;
+    LinearLayout ll_btn;
+    Button btn_push;
+    Button btn_delete;
+    Button btn_share;
+    Button btn_select;
+    Button btn_qr;
 
     @Override
     public void update() {
@@ -101,9 +110,27 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
             case R.id.fab:
                 if (listAdapter.isShow_cb()) {
                     listAdapter.setShow_cb(false);
+                    FabTransformation.with(fab)
+                            .transformFrom(ll_btn);
+
                 } else {
                     listAdapter.setShow_cb(true);
+                    FabTransformation.with(fab)
+                            .duration(500)
+                            .transformTo(ll_btn);
                 }
+                break;
+            case R.id.classify_btn_selectall:
+                listAdapter.setAllSelect();
+                listAdapter.notifyDataSetChanged();
+                break;
+            case R.id.classify_btn_push:
+                break;
+            case R.id.classify_btn_share:
+                break;
+            case R.id.classify_btn_qr:
+                break;
+            case R.id.classify_btn_delete:
                 break;
         }
     }
@@ -223,7 +250,11 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
                 break;
         }
         fab.setOnClickListener(this);
-
+        btn_delete.setOnClickListener(this);
+        btn_qr.setOnClickListener(this);
+        btn_select.setOnClickListener(this);
+        btn_share.setOnClickListener(this);
+        btn_push.setOnClickListener(this);
         lv_classify.setOnRefreshListener(this);
         lv_classify.setOnItemClickListener(new OnItemClickListener() {
 
@@ -263,6 +294,7 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
 
     @Override
     public void findView() {
+        ll_btn = findView(R.id.ll_btn);
         inflater = getLayoutInflater();
         fab = findView(R.id.fab);
         lv_classify = (RefreshListView) findViewById(R.id.file_list);
@@ -272,12 +304,24 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
         builder = new AlertDialog.Builder(ClassifyListActivity.this).setView(layout);
         alertDialog = builder.create();
         mProgressView = (CircleProgress) layout.findViewById(R.id.progress);
+        btn_push = findView(R.id.classify_btn_push);
+        btn_delete = findView(R.id.classify_btn_delete);
+        btn_qr = findView(R.id.classify_btn_qr);
+        btn_select = findView(R.id.classify_btn_selectall);
+        btn_share = findView(R.id.classify_btn_share);
 
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(listAdapter.isShow_cb()){
+                listAdapter.setShow_cb(false);
+                FabTransformation.with(fab)
+                        .duration(500)
+                        .transformFrom(ll_btn);
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

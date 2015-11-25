@@ -81,7 +81,7 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
     private AlertDialog alertDialog_preview;
     private AlertDialog.Builder builder_preview;
     private ImageView iv_preview;
-    private  AlertView alertView;
+    private AlertView alertView;
     private View layout_mediaplayer;
     private AlertDialog alertDialog_mediaplayer;
     private AlertDialog.Builder builder_mediaplayer;
@@ -171,10 +171,11 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if(alertView!=null){
-                if(alertView.isShowing()){
+            if (alertView != null) {
+                if (alertView.isShowing()) {
                     alertView.dismiss();
-                     return true;}
+                    return true;
+                }
             }
             if (netShareFileListAdapter.isshowcb()) {
                 netShareFileListAdapter.setIsshowcb(false);
@@ -267,7 +268,7 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ((NetShareFileListAdapter)parent.getAdapter()).setIsshowcb(true);
+        ((NetShareFileListAdapter) parent.getAdapter()).setIsshowcb(true);
         return false;
     }
 
@@ -303,12 +304,12 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
             }
             file = (JavaFile) parent.getItemAtPosition(position);
 
-             alertView =new AlertView("选择操作", null, "取消", null,
+            alertView = new AlertView("选择操作", null, "取消", null,
                     new String[]{"打开", "下载"},
                     ShowNetFileActivity.this, AlertView.Style.ActionSheet, new com.bigkoo.alertview.OnItemClickListener() {
                 public void onItemClick(Object o, int position) {
 
-                    switch(position){
+                    switch (position) {
                         case 0:
                             if (file.getFileType() == JavaFile.FileType.IMAGE) {
                                 showPreviewDialog(file.getLocation());

@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-public class VideoActivity extends BaseActivity  {  
+public class VideoActivity extends BaseActivity {
     String uri;
-    /** Called when the activity is first created. */  
+    /**
+     * Called when the activity is first created.
+     */
 //    @Override  
 //    public void onCreate(Bundle savedInstanceState) {
 //    	Intent intent =getIntent();
@@ -80,46 +82,48 @@ public class VideoActivity extends BaseActivity  {
 //  
 //}  
 //
-	private VideoView video1;
-	MediaController mediaco;
-//
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		MyApp myapp = (MyApp) getApplication();
-		myapp.setContext(this);
-		Intent intent = getIntent();
-		String uri =intent.getStringExtra("uri");
-		setContentView(R.layout.activity_video);
-		findView();
-		// File file = new File("/mnt/sdcard/通话录音/1.mp4");
+    private VideoView video1;
+    MediaController mediaco;
 
-		// VideoView与MediaController进行关联
-		video1.setVideoURI(Uri.parse(uri));		
-		video1.setMediaController(mediaco);
-		mediaco.setAnchorView(video1);
-		mediaco.setMediaPlayer(video1);
-		mediaco.setVisibility(View.VISIBLE);
-		video1.requestFocus();		
-		video1.start();
+    //
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MyApp myapp = (MyApp) getApplication();
+        myapp.setContext(this);
+        Intent intent = getIntent();
+        String uri = intent.getStringExtra("uri");
+        setContentView(R.layout.activity_video);
+        findView();
+        // File file = new File("/mnt/sdcard/通话录音/1.mp4");
 
-	}
-	@Override
-	protected void findView() {
-		video1 = (VideoView) findViewById(R.id.video1);
-		mediaco = new MediaController(this);
-		
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+        // VideoView与MediaController进行关联
+        video1.setVideoURI(Uri.parse(uri));
+        video1.setMediaController(mediaco);
+        mediaco.setAnchorView(video1);
+        mediaco.setMediaPlayer(video1);
+        mediaco.setVisibility(View.VISIBLE);
+        video1.requestFocus();
+        video1.start();
+
+    }
+
+    @Override
+    protected void findView() {
+        video1 = (VideoView) findViewById(R.id.video1);
+        mediaco = new MediaController(this);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {

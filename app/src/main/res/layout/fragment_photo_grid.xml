@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?main_bg"
+   >
 
-    <GridView
+    <com.felipecsl.asymmetricgridview.AsymmetricGridView
+        android:background="?main_bg"
         android:id="@+id/gv_photogrid"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="@dimen/griditem_img"
-        android:gravity="center_horizontal"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="0dp" />
-</LinearLayout>
+        />
+        <!--android:columnWidth="@dimen/griditem_img"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:numColumns="2"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--android:verticalSpacing="0dp" />-->
+</RelativeLayout>

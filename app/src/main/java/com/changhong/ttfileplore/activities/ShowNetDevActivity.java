@@ -37,164 +37,165 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ShowNetDevActivity extends BaseActivity {
-	Context context = ShowNetDevActivity.this;
-	ListView netList;
-	NetDevListAdapter netListAdapter;
-	AlertDialog alertDialog;
-	AlertDialog.Builder builder;
-	CircleProgress mProgressView;
-	View layout;
-	ArrayList<String> pushList;
-	MyApp myapp;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		Bundle b = intent.getBundleExtra("pushList");
-		if (b != null) {
-			pushList = b.getStringArrayList("pushList");
-		}
-		setContentView(R.layout.activity_net_dev);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-		setSupportActionBar(toolbar);
-		 myapp = (MyApp) getApplication();
-		LayoutInflater inflater = getLayoutInflater();
-		layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
-		builder = new AlertDialog.Builder(this).setView(layout);
-		alertDialog = builder.create();
-		mProgressView = (CircleProgress) layout.findViewById(R.id.progress);
+    Context context = ShowNetDevActivity.this;
+    ListView netList;
+    NetDevListAdapter netListAdapter;
+    AlertDialog alertDialog;
+    AlertDialog.Builder builder;
+    CircleProgress mProgressView;
+    View layout;
+    ArrayList<String> pushList;
+    MyApp myapp;
 
-		netList = (ListView) findViewById(R.id.lv_netactivity);
-		netListAdapter = new NetDevListAdapter(null, context);
-		netList.setAdapter(netListAdapter);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        Bundle b = intent.getBundleExtra("pushList");
+        if (b != null) {
+            pushList = b.getStringArrayList("pushList");
+        }
+        setContentView(R.layout.activity_net_dev);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+        myapp = (MyApp) getApplication();
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
+        builder = new AlertDialog.Builder(this).setView(layout);
+        alertDialog = builder.create();
+        mProgressView = (CircleProgress) layout.findViewById(R.id.progress);
 
-		if (CoreApp.mBinder != null) {
-			CoreApp.mBinder.setDeviceListener(deviceListener);
-			deviceListener.startWaiting();
-			ArrayList<DeviceInfo> list =new ArrayList<>();
-			list.addAll(ClientBusHandler.List_DeviceInfo);
-			setUpdateList(list);
-		}
+        netList = (ListView) findViewById(R.id.lv_netactivity);
+        netListAdapter = new NetDevListAdapter(null, context);
+        netList.setAdapter(netListAdapter);
 
-		netList.setOnItemClickListener(new OnItemClickListener() {
+        if (CoreApp.mBinder != null) {
+            CoreApp.mBinder.setDeviceListener(deviceListener);
+            deviceListener.startWaiting();
+            ArrayList<DeviceInfo> list = new ArrayList<>();
+            list.addAll(ClientBusHandler.List_DeviceInfo);
+            setUpdateList(list);
+        }
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (pushList != null) {
-					final DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
+        netList.setOnItemClickListener(new OnItemClickListener() {
 
-					PushDialogFragment pushDialogFragment = new PushDialogFragment() {
-						@Override
-						public void onPushFragmentEnter(String message) {
-							JSONObject pushJson = new JSONObject();
-							try {
-								TelephonyManager tm = (TelephonyManager) ShowNetDevActivity.this
-										.getSystemService(Context.TELEPHONY_SERVICE);
-								String DEVICE_ID = tm.getDeviceId();
-								pushJson.put("device_id",DEVICE_ID);
-								pushJson.put("message",message);
-								pushJson.put("filenum",pushList.size());
-								pushJson.put("http","http://"+myapp.getIp()+":"+myapp.getPort());
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-							if (pushList != null && pushList.size() != 0) {
-								ArrayList<String> tmp = new ArrayList<String>();
-								tmp.addAll(pushList);
-								tmp.add(0, pushJson.toString());
-								CoreApp.mBinder.PushResourceToDevice(info, tmp);
-								dismiss();
-							} else {
-								dismiss();
-								Toast.makeText(ShowNetDevActivity.this, "未选择推送文件", Toast.LENGTH_SHORT).show();
-							}
-						}
-					};
-					pushDialogFragment.show(getFragmentManager(),"pushDialogFragment");
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (pushList != null) {
+                    final DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
 
-				} else {
-					DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
-					Intent intent = new Intent();
-					intent.setClass(ShowNetDevActivity.this, ShowNetFileActivity.class);
-					((MyApp) getApplicationContext()).devinfo = info;
-					startActivity(intent);
-				}
-			}
-		});
+                    PushDialogFragment pushDialogFragment = new PushDialogFragment() {
+                        @Override
+                        public void onPushFragmentEnter(String message) {
+                            JSONObject pushJson = new JSONObject();
+                            try {
+                                TelephonyManager tm = (TelephonyManager) ShowNetDevActivity.this
+                                        .getSystemService(Context.TELEPHONY_SERVICE);
+                                String DEVICE_ID = tm.getDeviceId();
+                                pushJson.put("device_id", DEVICE_ID);
+                                pushJson.put("message", message);
+                                pushJson.put("filenum", pushList.size());
+                                pushJson.put("http", "http://" + myapp.getIp() + ":" + myapp.getPort());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if (pushList != null && pushList.size() != 0) {
+                                ArrayList<String> tmp = new ArrayList<String>();
+                                tmp.addAll(pushList);
+                                tmp.add(0, pushJson.toString());
+                                CoreApp.mBinder.PushResourceToDevice(info, tmp);
+                                dismiss();
+                            } else {
+                                dismiss();
+                                Toast.makeText(ShowNetDevActivity.this, "未选择推送文件", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    };
+                    pushDialogFragment.show(getFragmentManager(), "pushDialogFragment");
 
-	}
+                } else {
+                    DeviceInfo info = (DeviceInfo) parent.getItemAtPosition(position);
+                    Intent intent = new Intent();
+                    intent.setClass(ShowNetDevActivity.this, ShowNetFileActivity.class);
+                    ((MyApp) getApplicationContext()).devinfo = info;
+                    startActivity(intent);
+                }
+            }
+        });
 
-	private void setUpdateList(List<DeviceInfo> list) {
-		if (list.size() > 0) {
-			deviceListener.stopWaiting();
-		}
-		netListAdapter.updatelistview(list);
-	}
+    }
 
-	private CoreDeviceListener deviceListener = new CoreDeviceListener() {
+    private void setUpdateList(List<DeviceInfo> list) {
+        if (list.size() > 0) {
+            deviceListener.stopWaiting();
+        }
+        netListAdapter.updatelistview(list);
+    }
 
-		@Override
-		public void updateDeviceList(List<DeviceInfo> list) {
-			setUpdateList(list);
+    private CoreDeviceListener deviceListener = new CoreDeviceListener() {
 
-		}
+        @Override
+        public void updateDeviceList(List<DeviceInfo> list) {
+            setUpdateList(list);
 
-		@Override
-		public void stopWaiting() {
-			if (getTopActivity((Activity)MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
-				if (alertDialog.isShowing()) {
-					mProgressView.stopAnim();
-					alertDialog.dismiss();
-				}
-			}
-		}
+        }
 
-		@Override
-		public void startWaiting() {
-			if (getTopActivity((Activity)MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
-				mProgressView.startAnim();
-				alertDialog.show();
-			}
+        @Override
+        public void stopWaiting() {
+            if (getTopActivity((Activity) MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
+                if (alertDialog.isShowing()) {
+                    mProgressView.stopAnim();
+                    alertDialog.dismiss();
+                }
+            }
+        }
 
-		}
+        @Override
+        public void startWaiting() {
+            if (getTopActivity((Activity) MyApp.context.get()).equals(".activities.ShowNetDevActivity")) {
+                mProgressView.startAnim();
+                alertDialog.show();
+            }
 
-		@Override
-		public void showMessage(String arg0) {
-			Log.e("showMessage", arg0);
-		}
-	};
+        }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			CoreApp.mBinder.setDeviceListener(null);
-			finish();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+        @Override
+        public void showMessage(String arg0) {
+            Log.e("showMessage", arg0);
+        }
+    };
 
-	String getTopActivity(Activity context) {
-		ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-		@SuppressWarnings("deprecation")
-		List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            CoreApp.mBinder.setDeviceListener(null);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-		if (runningTaskInfos != null)
-			return (runningTaskInfos.get(0).topActivity).getShortClassName();
-		else
-			return "";
-	}
+    String getTopActivity(Activity context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        @SuppressWarnings("deprecation")
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
-	@Override
-	protected void findView() {
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+        if (runningTaskInfos != null)
+            return (runningTaskInfos.get(0).topActivity).getShortClassName();
+        else
+            return "";
+    }
+
+    @Override
+    protected void findView() {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

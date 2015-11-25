@@ -15,57 +15,58 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AppListAdapter extends BaseAdapter {
-	private Context context;
-	private ArrayList<AppInfo> appList;
+    private Context context;
+    private ArrayList<AppInfo> appList;
 
-	public AppListAdapter(Context context, ArrayList<AppInfo> appList) {
-		this.context = context;
-		this.appList = appList;
-	}
+    public AppListAdapter(Context context, ArrayList<AppInfo> appList) {
+        this.context = context;
+        this.appList = appList;
+    }
 
-	@Override
-	public int getCount() {
+    @Override
+    public int getCount() {
 
-		return appList.size();
-	}
+        return appList.size();
+    }
 
-	@Override
-	public Object getItem(int position) {
+    @Override
+    public Object getItem(int position) {
 
-		return appList.get(position);
-	}
+        return appList.get(position);
+    }
 
-	@Override
-	public long getItemId(int position) {
+    @Override
+    public long getItemId(int position) {
 
-		return position;
-	}
+        return position;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		final ViewHolder viewHolder;
-		if (convertView == null) {
-			viewHolder = new ViewHolder();
-			convertView =  LayoutInflater.from(context).inflate(R.layout.listitem_plore, null);
-			convertView.setTag(viewHolder);
-			viewHolder.cb = (CheckBox) convertView.findViewById(R.id.cb);
-			viewHolder.name = (TextView) convertView.findViewById(R.id.filename);
-			viewHolder.time = (TextView) convertView.findViewById(R.id.lasttime);
-			viewHolder.img = (ImageView) convertView.findViewById(R.id.fileimg);
-		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
-		AppInfo tmp = (AppInfo) getItem(position);
-		viewHolder.name.setText(tmp.appName);
-		viewHolder.img.setImageDrawable(tmp.appIcon);;
-		viewHolder.time.setText(tmp.versionName);
-		return convertView;
-	}
-	
-	class ViewHolder {
-		private CheckBox cb;
-		private ImageView img;
-		private TextView name;
-		private TextView time;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder viewHolder;
+        if (convertView == null) {
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.listitem_plore, null);
+            convertView.setTag(viewHolder);
+            viewHolder.cb = (CheckBox) convertView.findViewById(R.id.cb);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.filename);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.lasttime);
+            viewHolder.img = (ImageView) convertView.findViewById(R.id.fileimg);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        AppInfo tmp = (AppInfo) getItem(position);
+        viewHolder.name.setText(tmp.appName);
+        viewHolder.img.setImageDrawable(tmp.appIcon);
+        ;
+        viewHolder.time.setText(tmp.versionName);
+        return convertView;
+    }
+
+    class ViewHolder {
+        private CheckBox cb;
+        private ImageView img;
+        private TextView name;
+        private TextView time;
+    }
 }

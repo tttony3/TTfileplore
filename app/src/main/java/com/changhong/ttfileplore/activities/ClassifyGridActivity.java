@@ -40,7 +40,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ClassifyGridActivity extends BaseActivity implements MoreDialogFragment.UpDate{
+public class ClassifyGridActivity extends BaseActivity implements MoreDialogFragment.UpDate {
     GridView gv_classify;
     TextView tv_dir;
     int flg;
@@ -69,10 +69,12 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
         initView(flg);
         initToolBar();
     }
+
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
     }
+
     @Override
     public void findView() {
         inflater = getLayoutInflater();
@@ -109,61 +111,62 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         final Content content = (Content) parent.getItemAtPosition(position);
-                        WindowManager.LayoutParams lp=getWindow().getAttributes();
-                        lp.alpha=0.5f;
-                       getWindow().setAttributes(lp);
-                        PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this,Utils.dpTopx(150,ClassifyGridActivity.this), ViewGroup.LayoutParams.WRAP_CONTENT,
-                                true,content.getDir());
+                        WindowManager.LayoutParams lp = getWindow().getAttributes();
+                        lp.alpha = 0.5f;
+                        getWindow().setAttributes(lp);
+                        PopupMoreDialog p = new PopupMoreDialog(ClassifyGridActivity.this, Utils.dpTopx(150, ClassifyGridActivity.this), ViewGroup.LayoutParams.WRAP_CONTENT,
+                                true, content.getDir());
                         int[] viewLocation = new int[2];
                         view.getLocationInWindow(viewLocation);
                         int viewX = viewLocation[0]; // x 坐标
                         int viewY = viewLocation[1]; // y 坐标
                         Point point = new Point();
                         getWindow().getWindowManager().getDefaultDisplay().getSize(point);
-                        if(gridAdapter.x!=0&&gridAdapter.y!=0){
-                            if (point.x -viewX- gridAdapter.x > Utils.dpTopx(150,ClassifyGridActivity.this)) {
-                                if (point.y -viewY- gridAdapter.y > Utils.dpTopx(240,ClassifyGridActivity.this)) {
+                        if (gridAdapter.x != 0 && gridAdapter.y != 0) {
+                            if (point.x - viewX - gridAdapter.x > Utils.dpTopx(150, ClassifyGridActivity.this)) {
+                                if (point.y - viewY - gridAdapter.y > Utils.dpTopx(240, ClassifyGridActivity.this)) {
                                     p.setAnimationStyle(R.style.PopupAnimationTop);
                                     p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x, viewY + gridAdapter.y);
                                 } else {
                                     p.setAnimationStyle(R.style.PopupAnimationBottom);
-                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX +  gridAdapter.x, viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+gridAdapter.y);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x, viewY - Utils.dpTopx(240, ClassifyGridActivity.this) + gridAdapter.y);
                                 }
                             } else {
-                                if (point.y - viewY-gridAdapter.y >Utils.dpTopx(240,ClassifyGridActivity.this)) {
+                                if (point.y - viewY - gridAdapter.y > Utils.dpTopx(240, ClassifyGridActivity.this)) {
                                     p.setAnimationStyle(R.style.PopupAnimationTopRight);
-                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x-Utils.dpTopx(150,ClassifyGridActivity.this), viewY + gridAdapter.y);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x - Utils.dpTopx(150, ClassifyGridActivity.this), viewY + gridAdapter.y);
                                 } else {
                                     p.setAnimationStyle(R.style.PopupAnimationBottomRight);
-                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x-Utils.dpTopx(150,ClassifyGridActivity.this), viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+gridAdapter.y);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + gridAdapter.x - Utils.dpTopx(150, ClassifyGridActivity.this), viewY - Utils.dpTopx(240, ClassifyGridActivity.this) + gridAdapter.y);
                                 }
                             }
-                        }else{
-                        if (point.x - viewX > Utils.dpTopx(150,ClassifyGridActivity.this)) {
-                            if (point.y - viewY > Utils.dpTopx(240,ClassifyGridActivity.this)) {
-                                p.setAnimationStyle(R.style.PopupAnimationTop);
-                                p.showAsDropDown(view, Utils.dpTopx(80,ClassifyGridActivity.this), -Utils.dpTopx(80,ClassifyGridActivity.this));
-                            } else {
-                                p.setAnimationStyle(R.style.PopupAnimationBottom);
-                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + Utils.dpTopx(80,ClassifyGridActivity.this),
-                                        viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+Utils.dpTopx(80,ClassifyGridActivity.this));
-                            }
                         } else {
-                            if (point.y - viewY >Utils.dpTopx(240,ClassifyGridActivity.this)) {
-                                p.setAnimationStyle(R.style.PopupAnimationTopRight);
-                                p.showAsDropDown(view, -Utils.dpTopx(80,ClassifyGridActivity.this), -Utils.dpTopx(80,ClassifyGridActivity.this));
+                            if (point.x - viewX > Utils.dpTopx(150, ClassifyGridActivity.this)) {
+                                if (point.y - viewY > Utils.dpTopx(240, ClassifyGridActivity.this)) {
+                                    p.setAnimationStyle(R.style.PopupAnimationTop);
+                                    p.showAsDropDown(view, Utils.dpTopx(80, ClassifyGridActivity.this), -Utils.dpTopx(80, ClassifyGridActivity.this));
+                                } else {
+                                    p.setAnimationStyle(R.style.PopupAnimationBottom);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX + Utils.dpTopx(80, ClassifyGridActivity.this),
+                                            viewY - Utils.dpTopx(240, ClassifyGridActivity.this) + Utils.dpTopx(80, ClassifyGridActivity.this));
+                                }
                             } else {
-                                p.setAnimationStyle(R.style.PopupAnimationBottomRight);
-                                p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - Utils.dpTopx(80,ClassifyGridActivity.this),
-                                        viewY - Utils.dpTopx(240,ClassifyGridActivity.this)+Utils.dpTopx(80,ClassifyGridActivity.this));
+                                if (point.y - viewY > Utils.dpTopx(240, ClassifyGridActivity.this)) {
+                                    p.setAnimationStyle(R.style.PopupAnimationTopRight);
+                                    p.showAsDropDown(view, -Utils.dpTopx(80, ClassifyGridActivity.this), -Utils.dpTopx(80, ClassifyGridActivity.this));
+                                } else {
+                                    p.setAnimationStyle(R.style.PopupAnimationBottomRight);
+                                    p.showAtLocation(view, Gravity.NO_GRAVITY, viewX - Utils.dpTopx(80, ClassifyGridActivity.this),
+                                            viewY - Utils.dpTopx(240, ClassifyGridActivity.this) + Utils.dpTopx(80, ClassifyGridActivity.this));
+                                }
                             }
-                        }}
+                        }
                         p.setOnDismissListener(new PopupWindow.OnDismissListener() {
                             @Override
                             public void onDismiss() {
                                 WindowManager.LayoutParams lp = getWindow().getAttributes();
                                 lp.alpha = 1f;
-                              getWindow().setAttributes(lp);
+                                getWindow().setAttributes(lp);
                             }
                         });
 
@@ -210,7 +213,7 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
             Intent intent = new Intent();
             String[] s = new String[]{content.getDir(), content.getTitle()};
             intent.putExtra("content", s);
-        //    intent.setClass(ClassifyGridActivity.this, PhotoGridActivity.class);
+            //    intent.setClass(ClassifyGridActivity.this, PhotoGridActivity.class);
             intent.setClass(ClassifyGridActivity.this, PhotoActivity.class);
             startActivity(intent);
 
@@ -261,19 +264,19 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
             ClassifyGridActivity theActivity = mActivity.get();
             if (theActivity != null) {
                 super.handleMessage(msg);
-                ArrayList<Content> data ;
+                ArrayList<Content> data;
                 switch (msg.getData().getInt("tag")) {
                     case R.id.img_movie:
                         data = (ArrayList<Content>) msg.getData().get("data");
                         theActivity.gridAdapter = new ClassifyGridAdapter(data, theActivity, R.id.img_movie);
                         theActivity.gv_classify.setAdapter(theActivity.gridAdapter);
-                        theActivity. gridAdapter.notifyDataSetChanged();
+                        theActivity.gridAdapter.notifyDataSetChanged();
                         break;
                     case R.id.img_photo:
                         data = (ArrayList<Content>) msg.getData().get("data");
-                        theActivity. gridAdapter = new ClassifyGridAdapter(data, theActivity, R.id.img_movie);
+                        theActivity.gridAdapter = new ClassifyGridAdapter(data, theActivity, R.id.img_movie);
                         theActivity.gv_classify.setAdapter(theActivity.gridAdapter);
-                        theActivity. gridAdapter.notifyDataSetChanged();
+                        theActivity.gridAdapter.notifyDataSetChanged();
                         break;
 
                     default:
@@ -281,7 +284,7 @@ public class ClassifyGridActivity extends BaseActivity implements MoreDialogFrag
                 }
                 if (theActivity.alertDialog.isShowing()) {
                     theActivity.mProgressView.stopAnim();
-                    theActivity. alertDialog.dismiss();
+                    theActivity.alertDialog.dismiss();
                 }
             }
 

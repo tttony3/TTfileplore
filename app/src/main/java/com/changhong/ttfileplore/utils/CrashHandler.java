@@ -26,22 +26,27 @@ import android.widget.Toast;
 
 /**
  * Created by tangli on 2015/11/4.
+ * Website: https://github.com/tttony3
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private Thread.UncaughtExceptionHandler mDefaultHandler;// 系统默认的UncaughtException处理类
     private static CrashHandler INSTANCE = new CrashHandler();// CrashHandler实例
     private Context mContext;// 程序的Context对象
-    private Map<String, String> info = new HashMap<String, String>();// 用来存储设备信息和异常信息
+    private Map<String, String> info = new HashMap<>();// 用来存储设备信息和异常信息
     private SimpleDateFormat format = new SimpleDateFormat(
             "yyyy-MM-dd-HH-mm-ss");// 用于格式化日期,作为日志文件名的一部分
 
-    /** 保证只有一个CrashHandler实例 */
+    /**
+     * 保证只有一个CrashHandler实例
+     */
     private CrashHandler() {
 
     }
 
-    /** 获取CrashHandler实例 ,单例模式 */
+    /**
+     * 获取CrashHandler实例 ,单例模式
+     */
     public static CrashHandler getInstance() {
         return INSTANCE;
     }
@@ -49,7 +54,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 初始化
      *
-     * @param context
      */
     public void init(Context context) {
         mContext = context;
@@ -79,8 +83,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
      *
-     * @param ex
-     *            异常信息
+     * @param ex 异常信息
      * @return true 如果处理了该异常信息;否则返回false.
      */
     public boolean handleException(Throwable ex) {
@@ -106,7 +109,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 收集设备参数信息
      *
-     * @param context
      */
     public void collectDeviceInfo(Context context) {
         try {

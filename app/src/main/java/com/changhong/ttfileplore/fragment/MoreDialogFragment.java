@@ -148,7 +148,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
         int[] location = new int[2];
         source.getLocationOnScreen(location);
         if (x != 0 && y != 0) {
-            y=location[1];
+            y = location[1];
             Window window = getDialog().getWindow();
             DisplayMetrics dm = new DisplayMetrics();
             window.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -171,7 +171,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                     params.y = y - dpToPx(230);// above source view
                 }
             } else {
-                params.x = x-dpToPx(150);
+                params.x = x - dpToPx(150);
                 if (y + dpToPx(240) < sceenHeight) {
                     getDialog().getWindow()
                             .getAttributes().windowAnimations = R.style.PopupAnimationTopRight;

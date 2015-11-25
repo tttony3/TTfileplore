@@ -41,7 +41,7 @@ import java.util.Locale;
 /**
  * Created by tangli on 2015/11/12。
  */
-public class PopupMoreDialog  extends PopupWindow implements View.OnClickListener {
+public class PopupMoreDialog extends PopupWindow implements View.OnClickListener {
     String filePath;
     File file;
     RelativeLayout rl_delete;
@@ -56,15 +56,15 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
     SharedPreferences sharedPreferences;
     boolean isshare = true;
 
-    public PopupMoreDialog(Context context, int width, int height, boolean focusable,String path){
+    public PopupMoreDialog(Context context, int width, int height, boolean focusable, String path) {
         super(LayoutInflater.from(context).inflate(R.layout.fragment_moredialog, null), width, height, focusable);
         super.setBackgroundDrawable(new ColorDrawable(0x00000000));
         super.setTouchable(true);
-        baseContext  =context;
+        baseContext = context;
         sharedPreferences = context.getSharedPreferences("set", Context.MODE_PRIVATE); //私有数据
         isshare = sharedPreferences.getBoolean("share", true);
         filePath = path;
-        file  = new File(filePath);
+        file = new File(filePath);
         findView();
         initView();
     }
@@ -78,11 +78,12 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
         rl_push = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_push);
         rl_shareto = (RelativeLayout) getContentView().findViewById(R.id.rl_moreoption_shareto);
 
-        View layout_qr =LayoutInflater.from(baseContext).inflate(R.layout.dialog_qr, null);
+        View layout_qr = LayoutInflater.from(baseContext).inflate(R.layout.dialog_qr, null);
         AlertDialog.Builder builder_qr = new AlertDialog.Builder(baseContext).setView(layout_qr);
         alertDialog_qr = builder_qr.create();
         iv_qr = (ImageView) layout_qr.findViewById(R.id.iv_qr);
     }
+
     private void initView() {
         rl_delete.setOnClickListener(this);
         rl_qr.setOnClickListener(this);
@@ -110,7 +111,7 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                 this.dismiss();
                 break;
             case R.id.rl_moreoption_qr:
-                if(!isshare){
+                if (!isshare) {
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -126,7 +127,7 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                             WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                             ssid = wificonf.SSID;
                             Thread.sleep(500);
-                            final MyApp app = (MyApp)((Activity)baseContext).getApplicationContext();
+                            final MyApp app = (MyApp) ((Activity) baseContext).getApplicationContext();
                             app.setConnectedService(new ConnectedService() {
 
                                 @Override
@@ -151,7 +152,7 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                         WifiConfiguration wificonf = hpc.setupWifiAp("fileplore", "12345678");
                         ssid = wificonf.SSID;
                         Thread.sleep(500);
-                        final MyApp app = (MyApp) ((Activity)baseContext).getApplicationContext();
+                        final MyApp app = (MyApp) ((Activity) baseContext).getApplicationContext();
                         app.setConnectedService(new ConnectedService() {
 
                             @Override
@@ -174,7 +175,7 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                         .append(ssid)
                         .append("|");
                 if (!file.isDirectory()) {
-                    MyApp myapp = (MyApp) ((Activity)baseContext).getApplication();
+                    MyApp myapp = (MyApp) ((Activity) baseContext).getApplication();
                     String ip = myapp.getIp();
                     int port = myapp.getPort();
                     sb.append("http://")
@@ -210,11 +211,11 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                 bundle.putString("time", time);
                 bundle.putString("space", space);
                 detailDialog.setArguments(bundle);
-                detailDialog.show(((Activity)baseContext).getFragmentManager(), "detailDialog");
+                detailDialog.show(((Activity) baseContext).getFragmentManager(), "detailDialog");
 
                 break;
             case R.id.rl_moreoption_share:
-                if(!isshare){
+                if (!isshare) {
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -226,13 +227,13 @@ public class PopupMoreDialog  extends PopupWindow implements View.OnClickListene
                 }
                 break;
             case R.id.rl_moreoption_push:
-                if(!isshare){
+                if (!isshare) {
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 ArrayList<String> pushList = new ArrayList<>();
                 if (!file.isDirectory()) {
-                    MyApp myapp = (MyApp) ((Activity)baseContext).getApplication();
+                    MyApp myapp = (MyApp) ((Activity) baseContext).getApplication();
                     String ip = myapp.getIp();
                     int port = myapp.getPort();
                     pushList.add("http://" + ip + ":" + port + file.getPath());

@@ -77,11 +77,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(viewType ==VIEW_TYPES.Footer){
+        if (viewType == VIEW_TYPES.Footer) {
             view = new ImageView(context);
             view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, Utils.dpTopx(40, context)));
-        }
-        else
+        } else
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_plore, parent, false);
         return new ViewHolder(view);
     }
@@ -89,7 +88,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final RecyclerViewAdapter.ViewHolder viewHolder, final int position) {
-        if(position==files.size())
+        if (position == files.size())
             return;
         final File file = files.get(position);
         if (mOnItemClickLitener != null) {
@@ -127,7 +126,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             @Override
             public void onClick(View v) {
-                checkbox_list[position]=((CheckBox) v).isChecked();
+                checkbox_list[position] = ((CheckBox) v).isChecked();
 
             }
         });
@@ -217,7 +216,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return files.size()+1;
+        return files.size() + 1;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -238,7 +237,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemViewType(int position) {
 
-       if(position== files.size())
+        if (position == files.size())
             return VIEW_TYPES.Footer;
         else
             return VIEW_TYPES.Normal;
