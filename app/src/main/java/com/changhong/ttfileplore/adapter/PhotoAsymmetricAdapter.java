@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,15 +77,18 @@ public class PhotoAsymmetricAdapter extends BaseAdapter {
                     x = (int) event.getX();
                     y = (int) event.getY();
                     Log.e("txy", x + " " + y);
-                } else {
-//					x = 0;
-//					y = 0;
-//					Log.e("modifyxy",x+" "+y);
                 }
                 return false;
             }
 
         });
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, 0.4f, 0.4f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.2f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(1200);
         return convertView;
     }
 

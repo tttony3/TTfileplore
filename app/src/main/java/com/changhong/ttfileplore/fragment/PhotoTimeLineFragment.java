@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -203,7 +206,6 @@ public class PhotoTimeLineFragment extends Fragment {
             PhotoItem tmp = fileitems.get(position);
             int size = tmp.getFiles().size();
             viewHolder.tv_left.setText(DateFormat.getDateInstance(DateFormat.SHORT).format((new Date(tmp.getTime()))));
-
             viewHolder.tv_right.setText(DateFormat.getDateInstance().format((new Date(tmp.getFiles().get(size - 1).lastModified()))));
             viewHolder.tv_right.append("-");
             viewHolder.tv_right.append(DateFormat.getDateInstance().format((new Date(tmp.getTime()))));
@@ -263,9 +265,22 @@ public class PhotoTimeLineFragment extends Fragment {
                         return true;
                     }
                 });
+                AnimationSet animationSet = new AnimationSet(true);
+                ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, 0.3f, 0.3f);
+                AlphaAnimation alphaAnimation = new AlphaAnimation(0f, 1f);
+                animationSet.addAnimation(scaleAnimation);
+                animationSet.addAnimation(alphaAnimation);
+                tmpView.setAnimation(animationSet);
+                animationSet.setDuration(1200);
                 viewHolder.flowLayoutView.addView(tmpView);
             }
-
+            AnimationSet animationSet = new AnimationSet(true);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f, 1f, 1f, 1f, 1f, 0f);
+            AlphaAnimation alphaAnimation = new AlphaAnimation(0.2f, 1f);
+            animationSet.addAnimation(scaleAnimation);
+            animationSet.addAnimation(alphaAnimation);
+            convertView.setAnimation(animationSet);
+            animationSet.setDuration(300);
             return convertView;
         }
 

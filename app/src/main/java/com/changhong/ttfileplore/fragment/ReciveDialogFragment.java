@@ -19,8 +19,12 @@ public abstract class ReciveDialogFragment extends DialogFragment {
     Button btn_recive;
     Button btn_cancel;
     LinearLayout ll_content_recivedialog;
+    LinearLayout ll_btn;
     EditText et_replymessage;
     ImageView iv_replymessage;
+    TextView tv_tittle;
+
+    abstract public void showBtnAndSetTittle(LinearLayout ll_btn, TextView tv_tittle);
 
     abstract public void onReciveFragmentEnter();
 
@@ -31,6 +35,7 @@ public abstract class ReciveDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         View view = inflater.inflate(R.layout.fragment_recivedialog, container);
         findView(view);
 
@@ -40,7 +45,7 @@ public abstract class ReciveDialogFragment extends DialogFragment {
     }
 
     private void initView() {
-
+        showBtnAndSetTittle(ll_btn, tv_tittle);
         setReciveFragmentMessage(tv_message);
         if (tv_message.getText().equals(""))
             ll_content_recivedialog.setVisibility(View.GONE);
@@ -67,12 +72,14 @@ public abstract class ReciveDialogFragment extends DialogFragment {
     }
 
     private void findView(View view) {
+        tv_tittle = (TextView) view.findViewById(R.id.tv_title_recivedialog);
         tv_message = (TextView) view.findViewById(R.id.tv_message);
         btn_recive = (Button) view.findViewById(R.id.btn_recivedialog_recive);
         btn_cancel = (Button) view.findViewById(R.id.btn_recivedialog_cancel);
         et_replymessage = (EditText) view.findViewById(R.id.et_replymessage);
         iv_replymessage = (ImageView) view.findViewById(R.id.iv_recivedialog_reply);
         ll_content_recivedialog = (LinearLayout) view.findViewById(R.id.ll_content_recivedialog);
+        ll_btn = (LinearLayout) view.findViewById(R.id.ll_btn_default);
     }
 
 }

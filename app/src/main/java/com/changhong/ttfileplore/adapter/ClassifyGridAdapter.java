@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -97,6 +100,13 @@ public class ClassifyGridAdapter extends BaseAdapter {
             }
 
         });
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, 0.5f, 0.5f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(300);
         return convertView;
     }
 

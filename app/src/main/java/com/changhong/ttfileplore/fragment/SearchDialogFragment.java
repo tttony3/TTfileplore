@@ -31,6 +31,7 @@ public class SearchDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         View view = inflater.inflate(R.layout.fragment_seachdialog, container);
         findView(view);
 

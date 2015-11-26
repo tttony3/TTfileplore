@@ -9,6 +9,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -58,8 +61,14 @@ public class AppListAdapter extends BaseAdapter {
         AppInfo tmp = (AppInfo) getItem(position);
         viewHolder.name.setText(tmp.appName);
         viewHolder.img.setImageDrawable(tmp.appIcon);
-        ;
         viewHolder.time.setText(tmp.versionName);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1f, 0.8f, 1f, 1f, 1f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(250);
         return convertView;
     }
 

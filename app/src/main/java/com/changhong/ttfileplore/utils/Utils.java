@@ -103,7 +103,7 @@ public class Utils {
 
                 Content video = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA)),
                         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)),
-                        MediaStore.Video.Thumbnails.getThumbnail(contentResolver, origId, Images.Thumbnails.MICRO_KIND,
+                        MediaStore.Video.Thumbnails.getThumbnail(contentResolver, origId, Images.Thumbnails.MINI_KIND,
                                 null));
 
                 results.add(video);
@@ -190,7 +190,7 @@ public class Utils {
                 Content photo = new Content(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)),
                         // cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE)),
                         path[path.length - 2], MediaStore.Images.Thumbnails.getThumbnail(contentResolver, origId,
-                        Images.Thumbnails.MICRO_KIND, null),
+                        Images.Thumbnails.MINI_KIND, null),
                         origId);
 
                 results.add(photo);

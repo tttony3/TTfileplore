@@ -6,14 +6,14 @@
     android:layout_marginBottom="2dp"
     android:layout_marginTop="2dp"
     android:background="?shape_select"
- android:paddingBottom="2dp"
+    android:paddingBottom="2dp"
     android:descendantFocusability="blocksDescendants"
         >
 
     <com.makeramen.roundedimageview.RoundedImageView
         app:riv_corner_radius="5dip"
         android:contentDescription="@string/img_description"
-         android:scaleType="centerInside"
+         android:scaleType="centerCrop"
         android:id="@+id/iv_download"
         android:layout_width="40dp"
         android:layout_height="40dp"

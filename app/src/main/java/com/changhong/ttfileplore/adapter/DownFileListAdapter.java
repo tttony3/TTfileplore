@@ -19,6 +19,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -91,8 +94,18 @@ public class DownFileListAdapter extends BaseAdapter {
         }
         final DownData tmpdata = allList.get(position);
         if (!(new File(download_Path + "/" + appname + "/download/" + tmpdata.getName()).exists())) {
-            viewHolder.tv_name.setText("文件已被删除");
-            return convertView;
+            boolean isdowning = false;
+            for (DownData data : downList) {
+                if (data.getName().equals(tmpdata.getName())) {
+                    isdowning = true;
+                    break;
+                }
+
+            }
+            if (!isdowning) {
+                viewHolder.tv_name.setText("文件已被删除");
+                return convertView;
+            }
         }
         viewHolder.tv_name.setText(tmpdata.getName());
         int max = (int) (tmpdata.getTotalPart() / 100);
@@ -164,6 +177,7 @@ public class DownFileListAdapter extends BaseAdapter {
                 });
             }
         }
+
         return convertView;
     }
 

@@ -30,14 +30,20 @@ import com.squareup.leakcanary.LeakCanary;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.internal.widget.DialogTitle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +59,7 @@ public class MyApp extends CoreApp {
             .showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
             .cacheInMemory(true).cacheOnDisk(false).bitmapConfig(Bitmap.Config.RGB_565)
                     //.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
-            .displayer(new FadeInBitmapDisplayer(400))//是否图片加载好后渐入的动画时间
+            .displayer(new FadeInBitmapDisplayer(500))//是否图片加载好后渐入的动画时间
             .build();
     static public ArrayList<List<String>> recivePushList = new ArrayList<>();
 
@@ -110,7 +116,6 @@ public class MyApp extends CoreApp {
      */
     public void clearFileList() {
         fileList.clear();
-        ;
     }
 
     @Override
@@ -137,7 +142,7 @@ public class MyApp extends CoreApp {
                 .Builder(this)
                 .memoryCacheExtraOptions(500, 500) // max width, max height，即保存的每个缓存文件的最大长宽
                         //	    .diskCacheExtraOptions(200, 200, null) // Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个
-                .threadPoolSize(2)//线程池内加载的数量
+                .threadPoolSize(3)//线程池内加载的数量
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                         //	    .denyCacheImageMultipleSizesInMemory()
                         //		.memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // You can pass your own memory cache implementation/你可以通过自己的内存缓存实现
@@ -181,14 +186,12 @@ public class MyApp extends CoreApp {
         }
 
         @Override
-        public void recivePushResources(List<String> pushList) {
+        public void recivePushResources(final List<String> pushList) {
             recivePushList.add(pushList);
             final List<String> list = new ArrayList<>();
             list.addAll(pushList);
             String jsonString = list.remove(0);
-            Log.e("pushList", pushList.size() + "");
-            Log.e("list", list.size() + "");
-            Log.e("recivePushList", recivePushList.size() + "");
+
             String message = null;
             int filenum = 0;
             String http1 = "";
@@ -205,7 +208,17 @@ public class MyApp extends CoreApp {
             final String device_id = device_id1;
             final String http = http1;
             final String msg = message;
+
             ReciveDialogFragment reciveDialogFragment = new ReciveDialogFragment() {
+                @Override
+                public void showBtnAndSetTittle(LinearLayout ll_btn, TextView tv_tittle) {
+                    if (pushList.size() == 1) {
+                        tv_tittle.setText("收到消息");
+                        ll_btn.setVisibility(View.GONE);
+                    }
+                    tv_tittle.append("   来自 " + device_id);
+                }
+
                 @Override
                 public void onReciveFragmentEnter() {
                     if (list.size() > 0) {
@@ -214,6 +227,8 @@ public class MyApp extends CoreApp {
                         intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
                         startActivity(intent);
                         dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "没有文件", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -259,8 +274,13 @@ public class MyApp extends CoreApp {
                 List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
                 if (runningTaskInfos != null) {
-                    if ((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore"))
+                    if ((runningTaskInfos.get(0).topActivity).getPackageName().equals("com.changhong.ttfileplore")) {
+                        DialogFragment f = (DialogFragment) ((Activity) context.get()).getFragmentManager().findFragmentByTag("reciveDialogFragment");
+                        if (f != null) {
+                            f.dismiss();
+                        }
                         reciveDialogFragment.show(((Activity) context.get()).getFragmentManager(), "reciveDialogFragment");
+                    }
                 }
 
 

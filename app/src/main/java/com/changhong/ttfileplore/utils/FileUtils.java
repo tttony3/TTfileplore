@@ -21,7 +21,7 @@ public class FileUtils {
 
         try {
 
-           fi = new FileInputStream(s);
+            fi = new FileInputStream(s);
 
             fo = new FileOutputStream(t);
 
@@ -38,14 +38,14 @@ public class FileUtils {
         } finally {
 
             try {
-                if(fi!=null)
+                if (fi != null)
                     fi.close();
-                if(in!=null)
-                in.close();
-                if(fo!=null)
-                fo.close();
-                if(out!=null)
-                out.close();
+                if (in != null)
+                    in.close();
+                if (fo != null)
+                    fo.close();
+                if (out != null)
+                    out.close();
 
             } catch (IOException e) {
 

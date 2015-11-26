@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
 
-    android:background="?attr/mcolorAccent">
+    android:background="?attr/shape_popmenu">
     <TextView
         android:id="@+id/tv_title_recivedialog"
 
@@ -11,17 +11,22 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:text="@string/recivefile"
-        android:textColor="?mToolBarTextColor"
+        android:textColor="@color/gray"
         android:lines="1"
         android:textSize="15sp"/>
-
+    <ImageView
+        android:layout_below="@+id/tv_title_recivedialog"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50000000"
+        />
 
     <LinearLayout
         android:layout_below="@+id/tv_title_recivedialog"
         android:id="@+id/ll_content_recivedialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?item_bg_deep"
+
         android:paddingBottom="3dp"
         android:layout_marginTop="3dp"
         android:paddingTop="3dp">
@@ -31,7 +36,7 @@
             android:paddingEnd="2dp"
             android:layout_marginStart="2dp"
             android:gravity="center"
-            android:textColor="?main_textcolor"
+            android:textColor="@color/gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -57,7 +62,7 @@
         android:layout_below="@+id/ll_content_recivedialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?item_bg_deep"
+
         android:paddingBottom="10dp"
         android:paddingTop="5dp">
 
@@ -89,14 +94,19 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-
+    <ImageView
+        android:layout_below="@+id/rl_content2_recivedialog"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50000000"
+        />
     <LinearLayout
 
         android:id="@+id/ll_btn_default"
         android:layout_below="@+id/rl_content2_recivedialog"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:background="?attr/mcolorAccent"
+
         android:layout_height="35dp"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -108,9 +118,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/look"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
-
+        <ImageView
+            android:layout_marginTop="3dp"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#50000000"
+            />
         <Button
             android:id="@+id/btn_recivedialog_cancel"
             style="?android:attr/buttonBarButtonStyle"
@@ -118,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
 
 

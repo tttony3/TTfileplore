@@ -28,6 +28,7 @@
             android:layout_marginBottom="2dp"
             android:layout_marginStart="7dp"
             android:layout_marginTop="2dp"
+            android:textColor="?main_textcolor"
             android:maxEms="12"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"

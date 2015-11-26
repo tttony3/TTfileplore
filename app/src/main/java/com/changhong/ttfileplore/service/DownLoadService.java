@@ -62,9 +62,9 @@ public class DownLoadService extends Service implements DownStatusInterface {
             alreadydownList = Utils.getDownDataObject("alreadydownlist");
         } catch (Exception e) {
 
-            alreadydownList = new ArrayList<DownData>();
+            alreadydownList = new ArrayList<>();
         }
-        ArrayList<String> del = new ArrayList<String>();
+        ArrayList<String> del = new ArrayList<>();
         Iterator<String> it = downMap.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
@@ -103,8 +103,6 @@ public class DownLoadService extends Service implements DownStatusInterface {
             while (it1.hasNext()) {
                 pool.execute(new DownRunnAble(it1.next()));
             }
-        } else if (downloadlist == null) {
-
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -117,8 +115,6 @@ public class DownLoadService extends Service implements DownStatusInterface {
     public class DownLoadBinder extends Binder {
         /**
          * 获取 Service 实例
-         *
-         * @return
          */
         public DownLoadService getService() {
             return DownLoadService.this;
@@ -182,9 +178,9 @@ public class DownLoadService extends Service implements DownStatusInterface {
                     alreadydownList = Utils.getDownDataObject("alreadydownlist");
                 } catch (Exception e) {
 
-                    alreadydownList = new ArrayList<DownData>();
+                    alreadydownList = new ArrayList<>();
                 }
-                ArrayList<String> del = new ArrayList<String>();
+                ArrayList<String> del = new ArrayList<>();
                 Iterator<String> it = downMap.keySet().iterator();
                 while (it.hasNext()) {
                     String key = it.next();
@@ -230,7 +226,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
     public boolean cancelDownload(String uri) {
         if (downMap.containsKey(uri)) {
             CoreApp.mBinder.cancelDownload(uri);
-            downMap.remove(uri);
+            downMap.get(uri).setCancel(true);
             return true;
         } else {
             return false;

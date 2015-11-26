@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?attr/mcolorAccent">
+    android:background="?shape_popmenu">
 
 
         <TextView
@@ -14,22 +14,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/push_to_this_device"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="@color/gray"
             android:textSize="15sp"/>
-
+    <ImageView
+        android:layout_below="@+id/tv_title_pushdialog"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50000000"
+        />
     <RelativeLayout
         android:id="@+id/rl_pushdialog"
         android:layout_below="@+id/tv_title_pushdialog"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="?item_bg_deep"
         android:paddingTop="5dp"
         android:paddingEnd="5dp"
         android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/tv_message_"
-            android:textColor="?main_textcolor"
+            android:textColor="@color/gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -39,7 +43,7 @@
         <EditText
             android:padding="5dp"
             android:layout_toEndOf="@+id/tv_message_"
-            android:background="?item_shape"
+
             android:textColor="?main_textcolor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,13 +56,19 @@
             android:singleLine="false"
             android:scrollHorizontally="false" />
     </RelativeLayout>
+    <ImageView
+        android:layout_below="@+id/rl_pushdialog"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50000000"
+        />
     <LinearLayout
-android:layout_below="@+id/rl_pushdialog"
+    android:layout_below="@+id/rl_pushdialog"
         android:id="@+id/ll_btn_default"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="?attr/mcolorAccent"
+
         android:orientation="horizontal"
         android:visibility="visible">
 
@@ -69,9 +79,14 @@ android:layout_below="@+id/rl_pushdialog"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/push"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
-
+        <ImageView
+          android:layout_marginTop="3dp"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#50000000"
+            />
         <Button
             android:id="@+id/btn_pushdialog_cancel"
             style="?android:attr/buttonBarButtonStyle"
@@ -79,7 +94,7 @@ android:layout_below="@+id/rl_pushdialog"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
 
 

@@ -25,6 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -247,6 +250,13 @@ public class PloreListAdapter extends BaseAdapter {
             }
 
         });
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.9f, 1f, 0.9f, 1f, 0.8f, 0.8f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.5f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(200);
         return convertView;
     }
 

@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -34,6 +38,8 @@ public class ClassifyListAdapter extends BaseAdapter {
         for (int i = 0; i < checkbox_list.length; i++) {
             checkbox_list[i] = false;
         }
+
+
     }
 
     @Override
@@ -54,7 +60,7 @@ public class ClassifyListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listitem_plore, null);
             viewHolder = new ViewHolder();
@@ -67,12 +73,50 @@ public class ClassifyListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (show_cb) {
-            viewHolder.cb.setChecked(checkbox_list[position]);
+//            AnimationSet cb_startanimationSet;
+//            cb_startanimationSet= new AnimationSet(true);
+//            AlphaAnimation start_alphaAnimation =new AlphaAnimation(0.1f,1f);
+//            ScaleAnimation start_scaleAnimation = new ScaleAnimation(0f,1f,0f,1f,0f,0f);
+//            cb_startanimationSet.addAnimation(start_alphaAnimation);
+//            cb_startanimationSet.addAnimation(start_scaleAnimation);
+//            cb_startanimationSet.setDuration(500);
+//
+//            viewHolder.cb.setChecked(checkbox_list[position]);
             viewHolder.cb.setVisibility(View.VISIBLE);
+            //  viewHolder.cb.setAnimation(cb_startanimationSet);
+
 
         } else {
-            viewHolder.cb.setChecked(checkbox_list[position]);
-            viewHolder.cb.setVisibility(View.GONE);
+            if (viewHolder.cb.getVisibility() == View.VISIBLE) {
+                viewHolder.cb.setVisibility(View.GONE);
+//                AnimationSet cb_hideanimationSet;
+//                cb_hideanimationSet = new AnimationSet(true);
+//                AlphaAnimation stop_alphaAnimation = new AlphaAnimation(1f, 0f);
+//                ScaleAnimation stop_scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f, 0.5f, 0.5f);
+//                cb_hideanimationSet.addAnimation(stop_alphaAnimation);
+//                cb_hideanimationSet.addAnimation(stop_scaleAnimation);
+//                cb_hideanimationSet.setDuration(200);
+//
+//                viewHolder.cb.setChecked(checkbox_list[position]);
+//               viewHolder.cb.setAnimation(cb_hideanimationSet);
+//
+//                cb_hideanimationSet.setAnimationListener(new Animation.AnimationListener() {
+//                    @Override
+//                    public void onAnimationStart(Animation animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animation animation) {
+//                        viewHolder.cb.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animation animation) {
+//
+//                    }
+//                });
+            }
 
         }
         viewHolder.cb.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +155,13 @@ public class ClassifyListAdapter extends BaseAdapter {
             }
 
         });
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.9f, 1f, 0.9f, 1f, 1f, 1f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.3f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(150);
         return convertView;
     }
 
@@ -163,5 +214,10 @@ public class ClassifyListAdapter extends BaseAdapter {
         show_cb = false;
         notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

@@ -66,7 +66,8 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
     private int y;
 
     /**
-     * 刷新界面，由activity实现
+     * 删除数据后刷新界面
+     * 由activity实现
      */
     public interface UpDate {
         void update();
@@ -239,7 +240,7 @@ public class MoreDialogFragment extends DialogFragment implements View.OnClickLi
                     Toast.makeText(baseContext, "未开启共享", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                String ssid = "~";
+                String ssid ;
                 WifiManager wifiManager = (WifiManager) baseContext.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager.isWifiEnabled()) {
                     WifiInfo info = wifiManager.getConnectionInfo();

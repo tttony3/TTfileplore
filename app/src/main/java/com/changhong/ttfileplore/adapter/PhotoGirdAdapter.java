@@ -12,15 +12,15 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PhotoGirdAdapter extends BaseAdapter {
-    DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.file_icon_photo)
-            .showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
-            .cacheInMemory(true).cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565) // 设置图片的解码类型
-            .build();
+
     ArrayList<Content> results;
     private LayoutInflater inflater;
     ImageLoader imageLoader;
@@ -70,8 +70,14 @@ public class PhotoGirdAdapter extends BaseAdapter {
         // viewHolder.image, options);
         final String path = results.get(position).getDir();
 
-        imageLoader.displayImage("file://" + path, viewHolder.image, options);
-
+        imageLoader.displayImage("file://" + path, viewHolder.image);
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, 0.5f, 0.5f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        convertView.setAnimation(animationSet);
+        animationSet.setDuration(400);
         return convertView;
     }
 

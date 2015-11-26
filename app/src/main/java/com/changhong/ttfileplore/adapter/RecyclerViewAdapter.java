@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+
 
     private LayoutInflater mInflater;
     private boolean show_cb = false;
@@ -82,6 +86,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             view.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, Utils.dpTopx(40, context)));
         } else
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_plore, parent, false);
+
+
         return new ViewHolder(view);
     }
 
@@ -212,6 +218,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     break;
             }
         }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        holder.itemView.clearAnimation();
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(ViewHolder holder) {
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.9f, 1f, 0.9f, 1f, 0.8f, 0.8f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.5f, 1f);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+        holder.itemView.setAnimation(animationSet);
+        animationSet.setDuration(150);
+        super.onViewAttachedToWindow(holder);
     }
 
     @Override

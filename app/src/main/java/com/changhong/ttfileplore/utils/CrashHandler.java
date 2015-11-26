@@ -53,7 +53,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 初始化
-     *
      */
     public void init(Context context) {
         mContext = context;
@@ -108,7 +107,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 收集设备参数信息
-     *
      */
     public void collectDeviceInfo(Context context) {
         try {
@@ -132,9 +130,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 field.setAccessible(true);
                 info.put(field.getName(), field.get("").toString());
                 Log.d(TAG, field.getName() + ":" + field.get(""));
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (IllegalArgumentException |IllegalAccessException e) {
                 e.printStackTrace();
             }
         }

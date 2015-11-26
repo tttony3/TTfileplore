@@ -55,7 +55,7 @@ public class PloreData {
     private void lodaData(File folder, boolean showhide, int type) {
         File[] names = folder.listFiles();
 
-        for (File tmp :names) {
+        for (File tmp : names) {
             if (!showhide) {
                 if (tmp.getName().startsWith("."))
                     continue;

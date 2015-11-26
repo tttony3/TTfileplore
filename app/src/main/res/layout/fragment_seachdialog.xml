@@ -2,28 +2,33 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?shape_popmenu">
 
-    <TableRow android:background="?attr/mcolorAccent">
+    <TableRow >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:text="@string/searchfile"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="@color/gray"
             android:textSize="15sp"/>
     </TableRow>
-
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="#50000000"
+    />
     <TableRow
-        android:background="?item_bg_deep"
+
         android:paddingBottom="5dp">
 
         <TextView
-            android:textColor="?main_textcolor"
+            android:textColor="@color/gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="7dp"
             android:text="@string/filename"/>
 
         <EditText
@@ -31,23 +36,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="0dp"
             android:ems="10"
             android:hint=""
             android:inputType="text"
             android:labelFor="@+id/et_filename"
-            android:lines="1"
+
             android:maxLines="3"
             android:textColor="?main_textcolor" />
     </TableRow>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#50000000"
+        />
     <LinearLayout
 
         android:id="@+id/ll_btn_default"
-        style="?android:attr/buttonBarStyle"
+
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:background="?attr/mcolorAccent"
         android:orientation="horizontal"
         android:visibility="visible">
 
@@ -58,9 +66,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/seach"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
-
+        <ImageView
+            android:layout_marginTop="3dp"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#50000000"
+            />
         <Button
             android:id="@+id/btn_searchdialog_cancel"
             style="?android:attr/buttonBarButtonStyle"
@@ -68,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
-            android:textColor="?mToolBarTextColor"
+            android:textColor="?mcolorAccent"
             android:textSize="15sp" />
 
 

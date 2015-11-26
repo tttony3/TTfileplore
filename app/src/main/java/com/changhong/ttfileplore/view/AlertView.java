@@ -3,6 +3,7 @@ package com.changhong.ttfileplore.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextPaint;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,7 +31,7 @@ import java.util.List;
  * Created by tangli on 2015/11/12。
  */
 public class AlertView {
-    public static enum Style {
+    public  enum Style {
         ActionSheet,
         Alert
     }
@@ -112,7 +113,7 @@ public class AlertView {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ));
         contentContainer = (ViewGroup) rootView.findViewById(com.bigkoo.alertview.R.id.content_container);
-        int margin_alert_left_right ;
+        int margin_alert_left_right;
         switch (style) {
             case ActionSheet:
                 params.gravity = Gravity.BOTTOM;
@@ -183,10 +184,10 @@ public class AlertView {
 
         initListView();
         TextView tvAlertCancel = (TextView) contentContainer.findViewById(com.bigkoo.alertview.R.id.tvAlertCancel);
-        if (cancel != null) {
-            tvAlertCancel.setVisibility(View.VISIBLE);
-            tvAlertCancel.setText(cancel);
-        }
+//        if (cancel != null) {
+//            tvAlertCancel.setVisibility(View.VISIBLE);
+//            tvAlertCancel.setText(cancel);
+//        }
         tvAlertCancel.setOnClickListener(new OnTextClickListener(CANCELPOSITION));
     }
 
@@ -226,7 +227,7 @@ public class AlertView {
                 tvAlert.setText(data);
 
                 //取消按钮的样式
-                if (data .equals( cancel)) {
+                if (data.equals(cancel)) {
                     tvAlert.setTypeface(Typeface.DEFAULT);
                     tvAlert.setTextColor(context.getResources().getColor(com.bigkoo.alertview.R.color.textColor_alert_button_cancel));
                     tvAlert.setOnClickListener(new OnTextClickListener(CANCELPOSITION));

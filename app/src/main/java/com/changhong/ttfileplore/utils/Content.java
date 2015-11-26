@@ -1,5 +1,6 @@
 package com.changhong.ttfileplore.utils;
 
+import java.io.File;
 import java.io.Serializable;
 
 import android.graphics.Bitmap;
@@ -64,6 +65,10 @@ public class Content implements Serializable {
         return dir;
     }
 
+    public String getPath() {
+        return dir;
+    }
+
     public void setDir(String dir) {
         this.dir = dir;
     }
@@ -82,5 +87,15 @@ public class Content implements Serializable {
 
     public void setImg(Bitmap img) {
         this.img = img;
+    }
+
+    public boolean isDirectory() {
+        File t = new File(dir);
+        return t.isDirectory();
+    }
+
+    public boolean delete() {
+        File t = new File(dir);
+        return t.delete();
     }
 }
