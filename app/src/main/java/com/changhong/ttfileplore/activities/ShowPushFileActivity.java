@@ -84,6 +84,8 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
         setContentView(R.layout.activity_push_file);
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
         Intent intent = getIntent();
         pushList = intent.getStringArrayListExtra("pushList");

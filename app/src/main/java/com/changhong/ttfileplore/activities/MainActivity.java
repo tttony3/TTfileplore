@@ -31,7 +31,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
@@ -230,13 +229,6 @@ public class MainActivity extends AppCompatActivity
         iv_wechat.setOnClickListener(this);
         iv_app.setOnClickListener(this);
 
-//        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-//
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
-//        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
-//
-//        mTabLayout.setupWithViewPager(pager);
-//        mTabLayout.setTabsFromPagerAdapter(myPagerAdapter);
 
     }
 

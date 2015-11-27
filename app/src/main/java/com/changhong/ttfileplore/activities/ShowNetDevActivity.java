@@ -58,6 +58,8 @@ public class ShowNetDevActivity extends BaseActivity {
         setContentView(R.layout.activity_net_dev);
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         myapp = (MyApp) getApplication();
         LayoutInflater inflater = getLayoutInflater();
         layout = inflater.inflate(R.layout.circle_progress, (ViewGroup) findViewById(R.id.rl_progress));
@@ -168,7 +170,8 @@ public class ShowNetDevActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            CoreApp.mBinder.setDeviceListener(null);
+            if(CoreApp.mBinder!=null)
+             CoreApp.mBinder.setDeviceListener(null);
             finish();
         }
         return super.onKeyDown(keyCode, event);

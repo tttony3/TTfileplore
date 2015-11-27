@@ -109,7 +109,8 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
         setContentView(R.layout.activity_net_file);
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
-
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         MyApp myapp = (MyApp) getApplication();
         myapp.setContext(this);
         findView();

@@ -74,6 +74,8 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initView() {

@@ -56,12 +56,16 @@ public class Utils {
      * @return 手机内部存储空间字符串数组（总空间，可用空间，可用百分比）
      */
     public static String[] getPhoneSpace(Context context) {
-        StatFs fs = new StatFs("/storage/sdcard0");
-        String totalSize = Formatter.formatFileSize(context, (fs.getTotalBytes()));
-        String availableSize = Formatter.formatFileSize(context, (fs.getAvailableBytes()));
+        try {
+            StatFs fs = new StatFs("/storage/sdcard0");
+            String totalSize = Formatter.formatFileSize(context, (fs.getTotalBytes()));
+            String availableSize = Formatter.formatFileSize(context, (fs.getAvailableBytes()));
+            return (new String[]{totalSize, availableSize,
+                    (double) fs.getAvailableBytes() / (double) fs.getTotalBytes() * 100 + ""});
+        }catch(IllegalArgumentException e){
+            return (new String[]{"未装载", "未装载", "000"});
+        }
 
-        return (new String[]{totalSize, availableSize,
-                (double) fs.getAvailableBytes() / (double) fs.getTotalBytes() * 100 + ""});
     }
 
     /**
@@ -72,7 +76,6 @@ public class Utils {
         if (file.exists() && null != file.list() && file.list().length != 0) {
             // if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             StatFs fs = new StatFs("/storage/sdcard1");
-
             // StatFs fs = new
             // StatFs(Environment.getExternalStorageDirectory().getPath());
             // Android API18之前：fs.getAvailableBlocks()*fs.getBlockSize()

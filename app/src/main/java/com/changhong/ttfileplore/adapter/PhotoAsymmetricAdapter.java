@@ -17,7 +17,6 @@ import com.changhong.ttfileplore.R;
 import com.changhong.ttfileplore.data.FileImplAsymmeric;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class PhotoAsymmetricAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.photoitem_classify, parent, false);
+            convertView = inflater.inflate(R.layout.griditem_photo_grid, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.griditem_text);
             viewHolder.image = (ImageView) convertView.findViewById(R.id.griditem_img);

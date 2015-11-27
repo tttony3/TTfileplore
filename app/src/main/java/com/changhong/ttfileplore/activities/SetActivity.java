@@ -33,6 +33,8 @@ public class SetActivity extends BaseActivity implements ToggleButton.OnToggleCh
         findView();
         initView();
         initToolBar();
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initToolBar() {

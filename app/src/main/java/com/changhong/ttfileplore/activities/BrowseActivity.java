@@ -26,8 +26,8 @@ import android.widget.Toast;
 
 
 public class BrowseActivity extends Activity {
-    TextView tv_phoneTotal;
     TextView tv_phoneNotUse;
+    TextView tv_phoneTotal;
     TextView tv_sdTotal;
     TextView tv_sdNotUse;
     ProgressBar pb_phone;

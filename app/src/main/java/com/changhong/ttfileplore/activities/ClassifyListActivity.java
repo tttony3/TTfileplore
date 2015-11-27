@@ -91,6 +91,8 @@ public class ClassifyListActivity extends BaseActivity implements RefreshListVie
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initView(final int flg) {

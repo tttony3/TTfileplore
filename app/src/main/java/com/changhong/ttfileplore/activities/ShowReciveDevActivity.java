@@ -38,6 +38,8 @@ public class ShowReciveDevActivity extends BaseActivity implements AdapterView.O
         setContentView(R.layout.activity_show_recive_dev);
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
         reciveListAdapter = new ReciveListAdapter(MyApp.recivePushList, ShowReciveDevActivity.this);
         lv_recivefile.setAdapter(reciveListAdapter);

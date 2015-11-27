@@ -81,7 +81,7 @@ public class ClassifyListAdapter extends BaseAdapter {
 //            cb_startanimationSet.addAnimation(start_scaleAnimation);
 //            cb_startanimationSet.setDuration(500);
 //
-//            viewHolder.cb.setChecked(checkbox_list[position]);
+            viewHolder.cb.setChecked(checkbox_list[position]);
             viewHolder.cb.setVisibility(View.VISIBLE);
             //  viewHolder.cb.setAnimation(cb_startanimationSet);
 
@@ -97,7 +97,7 @@ public class ClassifyListAdapter extends BaseAdapter {
 //                cb_hideanimationSet.addAnimation(stop_scaleAnimation);
 //                cb_hideanimationSet.setDuration(200);
 //
-//                viewHolder.cb.setChecked(checkbox_list[position]);
+                viewHolder.cb.setChecked(checkbox_list[position]);
 //               viewHolder.cb.setAnimation(cb_hideanimationSet);
 //
 //                cb_hideanimationSet.setAnimationListener(new Animation.AnimationListener() {

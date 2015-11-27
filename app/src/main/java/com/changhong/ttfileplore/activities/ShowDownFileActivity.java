@@ -83,6 +83,8 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

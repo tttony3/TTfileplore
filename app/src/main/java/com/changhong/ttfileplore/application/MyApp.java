@@ -13,6 +13,7 @@ import com.changhong.ttfileplore.activities.ShowPushFileActivity;
 import com.changhong.ttfileplore.fragment.ReciveDialogFragment;
 import com.changhong.ttfileplore.utils.CrashHandler;
 import com.changhong.ttfileplore.utils.Utils;
+import com.chobit.corestorage.ConnectedService;
 import com.chobit.corestorage.CoreApp;
 import com.chobit.corestorage.CoreHttpServerCB;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -35,6 +36,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.support.v7.internal.widget.DialogTitle;
 import android.telephony.TelephonyManager;
@@ -216,7 +218,7 @@ public class MyApp extends CoreApp {
                         tv_tittle.setText("收到消息");
                         ll_btn.setVisibility(View.GONE);
                     }
-                    tv_tittle.append("   来自 " + device_id);
+                    tv_tittle.append("   来自 " + http);
                 }
 
                 @Override
@@ -290,4 +292,12 @@ public class MyApp extends CoreApp {
         }
     };
 
+    @Override
+    public boolean bindService(Intent service, ServiceConnection conn, int flags) {
+      //  Intent intent = new Intent("com.chobit.corestorage.CoreService");
+        Log.e("a", service.getAction()+"  "+service.getPackage());
+//        service.setPackage("com.chobit.corestorage");
+//        service.setAction("com.chobit.corestorage.CoreService");
+        return super.bindService(service, conn, flags);
+    }
 }

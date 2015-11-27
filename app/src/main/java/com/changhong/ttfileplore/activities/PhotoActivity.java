@@ -54,6 +54,8 @@ public class PhotoActivity extends BaseActivity implements MoreDialogFragment.Up
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void showDialog() {

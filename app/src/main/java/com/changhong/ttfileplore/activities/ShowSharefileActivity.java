@@ -38,6 +38,8 @@ public class ShowSharefileActivity extends BaseActivity {
         setContentView(R.layout.activity_share_file);
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findView();
         shareList = FC_GetShareFile.GetShareList();
         initView();
