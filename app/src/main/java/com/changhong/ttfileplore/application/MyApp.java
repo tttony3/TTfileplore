@@ -296,7 +296,8 @@ public class MyApp extends CoreApp {
     public boolean bindService(Intent service, ServiceConnection conn, int flags) {
       //  Intent intent = new Intent("com.chobit.corestorage.CoreService");
         Log.e("a", service.getAction()+"  "+service.getPackage());
-//        service.setPackage("com.chobit.corestorage");
+        service.setPackage(getPackageName());
+        Log.e("a1", service.getAction() + "  " + service.getPackage());
 //        service.setAction("com.chobit.corestorage.CoreService");
         return super.bindService(service, conn, flags);
     }

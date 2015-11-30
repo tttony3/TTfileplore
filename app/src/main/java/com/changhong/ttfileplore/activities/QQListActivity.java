@@ -13,16 +13,20 @@ import com.changhong.ttfileplore.base.BaseActivity;
 import com.changhong.ttfileplore.data.AppInfo;
 import com.changhong.ttfileplore.data.PloreData;
 import com.changhong.ttfileplore.fragment.MoreDialogFragment;
+import com.changhong.ttfileplore.utils.Content;
 import com.changhong.ttfileplore.utils.Utils;
 import com.changhong.ttfileplore.view.CircleProgress;
 import com.changhong.ttfileplore.view.RefreshListView;
 import com.chobit.corestorage.CoreApp;
+import com.konifar.fab_transformation.FabTransformation;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
@@ -37,6 +41,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +65,20 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
     private ArrayList<AppInfo> appList = new ArrayList<>();
     private int flag;
     File file;
+    private LinearLayout ll_btn;
+    Button btn_push;
+    Button btn_delete;
+    Button btn_share;
+    Button btn_select;
+    Button btn_qr;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_classify_list);
+        sharedPreferences = getSharedPreferences("set", Context.MODE_PRIVATE);
         inflater = LayoutInflater.from(this);
         findView();
         initView();
@@ -74,7 +88,7 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -155,6 +169,11 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 
             tv_count.setText(files.size() + "项");
             fab.setOnClickListener(this);
+            btn_delete.setOnClickListener(this);
+            btn_qr.setOnClickListener(this);
+            btn_select.setOnClickListener(this);
+            btn_share.setOnClickListener(this);
+            btn_push.setOnClickListener(this);
             qqAdapter = new PloreListAdapter(QQListActivity.this, files, true, ImageLoader.getInstance());
             lv_classify.setAdapter(qqAdapter);
             lv_classify.setOnItemClickListener(this);
@@ -169,7 +188,12 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
         lv_classify = (RefreshListView) findViewById(R.id.file_list);
         tv_dir = (TextView) findViewById(R.id.path);
         tv_count = (TextView) findViewById(R.id.item_count);
-
+        ll_btn = findView(R.id.ll_btn);
+        btn_push = findView(R.id.classify_btn_push);
+        btn_delete = findView(R.id.classify_btn_delete);
+        btn_qr = findView(R.id.classify_btn_qr);
+        btn_select = findView(R.id.classify_btn_selectall);
+        btn_share = findView(R.id.classify_btn_share);
     }
 
     @Override
@@ -196,21 +220,32 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            File file = father.pollLast();
-            if (file != null) {
-                PloreData mPloreData = new PloreData(file, true);
-                files.clear();
-                files.addAll(mPloreData.getfiles());
-                for (int i = 0; i < files.size(); i++) {
-                    if (files.get(i).getName().startsWith(".")) {
-                        files.remove(i);
-                        i--;
-                    }
-                }
-                qqAdapter.updateList(files);
+            if (flag == R.id.img_app) {
+                return super.onKeyDown(keyCode, event);
+            } else if (qqAdapter.isShow_cb()) {
+                qqAdapter.setShow_cb(false);
+                qqAdapter.notifyDataSetChanged();
+                FabTransformation.with(fab)
+                        .duration(350)
+                        .transformFrom(ll_btn);
                 return true;
-            }
+            } else {
+                File file = father.pollLast();
+                if (file != null) {
+                    PloreData mPloreData = new PloreData(file, true);
+                    files.clear();
+                    files.addAll(mPloreData.getfiles());
+                    for (int i = 0; i < files.size(); i++) {
+                        if (files.get(i).getName().startsWith(".")) {
+                            files.remove(i);
+                            i--;
+                        }
+                    }
+                    qqAdapter.updateList(files);
+                    return true;
+                }
 
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -271,14 +306,97 @@ public class QQListActivity extends BaseActivity implements OnItemClickListener,
 
     @Override
     public void onClick(View v) {
+        Boolean[] mlist;
         switch (v.getId()) {
             case R.id.fab:
+                if (flag == R.id.img_app) {
+                    break;
+                }
                 if (qqAdapter.isShow_cb()) {
                     qqAdapter.setShow_cb(false);
+                    FabTransformation.with(fab)
+                            .transformFrom(ll_btn);
+
                 } else {
                     qqAdapter.setShow_cb(true);
+                    qqAdapter.notifyDataSetChanged();
+                    FabTransformation.with(fab)
+                            .duration(350)
+                            .transformTo(ll_btn);
                 }
+                break;
+            case R.id.classify_btn_selectall:
+                qqAdapter.setAllSelect();
                 qqAdapter.notifyDataSetChanged();
+                break;
+            case R.id.classify_btn_push:
+
+                if (!sharedPreferences.getBoolean("share", true)) {
+                    Toast.makeText(QQListActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    ArrayList<String> pushList = new ArrayList<>();
+                    mlist = qqAdapter.getCheckBox_List();
+                    for (int i = 0; i < mlist.length; i++) {
+                        if (mlist[i]) {
+                            File file = (File) qqAdapter.getItem(i);
+                            if (!file.isDirectory()) {
+
+                                MyApp myapp = (MyApp) getApplication();
+                                String ip = myapp.getIp();
+                                int port = myapp.getPort();
+                                pushList.add("http://" + ip + ":" + port + file.getPath());
+                            } else {
+                                Toast.makeText(QQListActivity.this, "文件夹暂不支持推送", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                    if (pushList.size() > 0) {
+                        Intent intent = new Intent();
+                        Bundle b = new Bundle();
+                        b.putStringArrayList("pushList", pushList);
+                        intent.putExtra("pushList", b);
+                        intent.setClass(QQListActivity.this, ShowNetDevActivity.class);
+                        startActivity(intent);
+                    }
+
+                }
+
+                break;
+            case R.id.classify_btn_share:
+                if (!sharedPreferences.getBoolean("share", true)) {
+                    Toast.makeText(QQListActivity.this, "未开启共享", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                mlist = qqAdapter.getCheckBox_List();
+                for (int i = 0; i < mlist.length; i++) {
+                    if (mlist[i]) {
+                        File file = (File) qqAdapter.getItem(i);
+
+                        String s = CoreApp.mBinder.AddShareFile(file.getPath());
+                        Toast.makeText(QQListActivity.this, "AddShareFile  " + s, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+                break;
+            case R.id.classify_btn_qr:
+                break;
+            case R.id.classify_btn_delete:
+                mlist = qqAdapter.getCheckBox_List();
+                for (int i = 0; i < mlist.length; i++) {
+                    if (mlist[i]) {
+                        File file = (File) qqAdapter.getItem(i);
+                        if (file.delete()) {
+
+                            Toast.makeText(QQListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(QQListActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                update();
                 break;
         }
     }

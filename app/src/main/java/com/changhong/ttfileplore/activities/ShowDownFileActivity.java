@@ -291,8 +291,8 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
 
     class DownloadProcessRunnable implements Runnable {
         public void run() {
-            int i = 0;
-            int j = 0;
+            int i ;
+            int j ;
             do {
                 downList.clear();
                 i = 0;
