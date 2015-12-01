@@ -335,6 +335,7 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
                             ArrayList<String> downlist = new ArrayList<String>();
                             downlist.add(devInfo.getM_httpserverurl() + file.getLocation());
                             Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
+                            intent.setPackage(getPackageName());
                             intent.putStringArrayListExtra("downloadlist", downlist);
                             startService(intent);
                             Toast.makeText(ShowNetFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();

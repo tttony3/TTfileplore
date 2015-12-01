@@ -89,9 +89,11 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
 
     @Override
     protected void onStart() {
-
-        if (sharedPreferences.getBoolean("share", true))
-            this.bindService(new Intent("com.changhong.fileplore.service.DownLoadService"), conn, BIND_AUTO_CREATE);
+        if (sharedPreferences.getBoolean("share", true)){
+            Intent intent =new Intent("com.changhong.fileplore.service.DownLoadService");
+            intent.setPackage(getPackageName());
+            this.bindService(intent, conn, BIND_AUTO_CREATE);
+        }
         else
             downLoadService = new DownLoadService();
         try {
