@@ -225,6 +225,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
                         break;
                     case 1:
                         if (downLoadService.cancelDownload(tmp.getUri())) {
+                            downLoadService.getAllDownStatus().remove(tmp.getUri());
                             break;
                         } else {
 
@@ -232,7 +233,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
                                 alreadydownList = Utils.getDownDataObject("alreadydownlist");
                             } catch (Exception e) {
 
-                                alreadydownList = new ArrayList<DownData>();
+                                alreadydownList = new ArrayList<>();
                             }
                             for (int i = 0; i < alreadydownList.size(); i++) {
                                 if (alreadydownList.get(i).getUri().equals(tmp.getUri())) {
@@ -246,7 +247,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
                             alreadydownList = Utils.getDownDataObject("alreadydownlist");
                         } catch (Exception e) {
 
-                            alreadydownList = new ArrayList<DownData>();
+                            alreadydownList = new ArrayList<>();
                         }
                         HashMap<String, DownData> map = downLoadService.getAllDownStatus();
                         if (map != null) {
@@ -314,6 +315,7 @@ public class ShowDownFileActivity extends BaseActivity implements OnItemLongClic
                         }
 
                     }
+
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putInt("key", UPDATE_LIST);

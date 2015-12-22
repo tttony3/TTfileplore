@@ -2,6 +2,7 @@ package com.changhong.ttfileplore.adapter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.changhong.alljoyn.simpleservice.FC_GetShareFile;
 import com.changhong.ttfileplore.R;
@@ -10,6 +11,7 @@ import com.changhong.ttfileplore.service.DownLoadService;
 import com.changhong.ttfileplore.utils.Utils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.content.Context;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class DownFileListAdapter extends BaseAdapter {
+
     String download_Path;
     String appname;
     private LayoutInflater inflater;
@@ -40,7 +43,12 @@ public class DownFileListAdapter extends BaseAdapter {
     Context context;
     DownLoadService downLoadService;
     ImageLoader imageLoader = ImageLoader.getInstance();
-
+    DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.color.gray_alph)
+            .showImageForEmptyUri(R.drawable.file_icon_photo).showImageOnFail(R.drawable.file_icon_photo)
+            .cacheInMemory(true).cacheOnDisk(false).bitmapConfig(Bitmap.Config.RGB_565)
+            //.displayer(new RoundedBitmapDisplayer(20)) // 设置图片的解码类型
+            .displayer(new FadeInBitmapDisplayer(0))//是否图片加载好后渐入的动画时间
+            .build();
 
     public DownFileListAdapter(ArrayList<DownData> downList, ArrayList<DownData> alreadydownList, Context context, DownLoadService downLoadService) {
         allList = new ArrayList<>();
@@ -54,9 +62,9 @@ public class DownFileListAdapter extends BaseAdapter {
         download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
         appname = FC_GetShareFile.getApplicationName(context);
         this.downLoadService = downLoadService;
-
         allList.addAll(downList);
         allList.addAll(alreadydownList);
+
     }
 
     @Override
@@ -118,7 +126,7 @@ public class DownFileListAdapter extends BaseAdapter {
         viewHolder.tv_process.setText(p + "%");
         if (tmpdata.isDone()) {
             if (Utils.getMIMEType(tmpdata.getName()).equals("image") || Utils.getMIMEType(tmpdata.getName()).equals("video"))
-                imageLoader.displayImage("File://" + download_Path + "/" + appname + "/download/" + tmpdata.getName(), viewHolder.iv);
+                imageLoader.displayImage("File://" + download_Path + "/" + appname + "/download/" + tmpdata.getName(), viewHolder.iv,options);
             else if (Utils.getMIMEType(tmpdata.getName()).equals("audio"))
                 viewHolder.iv.setImageResource(R.drawable.file_icon_music);
             else if (Utils.getMIMEType(tmpdata.getName()).equals("apk"))
@@ -143,7 +151,7 @@ public class DownFileListAdapter extends BaseAdapter {
             });
         } else {
             if (Utils.getMIMEType(tmpdata.getName()).equals("image") || Utils.getMIMEType(tmpdata.getName()).equals("video"))
-                imageLoader.displayImage(tmpdata.getUri(), viewHolder.iv);
+                imageLoader.displayImage(tmpdata.getUri(), viewHolder.iv,options);
             else if (Utils.getMIMEType(tmpdata.getName()).equals("audio"))
                 viewHolder.iv.setImageResource(R.drawable.file_icon_music);
             else if (Utils.getMIMEType(tmpdata.getName()).equals("apk"))
@@ -193,9 +201,10 @@ public class DownFileListAdapter extends BaseAdapter {
         downList = downList2;
         downLoadService = downLoadService2;
         allList.clear();
-
+        alreadydownList =Utils.getDownDataObject("alreadydownlist");
         allList.addAll(downList);
         allList.addAll(alreadydownList);
+
         notifyDataSetChanged();
 
     }
@@ -207,6 +216,7 @@ public class DownFileListAdapter extends BaseAdapter {
         this.alreadydownList = alreadydownList;
         allList.addAll(downList);
         allList.addAll(alreadydownList);
+
         notifyDataSetChanged();
 
     }

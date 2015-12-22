@@ -228,10 +228,11 @@
                     android:id="@+id/img_wechat"
                     android:layout_width="@dimen/browse_pic_width"
                     android:layout_height="@dimen/browse_pic_width"
+                    android:padding="3dp"
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
                     android:contentDescription="@string/img_description"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/icon_wechat_selector"/>
 
                 <TextView
@@ -258,10 +259,11 @@
                     android:id="@+id/img_qq"
                     android:layout_width="@dimen/browse_pic_width"
                     android:layout_height="@dimen/browse_pic_width"
+                    android:padding="5dp"
                     android:layout_centerHorizontal="true"
                     android:clickable="true"
-                    android:contentDescription="@string/zip"
-                    android:scaleType="centerInside"
+                    android:contentDescription="@string/qq_file"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/icon_qq_selector"/>
 
                 <TextView

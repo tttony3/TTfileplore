@@ -38,7 +38,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.support.v7.internal.widget.DialogTitle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -100,7 +99,7 @@ public class MyApp extends CoreApp {
         return fileList;
     }
 
-    public Context getContext() {
+    public static Context getContext() {
         return context.get();
     }
 
@@ -225,12 +224,12 @@ public class MyApp extends CoreApp {
                 public void onReciveFragmentEnter() {
                     if (list.size() > 0) {
                         Intent intent = new Intent();
-                        intent.setClass(getContext(), ShowPushFileActivity.class);
+                        intent.setClass(MyApp.getContext(), ShowPushFileActivity.class);
                         intent.putStringArrayListExtra("pushList", (ArrayList<String>) list);
                         startActivity(intent);
                         dismiss();
                     } else {
-                        Toast.makeText(getContext(), "没有文件", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApp.getContext(), "没有文件", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -294,9 +293,8 @@ public class MyApp extends CoreApp {
 
     @Override
     public boolean bindService(Intent service, ServiceConnection conn, int flags) {
-      //  Intent intent = new Intent("com.chobit.corestorage.CoreService");
+
         service.setPackage(getPackageName());
-//        service.setAction("com.chobit.corestorage.CoreService");
         return super.bindService(service, conn, flags);
     }
 }

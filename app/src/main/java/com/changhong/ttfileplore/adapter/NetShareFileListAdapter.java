@@ -33,12 +33,12 @@ public class NetShareFileListAdapter extends BaseAdapter {
                                    Context context) {
         this.devInfo = devInfo;
         if (null == fileList) {
-            this.fileList = new ArrayList<JavaFile>();
+            this.fileList = new ArrayList<>();
         } else {
             this.fileList = fileList;
         }
         if (null == folderList) {
-            this.folderList = new ArrayList<JavaFolder>();
+            this.folderList = new ArrayList<>();
         } else {
             this.folderList = folderList;
         }

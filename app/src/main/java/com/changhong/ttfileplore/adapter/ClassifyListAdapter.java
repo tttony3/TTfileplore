@@ -73,49 +73,14 @@ public class ClassifyListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (show_cb) {
-//            AnimationSet cb_startanimationSet;
-//            cb_startanimationSet= new AnimationSet(true);
-//            AlphaAnimation start_alphaAnimation =new AlphaAnimation(0.1f,1f);
-//            ScaleAnimation start_scaleAnimation = new ScaleAnimation(0f,1f,0f,1f,0f,0f);
-//            cb_startanimationSet.addAnimation(start_alphaAnimation);
-//            cb_startanimationSet.addAnimation(start_scaleAnimation);
-//            cb_startanimationSet.setDuration(500);
-//
             viewHolder.cb.setChecked(checkbox_list[position]);
             viewHolder.cb.setVisibility(View.VISIBLE);
-            //  viewHolder.cb.setAnimation(cb_startanimationSet);
-
 
         } else {
             if (viewHolder.cb.getVisibility() == View.VISIBLE) {
                 viewHolder.cb.setVisibility(View.GONE);
-//                AnimationSet cb_hideanimationSet;
-//                cb_hideanimationSet = new AnimationSet(true);
-//                AlphaAnimation stop_alphaAnimation = new AlphaAnimation(1f, 0f);
-//                ScaleAnimation stop_scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f, 0.5f, 0.5f);
-//                cb_hideanimationSet.addAnimation(stop_alphaAnimation);
-//                cb_hideanimationSet.addAnimation(stop_scaleAnimation);
-//                cb_hideanimationSet.setDuration(200);
-//
                 viewHolder.cb.setChecked(checkbox_list[position]);
-//               viewHolder.cb.setAnimation(cb_hideanimationSet);
-//
-//                cb_hideanimationSet.setAnimationListener(new Animation.AnimationListener() {
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                        viewHolder.cb.setVisibility(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//
-//                    }
-//                });
+
             }
 
         }

@@ -51,7 +51,8 @@ public class DownLoadService extends Service implements DownStatusInterface {
         pool = Executors.newFixedThreadPool(MAX_THREAD);
         if (setDownCB) {
             setDownCB = false;
-            CoreApp.mBinder.setDownloadCBInterface(new ServiceDownloadProgressCB());
+            if( null!=CoreApp.mBinder)
+             CoreApp.mBinder.setDownloadCBInterface(new ServiceDownloadProgressCB());
         }
     }
 
@@ -90,6 +91,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         ArrayList<String> downloadlist = intent.getStringArrayListExtra("downloadlist");
+
         if (downloadlist != null) {
             Iterator<String> it = downloadlist.iterator();
             while (it.hasNext()) {
@@ -98,11 +100,12 @@ public class DownLoadService extends Service implements DownStatusInterface {
                 tmp.setUri(uri).setCurPart(0).setTotalPart(0)
                         .setName(uri.substring(uri.lastIndexOf("/") + 1, uri.length()));
                 downMap.put(uri, tmp);
+                pool.execute(new DownRunnAble(uri));
             }
-            Iterator<String> it1 = downMap.keySet().iterator();
-            while (it1.hasNext()) {
-                pool.execute(new DownRunnAble(it1.next()));
-            }
+//            Iterator<String> it1 = downMap.keySet().iterator();
+//            while (it1.hasNext()) {
+//                pool.execute(new DownRunnAble(it1.next()));
+//            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -138,9 +141,12 @@ public class DownLoadService extends Service implements DownStatusInterface {
 
         @Override
         public void onDowloadProgress(UpdateDownloadPress press) {
+
             DownData mDownData = downMap.get(press.uriString);
+            if(mDownData!=null)
+            if(!mDownData.isCancel())
             mDownData.setCurPart(press.part).setTotalPart(press.total);
-            mDownData.setCancel(false);
+         //   mDownData.setCancel(false);
         }
 
         @Override
@@ -151,6 +157,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
         @Override
         public void onDowloaCancel(String fileuri) {
             DownData mDownData = downMap.get(fileuri);
+            if(mDownData!=null)
             mDownData.setCancel(true);
 
         }
@@ -158,6 +165,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
         @Override
         public void onDowloaFailt(String fileuri) {
             DownData mDownData = downMap.get(fileuri);
+            if(mDownData!=null)
             mDownData.setCancel(true);
 
         }
@@ -166,10 +174,10 @@ public class DownLoadService extends Service implements DownStatusInterface {
         public void onDownloadOK(String fileuri) {
 
             downMap.get(fileuri).setDone(true);
-            String download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String appname = FC_GetShareFile.getApplicationName(getApplicationContext());
-            Toast.makeText(MyApp.context.get(),
-                    "下载成功,保存在" + download_Path + "/" + appname + "/download/ 目录下", Toast.LENGTH_SHORT).show();
+//            String download_Path = Environment.getExternalStorageDirectory().getAbsolutePath();
+//            String appname = FC_GetShareFile.getApplicationName(getApplicationContext());
+//            Toast.makeText(MyApp.context.get(),
+//                    "下载成功,保存在" + download_Path + "/" + appname + "/download/ 目录下", Toast.LENGTH_SHORT).show();
             showNotification();
             synchronized (this) {
 
@@ -219,6 +227,7 @@ public class DownLoadService extends Service implements DownStatusInterface {
     @Override
     public void stopDownload(String uri) {
         CoreApp.mBinder.cancelDownload(uri);
+    //    downMap.remove(uri);
 
     }
 

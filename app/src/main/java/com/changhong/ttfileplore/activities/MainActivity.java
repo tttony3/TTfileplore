@@ -546,9 +546,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        Intent intent1 =  new Intent("com.chobit.corestorage.CoreService");
+        intent1.setPackage(getPackageName());
+        stopService(intent1);
 
-        stopService(new Intent("com.chobit.corestorage.CoreService"));
-        stopService(new Intent("com.changhong.fileplore.service.DownLoadService"));
+        Intent intent2 =  new Intent("com.changhong.fileplore.service.DownLoadService");
+        intent2.setPackage(getPackageName());
+        stopService(intent2);
         super.onDestroy();
         System.exit(0);
     }

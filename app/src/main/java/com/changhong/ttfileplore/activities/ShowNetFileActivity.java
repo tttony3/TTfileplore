@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -315,24 +316,37 @@ public class ShowNetFileActivity extends BaseActivity implements AdapterView.OnI
                             if (file.getFileType() == JavaFile.FileType.IMAGE) {
                                 showPreviewDialog(file.getLocation());
                             } else if (file.getFileType() == JavaFile.FileType.AUDIO) {
-                                alertDialog_mediaplayer.show();
-                                MediaButtonListener mediaButtonListener = new MediaButtonListener(file);
-                                ib_stop.setOnClickListener(mediaButtonListener);
-                                ib_start.setOnClickListener(mediaButtonListener);
+                                Intent intent = new Intent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setAction(android.content.Intent.ACTION_VIEW);
+
+                                String type = "audio/*";
+                                intent.setDataAndType(Uri.parse(devInfo.getM_httpserverurl() + file.getLocation()), type);
+                                startActivity(intent);
+//                                alertDialog_mediaplayer.show();
+//                                MediaButtonListener mediaButtonListener = new MediaButtonListener(file);
+//                                ib_stop.setOnClickListener(mediaButtonListener);
+//                                ib_start.setOnClickListener(mediaButtonListener);
 
                             } else if (file.getFileType() == JavaFile.FileType.VIDEO) {
-
                                 Intent intent = new Intent();
-                                intent.putExtra("uri", devInfo.getM_httpserverurl() + file.getLocation());
-                                intent.setClass(ShowNetFileActivity.this, VideoActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setAction(android.content.Intent.ACTION_VIEW);
+
+                                String type = "video/*";
+                                intent.setDataAndType(Uri.parse(devInfo.getM_httpserverurl() + file.getLocation()), type);
                                 startActivity(intent);
+//                                Intent intent = new Intent();
+//                                intent.putExtra("uri", devInfo.getM_httpserverurl() + file.getLocation());
+//                                intent.setClass(ShowNetFileActivity.this, VideoActivity.class);
+//                                startActivity(intent);
                             } else {
                                 Toast.makeText(ShowNetFileActivity.this, "所选文件暂不支持在线打开", Toast.LENGTH_SHORT).show();
                             }
                             break;
                         case 1:
 
-                            ArrayList<String> downlist = new ArrayList<String>();
+                            ArrayList<String> downlist = new ArrayList<>();
                             downlist.add(devInfo.getM_httpserverurl() + file.getLocation());
                             Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
                             intent.setPackage(getPackageName());

@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -124,15 +125,30 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
                 switch (position) {
                     case 0:
                         if (Utils.getMIMEType(fileLocation).equals("audio")) {
-                            alertDialog_mediaplayer.show();
-                            MediaButtonListener mediaButtonListener = new MediaButtonListener(fileLocation);
-                            ib_stop.setOnClickListener(mediaButtonListener);
-                            ib_start.setOnClickListener(mediaButtonListener);
+                            Intent intent = new Intent();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction(android.content.Intent.ACTION_VIEW);
+
+                            String type = "audio/*";
+                            intent.setDataAndType(Uri.parse(fileLocation), type);
+                            startActivity(intent);
+//                            alertDialog_mediaplayer.show();
+//                            MediaButtonListener mediaButtonListener = new MediaButtonListener(fileLocation);
+//                            ib_stop.setOnClickListener(mediaButtonListener);
+//                            ib_start.setOnClickListener(mediaButtonListener);
                         } else if (Utils.getMIMEType(fileLocation).equals("video")) {
                             Intent intent = new Intent();
-                            intent.putExtra("uri", fileLocation);
-                            intent.setClass(ShowPushFileActivity.this, VideoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction(android.content.Intent.ACTION_VIEW);
+
+                            String type = "video/*";
+                            intent.setDataAndType(Uri.parse(fileLocation), type);
                             startActivity(intent);
+
+//                            Intent intent = new Intent();
+//                            intent.putExtra("uri", fileLocation);
+//                            intent.setClass(ShowPushFileActivity.this, VideoActivity.class);
+//                            startActivity(intent);
 
                         } else if (Utils.getMIMEType(fileLocation).equals("image")) {
                             showPreviewDialog(fileLocation);
@@ -145,6 +161,7 @@ public class ShowPushFileActivity extends BaseActivity implements OnItemClickLis
                         downlist.add(fileLocation);
                         Intent intent = new Intent("com.changhong.fileplore.service.DownLoadService");
                         intent.putStringArrayListExtra("downloadlist", downlist);
+                        intent.setPackage(getPackageName());
                         startService(intent);
                         Toast.makeText(ShowPushFileActivity.this, "已加入下载列表", Toast.LENGTH_SHORT).show();
 
